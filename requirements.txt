@@ -1,0 +1,4 @@
+astpretty==2.1.0
+click==8.0.1
+flake8==3.9.2
+pytest==6.2.4
