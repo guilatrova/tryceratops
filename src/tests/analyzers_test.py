@@ -2,7 +2,7 @@ import ast
 import os
 from functools import partial
 
-from tryceratops.analyzers import CallRaiseVanillaAnalyzer, CallTooManyAnalyzer
+from tryceratops import analyzers
 from tryceratops.violations import Violation, codes
 
 
@@ -25,7 +25,7 @@ def assert_violation(code: str, msg: str, line: int, col: int, violation: Violat
 
 def test_too_many_calls():
     tree = read_sample("call_too_many_try")
-    analyzer = CallTooManyAnalyzer()
+    analyzer = analyzers.CallTooManyAnalyzer()
     expected_code, expected_msg = codes.TOO_MANY_TRY
     assert_too_many = partial(assert_violation, expected_code, expected_msg)
 
@@ -41,7 +41,7 @@ def test_too_many_calls():
 
 def test_raise_vanilla():
     tree = read_sample("call_raise_vanilla")
-    analyzer = CallRaiseVanillaAnalyzer()
+    analyzer = analyzers.CallRaiseVanillaAnalyzer()
 
     assert_args = partial(
         assert_violation, codes.RAISE_VANILLA_ARGS[0], codes.RAISE_VANILLA_ARGS[1]
@@ -57,3 +57,19 @@ def test_raise_vanilla():
 
     assert_class(12, 8, class_vio)
     assert_args(12, 8, args_vio)
+
+
+def test_check_continue():
+    tree = read_sample("call_avoid_if_not_none")
+    analyzer = analyzers.CallAvoidCheckingToContinueAnalyzer()
+    msg = codes.CHECK_TO_CONTINUE[1].format("another_func")
+
+    assert_check = partial(assert_violation, codes.CHECK_TO_CONTINUE[0], msg)
+
+    violations = list(analyzer.check(tree))
+
+    assert len(violations) == 2
+    first, second = violations
+
+    assert_check(20, 4, first)
+    assert_check(24, 4, second)
