@@ -2,7 +2,7 @@ import ast
 from abc import ABC
 from typing import List
 
-from .violations import RAISE_VANILLA_ARGS, RAISE_VANILLA_CLASS, TOO_MANY_TRY, Violation
+from .violations import Violation, codes
 
 
 class BaseAnalyzer(ABC):
@@ -20,7 +20,7 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
         if len(try_blocks) > 1:
             _, *violation_blocks = try_blocks
-            code, msg = TOO_MANY_TRY
+            code, msg = codes.TOO_MANY_TRY
             violations = [
                 Violation(code, block.lineno, block.col_offset, msg)
                 for block in violation_blocks
@@ -37,7 +37,7 @@ class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
             args = exc.args
 
             if raise_class_id == "Exception":
-                code, msg = RAISE_VANILLA_CLASS
+                code, msg = codes.RAISE_VANILLA_CLASS
                 self.violations.append(
                     Violation(code, node.lineno, node.col_offset, msg)
                 )
@@ -49,7 +49,7 @@ class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
                 )
 
                 if is_constant_str:
-                    code, msg = RAISE_VANILLA_ARGS
+                    code, msg = codes.RAISE_VANILLA_ARGS
                     self.violations.append(
                         Violation(code, node.lineno, node.col_offset, msg)
                     )

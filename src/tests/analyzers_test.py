@@ -3,12 +3,7 @@ import os
 from functools import partial
 
 from tryceratops.analyzers import CallRaiseVanillaAnalyzer, CallTooManyAnalyzer
-from tryceratops.violations import (
-    RAISE_VANILLA_ARGS,
-    RAISE_VANILLA_CLASS,
-    TOO_MANY_TRY,
-    Violation,
-)
+from tryceratops.violations import Violation, codes
 
 
 def read_sample(filename: str) -> ast.AST:
@@ -31,7 +26,7 @@ def assert_violation(code: str, msg: str, line: int, col: int, violation: Violat
 def test_too_many_calls():
     tree = read_sample("call_too_many_try")
     analyzer = CallTooManyAnalyzer()
-    expected_code, expected_msg = TOO_MANY_TRY
+    expected_code, expected_msg = codes.TOO_MANY_TRY
     assert_too_many = partial(assert_violation, expected_code, expected_msg)
 
     violations = list(analyzer.check(tree))
@@ -49,10 +44,10 @@ def test_raise_vanilla():
     analyzer = CallRaiseVanillaAnalyzer()
 
     assert_args = partial(
-        assert_violation, RAISE_VANILLA_ARGS[0], RAISE_VANILLA_ARGS[1]
+        assert_violation, codes.RAISE_VANILLA_ARGS[0], codes.RAISE_VANILLA_ARGS[1]
     )
     assert_class = partial(
-        assert_violation, RAISE_VANILLA_CLASS[0], RAISE_VANILLA_CLASS[1]
+        assert_violation, codes.RAISE_VANILLA_CLASS[0], codes.RAISE_VANILLA_CLASS[1]
     )
 
     violations = list(analyzer.check(tree))
