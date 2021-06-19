@@ -14,4 +14,3 @@ def func():
         a = 1
     except Exception:
         logger.error("log message")
-

@@ -16,4 +16,3 @@ def func():
         logger.exception(f"log message {ex}")
         logger.exception("log message: " + ex)
         logger.exception("log message", ex)
-

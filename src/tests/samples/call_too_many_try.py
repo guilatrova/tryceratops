@@ -5,6 +5,7 @@ Too many try/except blocks.
 Keep it short to 1 per function.
 """
 
+
 def func():
     try:
         a = 1

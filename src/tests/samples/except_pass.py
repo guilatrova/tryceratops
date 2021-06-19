@@ -4,6 +4,7 @@ Violation:
 Except with pass
 """
 
+
 class MyException(Exception):
     pass
 

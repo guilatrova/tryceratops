@@ -1,0 +1,6 @@
+#!/bin/bash
+
+black src
+flake8 src
+isort src
+mypy src

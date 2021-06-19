@@ -5,6 +5,7 @@ Constantly checking for non None values may indicate your parent function
 should be raising an exception instead of returning
 """
 
+
 class MyException(Exception):
     pass
 
