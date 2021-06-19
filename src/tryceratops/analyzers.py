@@ -1,20 +1,20 @@
 import ast
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import List
 
-from .violations import TOO_MANY_TRY, Violation
+from .violations import RAISE_VANILLA_ARGS, RAISE_VANILLA_CLASS, TOO_MANY_TRY, Violation
 
 
 class BaseAnalyzer(ABC):
-    @abstractmethod
-    def check(self, tree: ast.AST) -> List[Violation]:
-        ...
-
-
-class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     def __init__(self):
         self.violations: List[Violation] = []
 
+    def check(self, tree: ast.AST) -> List[Violation]:
+        self.visit(tree)
+        return self.violations
+
+
+class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         try_blocks = [stm for stm in node.body if isinstance(stm, ast.Try)]
 
@@ -29,6 +29,29 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def check(self, tree: ast.AST) -> List[Violation]:
-        self.visit(tree)
-        return self.violations
+
+class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+    def visit_Raise(self, node: ast.Raise):
+        if exc := node.exc:
+            raise_class_id = exc.func.id
+            args = exc.args
+
+            if raise_class_id == "Exception":
+                code, msg = RAISE_VANILLA_CLASS
+                self.violations.append(
+                    Violation(code, node.lineno, node.col_offset, msg)
+                )
+
+            if len(args):
+                first_arg, *_ = args
+                is_constant_str = isinstance(first_arg, ast.Constant) and isinstance(
+                    first_arg.value, str
+                )
+
+                if is_constant_str:
+                    code, msg = RAISE_VANILLA_ARGS
+                    self.violations.append(
+                        Violation(code, node.lineno, node.col_offset, msg)
+                    )
+
+        self.generic_visit(node)

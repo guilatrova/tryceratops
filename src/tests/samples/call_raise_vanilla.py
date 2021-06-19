@@ -9,4 +9,4 @@ customized.
 def func():
     a = 1
     if a == 1:
-        raise Exception("Custom message") from ex
+        raise Exception("Custom message")
