@@ -1,17 +1,9 @@
 import ast
-from abc import ABC
-from typing import Dict, List, Protocol
+from typing import Dict, List
 
-from .violations import Violation, codes
+from tryceratops.violations import Violation, codes
 
-
-class BaseAnalyzer(ABC):
-    def __init__(self):
-        self.violations: List[Violation] = []
-
-    def check(self, tree: ast.AST) -> List[Violation]:
-        self.visit(tree)
-        return self.violations
+from .base import BaseAnalyzer, StmtBodyProtocol
 
 
 class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
@@ -55,10 +47,6 @@ class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
                     )
 
         self.generic_visit(node)
-
-
-class StmtBodyProtocol(Protocol):
-    body: List[ast.stmt]
 
 
 class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):

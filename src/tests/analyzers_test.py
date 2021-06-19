@@ -60,7 +60,7 @@ def test_raise_vanilla():
 
 
 def test_check_continue():
-    tree = read_sample("call_avoid_if_not_none")
+    tree = read_sample("call_check_continue")
     analyzer = analyzers.CallAvoidCheckingToContinueAnalyzer()
     msg = codes.CHECK_TO_CONTINUE[1].format("another_func")
 
