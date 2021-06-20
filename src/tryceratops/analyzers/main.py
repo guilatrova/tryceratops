@@ -1,5 +1,7 @@
 import ast
-from typing import Iterable, List, Set, Tuple
+from collections import namedtuple
+from dataclasses import dataclass
+from typing import Iterable, List, Set, Tuple, Type
 
 from tryceratops.violations import Violation
 
@@ -20,15 +22,35 @@ def _get_analyzer_chain() -> Set[BaseAnalyzer]:
     return analyzers
 
 
-def analyze(trees: Iterable[Tuple[str, ast.AST]]) -> List[Violation]:
-    violations: List[Violation] = []
-    analyzers = _get_analyzer_chain()
+@dataclass
+class RuntimeError:
+    filename: str
+    analyzer: Type[BaseAnalyzer]
+    exception: Exception
 
-    for filename, tree in trees:
-        for analyzer in analyzers:
-            try:
-                violations += analyzer.check(tree, filename)
-            except Exception as ex:
-                print(f"*** Bug when analyzing {filename}: {ex}")
 
-    return violations
+class Runner:
+    def __init__(self):
+        self.runtime_errors: List[RuntimeError] = []
+        self.violations: List[Violation] = []
+        self.analyzed_files: int = 0
+
+    def _clear(self):
+        self.violations = []
+        self.runtime_errors = []
+
+    def analyze(self, trees: Iterable[Tuple[str, ast.AST]]) -> List[Violation]:
+        analyzers = _get_analyzer_chain()
+        self._clear()
+        self.analyzed_files = len(trees)
+
+        for filename, tree in trees:
+            for analyzer in analyzers:
+                try:
+                    self.violations += analyzer.check(tree, filename)
+                except Exception as ex:
+                    self.runtime_errors.append(
+                        RuntimeError(filename, type(analyzer), ex)
+                    )
+
+        return self.violations
