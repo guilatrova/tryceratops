@@ -11,11 +11,6 @@ LOGGING_CONFIG = {
         }
     },
     "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "stream": "ext://sys.stdout",
-            "formatter": "default",
-        },
         "logfile": {
             "class": "logging.handlers.RotatingFileHandler",
             "level": "ERROR",
@@ -24,5 +19,5 @@ LOGGING_CONFIG = {
             "backupCount": 2,
         },
     },
-    "root": {"level": "INFO", "handlers": ["console", "logfile"]},
+    "root": {"level": "INFO", "handlers": ["logfile"]},
 }
