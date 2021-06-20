@@ -86,3 +86,18 @@ def test_reraise_no_cause():
     assert len(violations) == 1
 
     assert_no_cause(16, 8, violations[0])
+
+
+def test_verbose_reraise():
+    tree = read_sample("except_verbose_reraise")
+    analyzer = analyzers.ExceptVerboseReraiseAnalyzer()
+    code, msg = codes.VERBOSE_RERAISE
+
+    assert_verbose = partial(assert_violation, code, msg)
+
+    violations = analyzer.check(tree)
+    assert len(violations) == 2
+    first, second = violations
+
+    assert_verbose(20, 8, first)
+    assert_verbose(28, 12, second)

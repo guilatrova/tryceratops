@@ -22,3 +22,23 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         self.violations += violations
 
         self.generic_visit(node)
+
+
+class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+    def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
+        code, msg = codes.VERBOSE_RERAISE
+
+        def is_raise_with_name(stm: ast.stmt, name: str):
+            if isinstance(stm, ast.Raise) and isinstance(stm.exc, ast.Name):
+                return stm.exc.id == name
+            return False
+
+        # If no name is set, then it's impossible to be verbose
+        # since you don't have the object
+        if node.name:
+            for child in ast.walk(node):
+                if is_raise_with_name(child, node.name):
+                    violation = Violation(code, child.lineno, child.col_offset, msg)
+                    self.violations.append(violation)
+
+        self.generic_visit(node)

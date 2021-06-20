@@ -13,7 +13,8 @@ CHECK_TO_CONTINUE = (
 )
 
 # TC2xx
-RERAISE_NO_CAUSE = (
-    "TC200",
-    "Use 'raise from' to specify exception cause"
+RERAISE_NO_CAUSE = ("TC200", "Use 'raise from' to specify exception cause")
+VERBOSE_RERAISE = (
+    "TC201",
+    "Simply use 'raise' without specifying exception object again",
 )
