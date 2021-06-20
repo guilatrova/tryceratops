@@ -9,6 +9,8 @@
 Currently in BETA (and very flaky).
 Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-python-like-a-pro/).
 
+> “For those who like dinosaurs 🦖 and clean try/except ✨ blocks.”
+
 ## Usage
 
 ```
