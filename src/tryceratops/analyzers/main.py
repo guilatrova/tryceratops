@@ -1,5 +1,5 @@
 import ast
-from typing import Iterable, List, Set
+from typing import Iterable, List, Set, Tuple
 
 from tryceratops.violations import Violation
 
@@ -20,15 +20,15 @@ def _get_analyzer_chain() -> Set[BaseAnalyzer]:
     return analyzers
 
 
-def analyze(trees: Iterable[ast.AST]) -> List[Violation]:
+def analyze(trees: Iterable[Tuple[str, ast.AST]]) -> List[Violation]:
     violations: List[Violation] = []
     analyzers = _get_analyzer_chain()
 
-    for tree in trees:
+    for filename, tree in trees:
         for analyzer in analyzers:
             try:
-                violations += analyzer.check(tree)
+                violations += analyzer.check(tree, filename)
             except Exception as ex:
-                print(f"*** Bug: {ex}")
+                print(f"*** Bug when analyzing {filename}: {ex}")
 
     return violations

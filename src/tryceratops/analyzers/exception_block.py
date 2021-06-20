@@ -14,7 +14,7 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
         reraises_no_cause = [stm for stm in node.body if is_raise_without_cause(stm)]
         violations = [
-            Violation.build(codes.RERAISE_NO_CAUSE, block)
+            Violation.build(self.filename, codes.RERAISE_NO_CAUSE, block)
             for block in reraises_no_cause
         ]
         self.violations += violations
@@ -34,7 +34,9 @@ class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         if node.name:
             for child in ast.walk(node):
                 if is_raise_with_name(child, node.name):
-                    violation = Violation.build(codes.VERBOSE_RERAISE, child)
+                    violation = Violation.build(
+                        self.filename, codes.VERBOSE_RERAISE, child
+                    )
                     self.violations.append(violation)
 
         self.generic_visit(node)

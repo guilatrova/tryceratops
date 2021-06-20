@@ -13,7 +13,8 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         if len(try_blocks) > 1:
             _, *violation_blocks = try_blocks
             violations = [
-                Violation.build(codes.TOO_MANY_TRY, block) for block in violation_blocks
+                Violation.build(self.filename, codes.TOO_MANY_TRY, block)
+                for block in violation_blocks
             ]
             self.violations += violations
 
@@ -27,7 +28,9 @@ class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
             args = exc.args
 
             if raise_class_id == "Exception":
-                self.violations.append(Violation.build(codes.RAISE_VANILLA_CLASS, node))
+                self.violations.append(
+                    Violation.build(self.filename, codes.RAISE_VANILLA_CLASS, node)
+                )
 
             if len(args):
                 first_arg, *_ = args
@@ -37,7 +40,7 @@ class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
                 if is_constant_str:
                     self.violations.append(
-                        Violation.build(codes.RAISE_VANILLA_ARGS, node)
+                        Violation.build(self.filename, codes.RAISE_VANILLA_ARGS, node)
                     )
 
         self.generic_visit(node)
@@ -83,7 +86,9 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
                     callable_name = assignment.value.func.id
                     msg = rawmsg.format(callable_name)
                     self.violations.append(
-                        Violation(code, if_stmt.lineno, if_stmt.col_offset, msg)
+                        Violation(
+                            code, if_stmt.lineno, if_stmt.col_offset, msg, self.filename
+                        )
                     )
             elif isinstance(test, ast.UnaryOp):
                 if isinstance(test.operand, ast.Name):
@@ -91,7 +96,13 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
                         callable_name = assignment.value.func.id
                         msg = rawmsg.format(callable_name)
                         self.violations.append(
-                            Violation(code, if_stmt.lineno, if_stmt.col_offset, msg)
+                            Violation(
+                                code,
+                                if_stmt.lineno,
+                                if_stmt.col_offset,
+                                msg,
+                                self.filename,
+                            )
                         )
 
     def _scan_deeper(self, node: StmtBodyProtocol, may_contain_violations: bool):
@@ -108,7 +119,9 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
             if hasattr(child, "body"):
                 self._scan_deeper(child, may_contain_violations)
 
-    def check(self, tree: ast.AST) -> List[Violation]:
+    def check(self, tree: ast.AST, filename: str) -> List[Violation]:
+        self.filename = filename
+
         for node in ast.walk(tree):
             if isinstance(node, ast.Module):
                 self._scan_deeper(node, False)

@@ -20,15 +20,16 @@ class Violation:
     line: int
     col: int
     description: str
+    filename: str
 
     @classmethod
-    def build(cls, vio_details: Tuple[str, str], stmt: ast.stmt):
+    def build(cls, filename: str, vio_details: Tuple[str, str], stmt: ast.stmt):
         code, msg = vio_details
-        return cls(code, stmt.lineno, stmt.col_offset, msg)
+        return cls(code, stmt.lineno, stmt.col_offset, msg, filename)
 
     def __str__(self):
         codestr = wrap_color(self.code, COLORS.CODE)
         descstr = wrap_color(self.description, COLORS.DESCR)
-        location = f"?.py:{self.line}:{self.col}"
+        location = f"{self.filename}:{self.line}:{self.col}"
 
         return f"[{codestr}] {descstr} - {location}"

@@ -9,7 +9,8 @@ class BaseAnalyzer(ABC):
     def __init__(self):
         self.violations: List[Violation] = []
 
-    def check(self, tree: ast.AST) -> List[Violation]:
+    def check(self, tree: ast.AST, filename: str) -> List[Violation]:
+        self.filename = filename
         self.visit(tree)
         return self.violations
 
