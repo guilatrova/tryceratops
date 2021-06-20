@@ -1,3 +1,5 @@
+ERROR_LOG_FILENAME = ".tryceratops-errors.log"
+
 LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -13,7 +15,14 @@ LOGGING_CONFIG = {
             "class": "logging.StreamHandler",
             "stream": "ext://sys.stdout",
             "formatter": "default",
-        }
+        },
+        "logfile": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "level": "ERROR",
+            "filename": ERROR_LOG_FILENAME,
+            "formatter": "default",
+            "backupCount": 2,
+        },
     },
-    "root": {"level": "INFO", "handlers": ["console"]},
+    "root": {"level": "INFO", "handlers": ["console", "logfile"]},
 }
