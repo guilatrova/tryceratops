@@ -3,6 +3,17 @@ from dataclasses import dataclass
 from typing import Tuple
 
 
+class COLORS:
+    DESCR = "\033[91m"
+    CODE = "\033[93m"
+
+    ENDC = "\033[0m"
+
+
+def wrap_color(msg: str, color: str):
+    return f"{color}{msg}{COLORS.ENDC}"
+
+
 @dataclass
 class Violation:
     code: str
@@ -16,4 +27,8 @@ class Violation:
         return cls(code, stmt.lineno, stmt.col_offset, msg)
 
     def __str__(self):
-        return f"[{self.code}] {self.description} - ?.py:{self.line}:{self.col}"
+        codestr = wrap_color(self.code, COLORS.CODE)
+        descstr = wrap_color(self.description, COLORS.DESCR)
+        location = f"?.py:{self.line}:{self.col}"
+
+        return f"[{codestr}] {descstr} - {location}"
