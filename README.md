@@ -6,7 +6,8 @@
 
 <h2 align="center">Manage your exceptions in Python like a PRO</h2>
 
-Currently in BETA.
+Currently in BETA (and very flaky).
+Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-python-like-a-pro/).
 
 ## Usage
 
