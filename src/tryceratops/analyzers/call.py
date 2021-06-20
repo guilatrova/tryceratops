@@ -12,10 +12,8 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
         if len(try_blocks) > 1:
             _, *violation_blocks = try_blocks
-            code, msg = codes.TOO_MANY_TRY
             violations = [
-                Violation(code, block.lineno, block.col_offset, msg)
-                for block in violation_blocks
+                Violation.build(codes.TOO_MANY_TRY, block) for block in violation_blocks
             ]
             self.violations += violations
 
@@ -29,10 +27,7 @@ class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
             args = exc.args
 
             if raise_class_id == "Exception":
-                code, msg = codes.RAISE_VANILLA_CLASS
-                self.violations.append(
-                    Violation(code, node.lineno, node.col_offset, msg)
-                )
+                self.violations.append(Violation.build(codes.RAISE_VANILLA_CLASS, node))
 
             if len(args):
                 first_arg, *_ = args
@@ -41,9 +36,8 @@ class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
                 )
 
                 if is_constant_str:
-                    code, msg = codes.RAISE_VANILLA_ARGS
                     self.violations.append(
-                        Violation(code, node.lineno, node.col_offset, msg)
+                        Violation.build(codes.RAISE_VANILLA_ARGS, node)
                     )
 
         self.generic_visit(node)
@@ -116,7 +110,6 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
 
     def check(self, tree: ast.AST) -> List[Violation]:
         for node in ast.walk(tree):
-            # for child in ast.iter_child_nodes(node):
             if isinstance(node, ast.Module):
                 self._scan_deeper(node, False)
 
