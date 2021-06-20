@@ -1,16 +1,19 @@
 import ast
 from os import listdir
 from os.path import isdir, isfile, join
-from typing import Generator, Tuple
+from typing import Generator, Optional, Tuple
 
 
 def is_python_file(filename: str):
     return isfile(filename) and filename.endswith(".py")
 
 
-def parse_file(filename: str) -> ast.AST:
+def parse_file(filename: str) -> Optional[ast.AST]:
     with open(filename) as content:
-        return ast.parse(content.read())
+        try:
+            return ast.parse(content.read())
+        except Exception:
+            return None
 
 
 def find_files(dir: str) -> Generator[str, None, None]:
@@ -25,7 +28,12 @@ def find_files(dir: str) -> Generator[str, None, None]:
 
 def parse_python_files_from_dir(dir: str) -> Generator[Tuple[str, ast.AST], None, None]:
     if is_python_file(dir):
-        yield (dir, parse_file(dir))
+        parsed = parse_file(dir)
+        if parsed:
+            yield (dir, parsed)
+
     elif isdir(dir):
         for filename in find_files(dir):
-            yield (filename, parse_file(filename))
+            parsed = parse_file(filename)
+            if parsed:
+                yield (filename, parsed)
