@@ -29,7 +29,7 @@ def test_too_many_calls():
     expected_code, expected_msg = codes.TOO_MANY_TRY
     assert_too_many = partial(assert_violation, expected_code, expected_msg)
 
-    violations = list(analyzer.check(tree))
+    violations = analyzer.check(tree, "filename")
 
     assert len(violations) == 3
     v2blocks, v3blocks_1, v3blocks_2 = violations
@@ -50,7 +50,7 @@ def test_raise_vanilla():
         assert_violation, codes.RAISE_VANILLA_CLASS[0], codes.RAISE_VANILLA_CLASS[1]
     )
 
-    violations = list(analyzer.check(tree))
+    violations = analyzer.check(tree, "filename")
 
     assert len(violations) == 2
     class_vio, args_vio = violations
@@ -66,7 +66,7 @@ def test_check_continue():
 
     assert_check = partial(assert_violation, codes.CHECK_TO_CONTINUE[0], msg)
 
-    violations = list(analyzer.check(tree))
+    violations = analyzer.check(tree, "filename")
 
     assert len(violations) == 2
     first, second = violations
@@ -82,7 +82,7 @@ def test_reraise_no_cause():
 
     assert_no_cause = partial(assert_violation, code, msg)
 
-    violations = analyzer.check(tree)
+    violations = analyzer.check(tree, "filename")
     assert len(violations) == 1
 
     assert_no_cause(16, 8, violations[0])
@@ -95,7 +95,7 @@ def test_verbose_reraise():
 
     assert_verbose = partial(assert_violation, code, msg)
 
-    violations = analyzer.check(tree)
+    violations = analyzer.check(tree, "filename")
     assert len(violations) == 2
     first, second = violations
 
