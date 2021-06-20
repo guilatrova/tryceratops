@@ -73,3 +73,16 @@ def test_check_continue():
 
     assert_check(20, 4, first)
     assert_check(24, 4, second)
+
+
+def test_reraise_no_cause():
+    tree = read_sample("except_reraise_no_cause")
+    analyzer = analyzers.ExceptReraiseWithoutCauseAnalyzer()
+    code, msg = codes.RERAISE_NO_CAUSE
+
+    assert_no_cause = partial(assert_violation, code, msg)
+
+    violations = analyzer.check(tree)
+    assert len(violations) == 1
+
+    assert_no_cause(16, 8, violations[0])
