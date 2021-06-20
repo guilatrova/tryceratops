@@ -33,6 +33,10 @@ def entrypoint(dir: str):
     print_finished_status()
 
 
-if __name__ == "__main__":
+def main():
     logging.config.dictConfig(LOGGING_CONFIG)
     entrypoint()
+
+
+if __name__ == "__main__":
+    main()

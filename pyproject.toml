@@ -1,6 +1,24 @@
 [build-system]
-requires = [
-    "setuptools >= 40.6.2",
-    "wheel >= 0.30.0",
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "tryceratops"
+author = "Guilherme Latrova"
+author-email = "hello@guilatrova.dev"
+home-page = "https://github.com/guilatrova/tryceratops"
+classifiers = [ "License :: OSI Approved :: MIT License",]
+description-file = "README.md"
+requires-python = ">=3.8"
+requires=[
+    "click>=8.0.1",
 ]
-build-backend = "setuptools.build_meta"
+
+[tool.flit.metadata.requires-extra]
+test = [
+    "pytest >=6.2.4",
+]
+
+[tool.flit.entrypoints.console_scripts]
+tryceratops = "tryceratops.__main__:main"
+

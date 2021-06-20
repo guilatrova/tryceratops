@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="./img/logo.png">
+    <img src="https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/logo.png">
 </p>
 
 
@@ -17,7 +17,7 @@ Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-
 tryceratops [filename or dir]
 ```
 
-![example](img/tryceratops-example.gif)
+![example](https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/tryceratops-example.gif)
 
 ## Violations
 
