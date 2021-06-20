@@ -121,6 +121,7 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
 
     def check(self, tree: ast.AST, filename: str) -> List[Violation]:
         self.filename = filename
+        self.violations = []
 
         for node in ast.walk(tree):
             if isinstance(node, ast.Module):

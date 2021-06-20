@@ -11,7 +11,10 @@ class BaseAnalyzer(ABC):
 
     def check(self, tree: ast.AST, filename: str) -> List[Violation]:
         self.filename = filename
+        self.violations = []
+
         self.visit(tree)
+
         return self.violations
 
 
