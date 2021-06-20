@@ -14,3 +14,10 @@ def func():
         a = 1
     except Exception:
         raise MyException()
+
+
+def good():
+    try:
+        a = 1
+    except Exception:
+        raise  # Just reraising don't need 'from'

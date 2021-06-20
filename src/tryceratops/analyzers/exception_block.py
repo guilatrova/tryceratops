@@ -9,7 +9,7 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
         def is_raise_without_cause(node: ast.stmt):
             if isinstance(node, ast.Raise):
-                return node.cause is None
+                return node.exc and node.cause is None
             return False
 
         reraises_no_cause = [stm for stm in node.body if is_raise_without_cause(stm)]
