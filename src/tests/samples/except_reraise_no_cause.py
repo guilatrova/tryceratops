@@ -19,5 +19,7 @@ def func():
 def good():
     try:
         a = 1
+    except MyException as e:
+        raise e  # This is verbose violation, shouldn't trigger no cause
     except Exception:
         raise  # Just reraising don't need 'from'
