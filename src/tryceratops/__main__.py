@@ -2,6 +2,7 @@ import logging.config
 
 import click
 
+import tryceratops
 from tryceratops.analyzers import Runner
 from tryceratops.main import parse_python_files_from_dir
 from tryceratops.settings import ERROR_LOG_FILENAME, LOGGING_CONFIG
@@ -23,6 +24,7 @@ def print_finished_status():
 
 @click.command()
 @click.argument("dir")
+@click.version_option(tryceratops.__version__)
 def entrypoint(dir: str):
     parsed_files = list(parse_python_files_from_dir(dir))
     violations = list(runner.analyze(parsed_files))
