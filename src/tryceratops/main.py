@@ -1,7 +1,9 @@
 import ast
 from os import listdir
 from os.path import isdir, isfile, join
-from typing import Generator, Optional, Tuple
+from typing import Generator, Optional
+
+from .types import ParsedFileType
 
 
 def is_python_file(filename: str):
@@ -26,7 +28,7 @@ def find_files(dir: str) -> Generator[str, None, None]:
             yield full_path
 
 
-def parse_python_files_from_dir(dir: str) -> Generator[Tuple[str, ast.AST], None, None]:
+def parse_python_files_from_dir(dir: str) -> Generator[ParsedFileType, None, None]:
     if is_python_file(dir):
         parsed = parse_file(dir)
         if parsed:

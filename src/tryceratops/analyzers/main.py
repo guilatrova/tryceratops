@@ -1,8 +1,8 @@
-import ast
 import logging
 from dataclasses import dataclass
-from typing import Iterable, List, Set, Tuple, Type
+from typing import List, Set, Type
 
+from tryceratops.types import ParsedFilesType
 from tryceratops.violations import Violation
 
 from . import call as call_analyzers
@@ -41,7 +41,7 @@ class Runner:
         self.violations = []
         self.runtime_errors = []
 
-    def analyze(self, trees: Iterable[Tuple[str, ast.AST]]) -> List[Violation]:
+    def analyze(self, trees: ParsedFilesType) -> List[Violation]:
         analyzers = _get_analyzer_chain()
         self._clear()
         self.analyzed_files = len(trees)
@@ -61,3 +61,7 @@ class Runner:
     @property
     def had_issues(self) -> bool:
         return len(self.runtime_errors) > 0
+
+    @property
+    def any_violation(self) -> bool:
+        return len(self.violations) > 0
