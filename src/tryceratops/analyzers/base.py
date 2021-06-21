@@ -4,6 +4,8 @@ from typing import List, Protocol
 
 from tryceratops.violations import Violation
 
+from .exceptions import AnalyzerVisitException
+
 
 class BaseAnalyzer(ABC):
     EXPERIMENTAL = False
@@ -22,3 +24,13 @@ class BaseAnalyzer(ABC):
 
 class StmtBodyProtocol(Protocol):
     body: List[ast.stmt]
+
+
+def visit_error_handler(func):
+    def _func(instance, node: ast.stmt):
+        try:
+            return func(instance, node)
+        except Exception as ex:
+            raise AnalyzerVisitException(node) from ex
+
+    return _func

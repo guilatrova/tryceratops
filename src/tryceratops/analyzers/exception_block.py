@@ -2,10 +2,11 @@ import ast
 
 from tryceratops.violations import Violation, codes
 
-from .base import BaseAnalyzer
+from .base import BaseAnalyzer, visit_error_handler
 
 
 class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+    @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
         def is_raise_without_cause(node: ast.stmt):
             if isinstance(node, ast.Raise):
@@ -23,6 +24,7 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
 
 class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+    @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
         def is_raise_with_name(stm: ast.stmt, name: str):
             if isinstance(stm, ast.Raise) and isinstance(stm.exc, ast.Name):

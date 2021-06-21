@@ -3,10 +3,11 @@ from typing import Dict, List
 
 from tryceratops.violations import Violation, codes
 
-from .base import BaseAnalyzer, StmtBodyProtocol
+from .base import BaseAnalyzer, StmtBodyProtocol, visit_error_handler
 
 
 class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+    @visit_error_handler
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         try_blocks = [stm for stm in node.body if isinstance(stm, ast.Try)]
 
@@ -22,6 +23,7 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
 
 class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+    @visit_error_handler
     def visit_Raise(self, node: ast.Raise):
         if exc := node.exc:
             if isinstance(exc, ast.Call):
