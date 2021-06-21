@@ -1,0 +1,8 @@
+-   id: tryceratops
+    name: tryceratops
+    description: "Manage your exceptions in Python like a PRO"
+    entry: tryceratops
+    language: python
+    language_version: python3
+    types: [python]
+    require_serial: true

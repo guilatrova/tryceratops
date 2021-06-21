@@ -1,7 +1,7 @@
 import ast
 from os import listdir
 from os.path import isdir, isfile, join
-from typing import Generator, Optional
+from typing import Generator, Iterable, Optional
 
 from .types import ParsedFileType
 
@@ -39,3 +39,8 @@ def parse_python_files_from_dir(dir: str) -> Generator[ParsedFileType, None, Non
             parsed = parse_file(filename)
             if parsed:
                 yield (filename, parsed)
+
+
+def parse_python_files(files: Iterable[str]) -> Generator[ParsedFileType, None, None]:
+    for file in files:
+        yield from parse_python_files_from_dir(file)
