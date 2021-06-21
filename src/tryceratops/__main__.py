@@ -11,17 +11,14 @@ from tryceratops.settings import LOGGING_CONFIG
 runner = Runner()
 interface = CliInterface(runner)
 
+EXPERIMENTAL_FLAG_OPTION = dict(
+    is_flag=True, help="Whether to enable experimental analyzers."
+)
+
 
 @click.command()
 @click.argument("dir")
-@click.option(
-    "--experimental",
-    is_flag=True,
-    type=bool,
-    default=False,
-    show_default=True,
-    help="Whether to enable experimental analyzers",
-)
+@click.option("--experimental", **EXPERIMENTAL_FLAG_OPTION)
 @click.version_option(tryceratops.__version__)
 def entrypoint(dir: str, experimental: bool):
     parsed_files = list(parse_python_files_from_dir(dir))
