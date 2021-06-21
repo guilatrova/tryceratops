@@ -7,7 +7,7 @@ from tryceratops.violations import Violation, codes
 
 
 def read_sample(filename: str) -> ast.AST:
-    ref_dir = f"{os.path.dirname(__file__)}/samples/"
+    ref_dir = f"{os.path.dirname(__file__)}/samples/violations/"
     path = f"{ref_dir}{filename}.py"
 
     with open(path) as sample:
