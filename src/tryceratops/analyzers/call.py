@@ -47,6 +47,8 @@ class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
 
 class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
+    EXPERIMENTAL = True
+
     def __init__(self):
         self.assignments_from_calls: Dict[str, ast.Assign] = {}
         super().__init__()

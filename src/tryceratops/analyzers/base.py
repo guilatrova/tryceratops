@@ -6,6 +6,8 @@ from tryceratops.violations import Violation
 
 
 class BaseAnalyzer(ABC):
+    EXPERIMENTAL = False
+
     def __init__(self):
         self.violations: List[Violation] = []
 

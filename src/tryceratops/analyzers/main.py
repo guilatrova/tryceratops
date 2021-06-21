@@ -12,15 +12,26 @@ from .base import BaseAnalyzer
 logger = logging.getLogger(__name__)
 
 
-def _get_analyzer_chain() -> Set[BaseAnalyzer]:
-    analyzers = {
-        call_analyzers.CallTooManyAnalyzer(),
-        call_analyzers.CallRaiseVanillaAnalyzer(),
-        call_analyzers.CallAvoidCheckingToContinueAnalyzer(),
-        except_analyzers.ExceptReraiseWithoutCauseAnalyzer(),
-        except_analyzers.ExceptVerboseReraiseAnalyzer(),
-    }
+ANALYZER_CLASSES = {
+    call_analyzers.CallTooManyAnalyzer,
+    call_analyzers.CallRaiseVanillaAnalyzer,
+    call_analyzers.CallAvoidCheckingToContinueAnalyzer,
+    except_analyzers.ExceptReraiseWithoutCauseAnalyzer,
+    except_analyzers.ExceptVerboseReraiseAnalyzer,
+}
 
+
+def _get_analyzer_chain(include_experimental=False) -> Set[BaseAnalyzer]:
+    if include_experimental:
+        analyzer_classes = ANALYZER_CLASSES
+    else:
+        analyzer_classes = {
+            analyzercls
+            for analyzercls in ANALYZER_CLASSES
+            if analyzercls.EXPERIMENTAL is False
+        }
+
+    analyzers = {analyzercls() for analyzercls in analyzer_classes}
     return analyzers
 
 
@@ -41,8 +52,10 @@ class Runner:
         self.violations = []
         self.runtime_errors = []
 
-    def analyze(self, trees: ParsedFilesType) -> List[Violation]:
-        analyzers = _get_analyzer_chain()
+    def analyze(
+        self, trees: ParsedFilesType, include_experimental: bool
+    ) -> List[Violation]:
+        analyzers = _get_analyzer_chain(include_experimental)
         self._clear()
         self.analyzed_files = len(trees)
 

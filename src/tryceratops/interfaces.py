@@ -29,10 +29,8 @@ class CliInterface:
     def __init__(self, runner: Runner):
         self.runner = runner
 
-    def _present_violations(self, files: ParsedFilesType):
-        violations = self.runner.analyze(files)
-
-        for violation in violations:
+    def _present_violations(self):
+        for violation in self.runner.violations:
             print(present_violation(violation))
 
     def _present_status(self):
@@ -56,7 +54,7 @@ class CliInterface:
 
         sys.exit(exit_code)
 
-    def present_and_exit(self, files: ParsedFilesType):
-        self._present_violations(files)
+    def present_and_exit(self):
+        self._present_violations()
         self._present_status()
         self._exit()
