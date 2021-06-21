@@ -24,24 +24,27 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     def visit_Raise(self, node: ast.Raise):
         if exc := node.exc:
-            raise_class_id = exc.func.id
-            args = exc.args
+            if isinstance(exc, ast.Call):
+                raise_class_id = exc.func.id
+                args = exc.args
 
-            if raise_class_id == "Exception":
-                self.violations.append(
-                    Violation.build(self.filename, codes.RAISE_VANILLA_CLASS, node)
-                )
-
-            if len(args):
-                first_arg, *_ = args
-                is_constant_str = isinstance(first_arg, ast.Constant) and isinstance(
-                    first_arg.value, str
-                )
-
-                if is_constant_str:
+                if raise_class_id == "Exception":
                     self.violations.append(
-                        Violation.build(self.filename, codes.RAISE_VANILLA_ARGS, node)
+                        Violation.build(self.filename, codes.RAISE_VANILLA_CLASS, node)
                     )
+
+                if len(args):
+                    first_arg, *_ = args
+                    is_constant_str = isinstance(
+                        first_arg, ast.Constant
+                    ) and isinstance(first_arg.value, str)
+
+                    if is_constant_str:
+                        self.violations.append(
+                            Violation.build(
+                                self.filename, codes.RAISE_VANILLA_ARGS, node
+                            )
+                        )
 
         self.generic_visit(node)
 
