@@ -55,8 +55,8 @@ def test_raise_vanilla():
     assert len(violations) == 2
     class_vio, args_vio = violations
 
-    assert_class(12, 8, class_vio)
-    assert_args(12, 8, args_vio)
+    assert_class(13, 8, class_vio)
+    assert_args(13, 8, args_vio)
 
 
 def test_check_continue():
