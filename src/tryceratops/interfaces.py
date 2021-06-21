@@ -3,6 +3,26 @@ import sys
 from tryceratops.analyzers import Runner
 from tryceratops.settings import ERROR_LOG_FILENAME
 from tryceratops.types import ParsedFilesType
+from tryceratops.violations import Violation
+
+
+class COLORS:
+    DESCR = "\033[91m"
+    CODE = "\033[93m"
+
+    ENDC = "\033[0m"
+
+
+def wrap_color(msg: str, color: str):
+    return f"{color}{msg}{COLORS.ENDC}"
+
+
+def present_violation(violation: Violation):
+    codestr = wrap_color(violation.code, COLORS.CODE)
+    descstr = wrap_color(violation.description, COLORS.DESCR)
+    location = f"{violation.filename}:{violation.line}:{violation.col}"
+
+    return f"[{codestr}] {descstr} - {location}"
 
 
 class CliInterface:
@@ -13,7 +33,7 @@ class CliInterface:
         violations = self.runner.analyze(files)
 
         for violation in violations:
-            print(str(violation))
+            print(present_violation(violation))
 
     def _present_status(self):
         print("Done processing! 🦖✨")
