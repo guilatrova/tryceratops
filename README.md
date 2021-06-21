@@ -39,6 +39,17 @@ tryceratops --experimental [filename or dir]
 
 All violations and its descriptions can be found in [docs](https://github.com/guilatrova/tryceratops/tree/main/docs/violations).
 
+## Pre-commit
+
+If you wish to use pre-commit, add this:
+
+```yaml
+  - repo: https://github.com/guilatrova/tryceratops
+    rev: v0.1.3
+    hooks:
+      - id: tryceratops
+```
+
 ## License
 
 MIT
