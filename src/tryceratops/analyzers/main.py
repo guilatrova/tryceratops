@@ -64,7 +64,9 @@ class Runner:
                 try:
                     self.violations += analyzer.check(tree, filename)
                 except Exception as ex:
-                    logger.exception(f"Exception raised when running {type(analyzer)}")
+                    logger.exception(
+                        f"Exception raised when running {type(analyzer)} on {filename}"
+                    )
                     self.runtime_errors.append(
                         RuntimeError(filename, type(analyzer), ex)
                     )
