@@ -27,9 +27,7 @@ def _get_analyzer_chain(include_experimental=False) -> Set[BaseAnalyzer]:
         analyzer_classes = ANALYZER_CLASSES
     else:
         analyzer_classes = {
-            analyzercls
-            for analyzercls in ANALYZER_CLASSES
-            if analyzercls.EXPERIMENTAL is False
+            analyzercls for analyzercls in ANALYZER_CLASSES if analyzercls.EXPERIMENTAL is False
         }
 
     analyzers = {analyzercls() for analyzercls in analyzer_classes}
@@ -53,9 +51,7 @@ class Runner:
         self.violations = []
         self.runtime_errors = []
 
-    def analyze(
-        self, trees: ParsedFilesType, include_experimental: bool
-    ) -> List[Violation]:
+    def analyze(self, trees: ParsedFilesType, include_experimental: bool) -> List[Violation]:
         analyzers = _get_analyzer_chain(include_experimental)
         self._clear()
         self.analyzed_files = len(trees)
@@ -68,9 +64,7 @@ class Runner:
                     logger.exception(
                         f"Exception raised when running {type(analyzer)} on {filename}"
                     )
-                    self.runtime_errors.append(
-                        RuntimeError(filename, type(analyzer), ex)
-                    )
+                    self.runtime_errors.append(RuntimeError(filename, type(analyzer), ex))
 
         return self.violations
 

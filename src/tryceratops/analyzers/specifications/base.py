@@ -84,10 +84,7 @@ class Or(MultaryCompositeSpecification):
 
     def is_satisfied_by(self, candidate):
         satisfied = any(
-            [
-                specification.is_satisfied_by(candidate)
-                for specification in self.specifications
-            ]
+            [specification.is_satisfied_by(candidate) for specification in self.specifications]
         )
         return satisfied
 
@@ -110,9 +107,7 @@ class BinaryCompositeSpecification(CompositeSpecification):
 
 class Xor(BinaryCompositeSpecification):
     def is_satisfied_by(self, candidate):
-        return self.left.is_satisfied_by(candidate) ^ self.right.is_satisfied_by(
-            candidate
-        )
+        return self.left.is_satisfied_by(candidate) ^ self.right.is_satisfied_by(candidate)
 
 
 class NullaryCompositeSpecification(CompositeSpecification):

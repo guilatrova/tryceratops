@@ -91,9 +91,7 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
                     callable_name = assignment.value.func.id
                     msg = rawmsg.format(callable_name)
                     self.violations.append(
-                        Violation(
-                            code, if_stmt.lineno, if_stmt.col_offset, msg, self.filename
-                        )
+                        Violation(code, if_stmt.lineno, if_stmt.col_offset, msg, self.filename)
                     )
             elif isinstance(test, ast.UnaryOp):
                 if isinstance(test.operand, ast.Name):

@@ -1,5 +1,4 @@
 import ast
-import builtins
 
 from tryceratops.violations import Violation, codes
 
@@ -37,9 +36,7 @@ class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         if node.name:
             for child in ast.walk(node):
                 if is_raise_with_name(child, node.name):
-                    violation = Violation.build(
-                        self.filename, codes.VERBOSE_RERAISE, child
-                    )
+                    violation = Violation.build(self.filename, codes.VERBOSE_RERAISE, child)
                     self.violations.append(violation)
 
         self.generic_visit(node)
@@ -57,10 +54,7 @@ class ExceptBroadPassAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
         elif isinstance(node.type, ast.Tuple):
             return any(
-                [
-                    self._is_vanilla_exception(includedtype)
-                    for includedtype in node.type.elts
-                ]
+                [self._is_vanilla_exception(includedtype) for includedtype in node.type.elts]
             )
 
         return False
@@ -75,14 +69,10 @@ class ExceptBroadPassAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
         first_child = node.body[0]
-        is_ignoring_exception = isinstance(first_child, ast.Pass) or self._is_ellipsis(
-            first_child
-        )
+        is_ignoring_exception = isinstance(first_child, ast.Pass) or self._is_ellipsis(first_child)
 
         if is_ignoring_exception and self._wraps_vanilla_exception(node):
-            violation = Violation.build(
-                self.filename, codes.IGNORING_EXCEPTION, first_child
-            )
+            violation = Violation.build(self.filename, codes.IGNORING_EXCEPTION, first_child)
             self.violations.append(violation)
 
         self.generic_visit(node)

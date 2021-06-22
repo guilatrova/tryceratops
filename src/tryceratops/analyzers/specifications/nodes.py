@@ -5,9 +5,7 @@ from .base import Specification, SpecificationResultType
 
 
 def has_at_least_child(node: ast.stmt, node_type: Type[ast.stmt], min: int):
-    children = [
-        child for child in ast.iter_child_nodes(node) if isinstance(node, node_type)
-    ]
+    children = [child for child in ast.iter_child_nodes(node) if isinstance(node, node_type)]
 
     if len(children) >= min:
         return (True, children)
