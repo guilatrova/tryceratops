@@ -18,3 +18,4 @@ VERBOSE_RERAISE = (
     "TC201",
     "Simply use 'raise' without specifying exception object again",
 )
+IGNORING_EXCEPTION = ("TC202", "You're ignoring a broad exception without even logging")

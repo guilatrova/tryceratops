@@ -101,3 +101,19 @@ def test_verbose_reraise():
 
     assert_verbose(20, 8, first)
     assert_verbose(28, 12, second)
+
+
+def test_broad_pass():
+    tree = read_sample("except_pass")
+    analyzer = analyzers.ExceptBroadPassAnalyzer()
+    code, msg = codes.IGNORING_EXCEPTION
+
+    assert_broad = partial(assert_violation, code, msg)
+
+    violations = analyzer.check(tree, "filename")
+    assert len(violations) == 3
+    first, second, third = violations
+
+    assert_broad(18, 8, first)
+    assert_broad(27, 8, second)
+    assert_broad(35, 12, third)

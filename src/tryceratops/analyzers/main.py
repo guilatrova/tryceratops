@@ -18,6 +18,7 @@ ANALYZER_CLASSES = {
     call_analyzers.CallAvoidCheckingToContinueAnalyzer,
     except_analyzers.ExceptReraiseWithoutCauseAnalyzer,
     except_analyzers.ExceptVerboseReraiseAnalyzer,
+    except_analyzers.ExceptBroadPassAnalyzer,
 }
 
 
