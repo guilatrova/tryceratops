@@ -4,16 +4,16 @@ from typing import Dict, List
 from tryceratops.violations import Violation, codes
 
 from .base import BaseAnalyzer, StmtBodyProtocol, visit_error_handler
-from .specifications.nodes import NodeFirstChildIs, NodeHasAttr, NodeHasPropEquals
+from .specifications.nodes import HasAtLeastChild, NodeFirstChildIs, NodeHasAttr, NodeHasPropEquals
 
 
 class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     @visit_error_handler
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
-        try_blocks = [stm for stm in node.body if isinstance(stm, ast.Try)]
+        at_least_try_blocks = HasAtLeastChild(ast.Try, 2)
+        if at_least_try_blocks.is_satisfied_by(node):
+            _, *violation_blocks = at_least_try_blocks.result
 
-        if len(try_blocks) > 1:
-            _, *violation_blocks = try_blocks
             violations = [
                 Violation.build(self.filename, codes.TOO_MANY_TRY, block)
                 for block in violation_blocks

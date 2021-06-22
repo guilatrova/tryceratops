@@ -4,13 +4,20 @@ from typing import Any, Type
 from .base import Specification, SpecificationResultType
 
 
-def has_at_least_child(node: ast.stmt, node_type: Type[ast.stmt], min: int):
-    children = [child for child in ast.iter_child_nodes(node) if isinstance(node, node_type)]
+class HasAtLeastChild(Specification):
+    def __init__(self, child_type: Type[ast.stmt], min: int = 1):
+        self.child_type = child_type
+        self.min = min
 
-    if len(children) >= min:
-        return (True, children)
+    def _calculate_result(self, candidate: ast.stmt) -> SpecificationResultType:
+        children = [
+            child for child in ast.iter_child_nodes(candidate) if isinstance(child, self.child_type)
+        ]
 
-    return (False, None)
+        if len(children) >= self.min:
+            return (True, children)
+
+        return (False, None)
 
 
 class NodeHasAttr(Specification):
