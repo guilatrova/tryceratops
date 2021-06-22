@@ -4,6 +4,7 @@ from typing import Dict, List
 from tryceratops.violations import Violation, codes
 
 from .base import BaseAnalyzer, StmtBodyProtocol, visit_error_handler
+from .specifications.nodes import NodeFirstChildIs, NodeHasAttr, NodeHasPropEquals
 
 
 class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
@@ -25,31 +26,25 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     @visit_error_handler
     def visit_Raise(self, node: ast.Raise):
-        if exc := node.exc:
-            if isinstance(exc, ast.Call):
-                if isinstance(exc.func, ast.Name):
-                    raise_class_id = exc.func.id
-                    args = exc.args
+        chain = NodeHasAttr("exc", ast.Call) & NodeHasAttr("func", ast.Name)
 
-                    if raise_class_id == "Exception":
-                        self.violations.append(
-                            Violation.build(
-                                self.filename, codes.RAISE_VANILLA_CLASS, node
-                            )
-                        )
+        if chain.is_satisfied_by(node):
+            raise_class = chain.result
+            args = node.exc.args
 
-                    if len(args):
-                        first_arg, *_ = args
-                        is_constant_str = isinstance(
-                            first_arg, ast.Constant
-                        ) and isinstance(first_arg.value, str)
+            if NodeHasPropEquals("id", "Exception").is_satisfied_by(raise_class):
+                self.violations.append(
+                    Violation.build(self.filename, codes.RAISE_VANILLA_CLASS, node)
+                )
 
-                        if is_constant_str:
-                            self.violations.append(
-                                Violation.build(
-                                    self.filename, codes.RAISE_VANILLA_ARGS, node
-                                )
-                            )
+            at_least_one_child = len(args) > 0
+            raising_constant_str = NodeFirstChildIs(ast.Constant, "args") & NodeHasAttr(
+                "value", str
+            )
+            if at_least_one_child and raising_constant_str.is_satisfied_by(node.exc):
+                self.violations.append(
+                    Violation.build(self.filename, codes.RAISE_VANILLA_ARGS, node)
+                )
 
         self.generic_visit(node)
 
