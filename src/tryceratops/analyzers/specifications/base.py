@@ -7,6 +7,9 @@ class Specification:
     def __and__(self, other):
         return And(self, other)
 
+    def __add__(self, other):
+        return Forward(self, other)
+
     def __or__(self, other):
         return Or(self, other)
 
@@ -49,15 +52,11 @@ class And(MultaryCompositeSpecification):
         return self
 
     def is_satisfied_by(self, candidate):
-        next_candidate = candidate
-        for spec in self.specifications:
-            if spec.is_satisfied_by(next_candidate):
-                next_candidate = spec.result
-            else:
-                return False
-
-        self.result = next_candidate
-        return True
+        satisfied = all(
+            [specification.is_satisfied_by(candidate) for specification in self.specifications]
+        )
+        self.result = candidate
+        return satisfied
 
     def remainder_unsatisfied_by(self, candidate):
         non_satisfied = [
@@ -72,6 +71,19 @@ class And(MultaryCompositeSpecification):
         if len(non_satisfied) == len(self.specifications):
             return self
         return And(*non_satisfied)
+
+
+class Forward(And):
+    def is_satisfied_by(self, candidate):
+        next_candidate = candidate
+        for spec in self.specifications:
+            if spec.is_satisfied_by(next_candidate):
+                next_candidate = spec.result
+            else:
+                return False
+
+        self.result = next_candidate
+        return True
 
 
 class Or(MultaryCompositeSpecification):

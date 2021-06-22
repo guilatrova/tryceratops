@@ -26,7 +26,7 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     @visit_error_handler
     def visit_Raise(self, node: ast.Raise):
-        chain = NodeHasAttr("exc", ast.Call) & NodeHasAttr("func", ast.Name)
+        chain = NodeHasAttr("exc", ast.Call) + NodeHasAttr("func", ast.Name)
 
         if chain.is_satisfied_by(node):
             raise_class = chain.result
@@ -38,7 +38,7 @@ class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
                 )
 
             at_least_one_child = len(args) > 0
-            raising_constant_str = NodeFirstChildIs(ast.Constant, "args") & NodeHasAttr(
+            raising_constant_str = NodeFirstChildIs(ast.Constant, "args") + NodeHasAttr(
                 "value", str
             )
             if at_least_one_child and raising_constant_str.is_satisfied_by(node.exc):
