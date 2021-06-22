@@ -74,12 +74,14 @@ class NodeFirstChildIs(Specification):
 
 
 class ChildrenAre(Specification):
-    def __init__(self, attr_type: Any):
+    def __init__(self, attr_type: Any, direct_children: bool = True):
         self.attr_type = attr_type
+        self.direct_children = direct_children
 
     def _calculate_result(self, candidate: ast.stmt) -> SpecificationResultType:
+        iter_strategy = ast.iter_child_nodes if self.direct_children else ast.walk
         children = [
-            child for child in ast.iter_child_nodes(candidate) if isinstance(child, self.attr_type)
+            child for child in iter_strategy(candidate) if isinstance(child, self.attr_type)
         ]
 
         if children:

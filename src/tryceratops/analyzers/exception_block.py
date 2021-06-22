@@ -3,7 +3,13 @@ import ast
 from tryceratops.violations import Violation, codes
 
 from .base import BaseAnalyzer, visit_error_handler
-from .specifications import ChildrenAre, ChildrenFilter, NodeHasAttr, NodeHasPropNone
+from .specifications import (
+    ChildrenAre,
+    ChildrenFilter,
+    NodeHasAttr,
+    NodeHasPropEquals,
+    NodeHasPropNone,
+)
 
 
 class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
@@ -26,18 +32,19 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
-        def is_raise_with_name(stm: ast.stmt, name: str):
-            if isinstance(stm, ast.Raise) and isinstance(stm.exc, ast.Name):
-                return stm.exc.id == name
-            return False
-
         # If no name is set, then it's impossible to be verbose
         # since you don't have the object
         if node.name:
-            for child in ast.walk(node):
-                if is_raise_with_name(child, node.name):
-                    violation = Violation.build(self.filename, codes.VERBOSE_RERAISE, child)
-                    self.violations.append(violation)
+            verbose_reraises = ChildrenAre(ast.Raise, direct_children=False) + ChildrenFilter(
+                NodeHasAttr("exc", ast.Name) + NodeHasPropEquals("id", node.name)
+            )
+
+            if verbose_reraises.is_satisfied_by(node):
+                violations = [
+                    Violation.build(self.filename, codes.VERBOSE_RERAISE, child)
+                    for child in verbose_reraises.result
+                ]
+                self.violations += violations
 
         self.generic_visit(node)
 
