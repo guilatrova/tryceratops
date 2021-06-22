@@ -53,8 +53,9 @@ class NodeFirstChildIs(Specification):
 
     def _calculate_result(self, candidate: ast.stmt) -> SpecificationResultType:
         if attr := getattr(candidate, self.attr_name, False):
-            first, *_ = attr
-            if isinstance(first, self.attr_type):
-                return True, first
+            if len(attr) > 0:
+                first, *_ = attr
+                if isinstance(first, self.attr_type):
+                    return True, first
 
         return False, None

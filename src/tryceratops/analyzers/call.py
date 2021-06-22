@@ -26,22 +26,18 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     @visit_error_handler
     def visit_Raise(self, node: ast.Raise):
-        chain = NodeHasAttr("exc", ast.Call) + NodeHasAttr("func", ast.Name)
+        exc_callable = NodeHasAttr("exc", ast.Call)
+        is_raise_vanilla = (
+            exc_callable + NodeHasAttr("func", ast.Name) + NodeHasPropEquals("id", "Exception")
+        )
+        is_taking_str_as_first_arg = (
+            exc_callable + NodeFirstChildIs(ast.Constant, "args") + NodeHasAttr("value", str)
+        )
 
-        if chain.is_satisfied_by(node):
-            raise_class = chain.result
-            args = node.exc.args
+        if is_raise_vanilla.is_satisfied_by(node):
+            self.violations.append(Violation.build(self.filename, codes.RAISE_VANILLA_CLASS, node))
 
-            if NodeHasPropEquals("id", "Exception").is_satisfied_by(raise_class):
-                self.violations.append(
-                    Violation.build(self.filename, codes.RAISE_VANILLA_CLASS, node)
-                )
-
-            at_least_one_child = len(args) > 0
-            raising_constant_str = NodeFirstChildIs(ast.Constant, "args") + NodeHasAttr(
-                "value", str
-            )
-            if at_least_one_child and raising_constant_str.is_satisfied_by(node.exc):
+            if is_taking_str_as_first_arg.is_satisfied_by(node):
                 self.violations.append(
                     Violation.build(self.filename, codes.RAISE_VANILLA_ARGS, node)
                 )
