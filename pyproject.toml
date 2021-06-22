@@ -21,4 +21,3 @@ test = [
 
 [tool.flit.entrypoints.console_scripts]
 tryceratops = "tryceratops.__main__:main"
-
