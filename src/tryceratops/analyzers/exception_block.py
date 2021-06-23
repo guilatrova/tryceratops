@@ -13,7 +13,7 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
                 return isinstance(node.exc, ast.Call) and node.cause is None
             return False
 
-        reraises_no_cause = [stm for stm in node.body if is_raise_without_cause(stm)]
+        reraises_no_cause = [stm for stm in ast.walk(node) if is_raise_without_cause(stm)]
         violations = [
             Violation.build(self.filename, codes.RERAISE_NO_CAUSE, block)
             for block in reraises_no_cause

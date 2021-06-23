@@ -9,7 +9,7 @@ from .base import BaseAnalyzer, StmtBodyProtocol, visit_error_handler
 class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     @visit_error_handler
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
-        try_blocks = [stm for stm in node.body if isinstance(stm, ast.Try)]
+        try_blocks = [stm for stm in ast.ast.iter_child_nodes(node) if isinstance(stm, ast.Try)]
 
         if len(try_blocks) > 1:
             _, *violation_blocks = try_blocks
