@@ -117,3 +117,17 @@ def test_broad_pass():
     assert_broad(18, 8, first)
     assert_broad(27, 8, second)
     assert_broad(35, 12, third)
+
+
+def test_consider_else():
+    tree = read_sample("try_consider_else")
+    analyzer = analyzers.TryConsiderElseAnalyzer()
+    code, msg = codes.CONSIDER_ELSE
+
+    assert_consider = partial(assert_violation, code, msg)
+
+    violations = analyzer.check(tree, "filename")
+    assert len(violations) == 1
+    violation = violations[0]
+
+    assert_consider(20, 8, violation)
