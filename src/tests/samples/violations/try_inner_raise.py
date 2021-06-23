@@ -21,3 +21,18 @@ def func():
             raise MyException()
     except MyException:
         logger.exception("reraise + catch in the same place is weird")
+        raise
+
+
+def another_func():
+    a = 1
+
+    try:
+        result = process()
+        if result:
+            return
+
+        raise MyException()
+    except MyException:
+        logger.exception("reraise + catch in the same place is weird")
+        raise

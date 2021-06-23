@@ -22,3 +22,4 @@ IGNORING_EXCEPTION = ("TC202", "You're ignoring a broad exception without even l
 
 # TC3xx - Try
 CONSIDER_ELSE = ("TC300", "Consider moving this statement to an 'else' block")
+RAISE_WITHIN_TRY = ("TC301", "Abstract raise to an inner function")

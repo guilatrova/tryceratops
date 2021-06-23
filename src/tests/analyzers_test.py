@@ -131,3 +131,17 @@ def test_consider_else():
     violation = violations[0]
 
     assert_consider(20, 8, violation)
+
+
+def test_try_inner_raise():
+    tree = read_sample("try_inner_raise")
+    analyzer = analyzers.TryShouldntRaiseAnalyzer()
+    code, msg = codes.RAISE_WITHIN_TRY
+
+    assert_inner_raise = partial(assert_violation, code, msg)
+
+    violations = analyzer.check(tree, "filename")
+    assert len(violations) == 2
+    violation = violations[0]
+
+    assert_inner_raise(21, 12, violation)
