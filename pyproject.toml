@@ -21,3 +21,11 @@ test = [
 
 [tool.flit.entrypoints.console_scripts]
 tryceratops = "tryceratops.__main__:main"
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+line_length = 100
+extra_standard_library = "pytest"

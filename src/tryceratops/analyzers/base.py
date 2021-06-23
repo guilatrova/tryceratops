@@ -28,9 +28,9 @@ class StmtBodyProtocol(Protocol):
 
 def visit_error_handler(func):
     def _func(instance, node: ast.stmt):
-        # try:
-        return func(instance, node)
-        # except Exception as ex:
-        #     raise AnalyzerVisitException(node) from ex
+        try:
+            return func(instance, node)
+        except Exception as ex:
+            raise AnalyzerVisitException(node) from ex
 
     return _func

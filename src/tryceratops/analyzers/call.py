@@ -33,22 +33,18 @@ class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
                     if raise_class_id == "Exception":
                         self.violations.append(
-                            Violation.build(
-                                self.filename, codes.RAISE_VANILLA_CLASS, node
-                            )
+                            Violation.build(self.filename, codes.RAISE_VANILLA_CLASS, node)
                         )
 
                     if len(args):
                         first_arg, *_ = args
-                        is_constant_str = isinstance(
-                            first_arg, ast.Constant
-                        ) and isinstance(first_arg.value, str)
+                        is_constant_str = isinstance(first_arg, ast.Constant) and isinstance(
+                            first_arg.value, str
+                        )
 
                         if is_constant_str:
                             self.violations.append(
-                                Violation.build(
-                                    self.filename, codes.RAISE_VANILLA_ARGS, node
-                                )
+                                Violation.build(self.filename, codes.RAISE_VANILLA_ARGS, node)
                             )
 
         self.generic_visit(node)
@@ -96,9 +92,7 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
                     callable_name = assignment.value.func.id
                     msg = rawmsg.format(callable_name)
                     self.violations.append(
-                        Violation(
-                            code, if_stmt.lineno, if_stmt.col_offset, msg, self.filename
-                        )
+                        Violation(code, if_stmt.lineno, if_stmt.col_offset, msg, self.filename)
                     )
             elif isinstance(test, ast.UnaryOp):
                 if isinstance(test.operand, ast.Name):

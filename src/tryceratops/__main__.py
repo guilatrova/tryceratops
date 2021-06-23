@@ -11,9 +11,7 @@ from tryceratops.settings import LOGGING_CONFIG
 runner = Runner()
 interface = CliInterface(runner)
 
-EXPERIMENTAL_FLAG_OPTION = dict(
-    is_flag=True, help="Whether to enable experimental analyzers."
-)
+EXPERIMENTAL_FLAG_OPTION = dict(is_flag=True, help="Whether to enable experimental analyzers.")
 
 
 @click.command()

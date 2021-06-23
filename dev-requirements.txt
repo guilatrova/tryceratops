@@ -1,0 +1,15 @@
+-r ./requirements.txt
+
+# Debugging
+astpretty==2.1.0
+
+# Linting
+pytest==6.2.4
+flake8==3.9.2
+black==20.8b1
+isort==5.8.0
+pre-commit==2.13.0
+
+# Packaging
+flit==3.2.0
+flit-core==3.2.0

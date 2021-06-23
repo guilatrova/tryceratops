@@ -2,7 +2,6 @@ import sys
 
 from tryceratops.analyzers import Runner
 from tryceratops.settings import ERROR_LOG_FILENAME
-from tryceratops.types import ParsedFilesType
 from tryceratops.violations import Violation
 
 
