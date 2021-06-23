@@ -98,6 +98,7 @@ class Or(MultaryCompositeSpecification):
         satisfied = any(
             [specification.is_satisfied_by(candidate) for specification in self.specifications]
         )
+        self.result = candidate if satisfied else None
         return satisfied
 
 

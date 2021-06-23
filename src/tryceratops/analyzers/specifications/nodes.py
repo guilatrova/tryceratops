@@ -1,5 +1,5 @@
 import ast
-from typing import Any, Type
+from typing import Any, Optional, Type
 
 from .base import Specification, SpecificationResultType
 
@@ -21,14 +21,16 @@ class HasAtLeastChild(Specification):
 
 
 class NodeHasAttr(Specification):
-    def __init__(self, attr_name: str, attr_type: Type[ast.expr]):
+    def __init__(self, attr_name: str, attr_type: Optional[Type[ast.expr]] = None):
         self.attr_name = attr_name
         self.attr_type = attr_type
 
     def _calculate_result(self, candidate: ast.stmt) -> SpecificationResultType:
         if attr := getattr(candidate, self.attr_name, False):
-            if isinstance(attr, self.attr_type):
-                return True, attr
+            if self.attr_type:
+                if isinstance(attr, self.attr_type):
+                    return True, attr
+            return True, attr
 
         return False, None
 
@@ -59,16 +61,30 @@ class NodeHasPropNone(Specification):
 
 
 class NodeFirstChildIs(Specification):
-    def __init__(self, attr_type: Any, attr_name: str):
-        self.attr_name = attr_name
+    def __init__(self, attr_type: Any, attr_name: Optional[str] = None):
         self.attr_type = attr_type
+        self.attr_name = attr_name
 
     def _calculate_result(self, candidate: ast.stmt) -> SpecificationResultType:
-        if attr := getattr(candidate, self.attr_name, False):
-            if len(attr) > 0:
-                first, *_ = attr
-                if isinstance(first, self.attr_type):
-                    return True, first
+        if self.attr_name:
+            if attr := getattr(candidate, self.attr_name, False):
+                if len(attr) > 0:
+                    first, *_ = attr
+                    if isinstance(first, self.attr_type):
+                        return True, first
+
+        return False, None
+
+
+class NodeFirstChildIsEllipsis(Specification):
+    def _calculate_result(self, candidate: ast.stmt) -> SpecificationResultType:
+        children = ast.iter_child_nodes(candidate)
+        if children:
+            first_child, *_ = children
+            if isinstance(first_child, ast.Expr):
+                if isinstance(first_child.value, ast.Constant):
+                    if first_child.value.value == ...:
+                        return True, first_child
 
         return False, None
 
