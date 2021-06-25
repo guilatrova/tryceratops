@@ -1,10 +1,9 @@
 import ast
-from abc import ABC, abstractmethod
 from typing import Dict, List
 
 from tryceratops.violations import Violation, codes
 
-from .base import BaseAnalyzer, StmtBodyProtocol, visit_error_handler
+from .base import BaseAnalyzer, BaseRaiseCallableAnalyzer, StmtBodyProtocol, visit_error_handler
 
 
 class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
@@ -17,21 +16,6 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         if len(try_blocks) > 1:
             _, *violation_blocks = try_blocks
             self._mark_violation(*violation_blocks)
-
-        self.generic_visit(node)
-
-
-class BaseRaiseCallableAnalyzer(BaseAnalyzer, ast.NodeVisitor, ABC):
-    @abstractmethod
-    def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name):
-        pass
-
-    @visit_error_handler
-    def visit_Raise(self, node: ast.Raise):
-        if exc := node.exc:
-            if isinstance(exc, ast.Call):
-                if isinstance(exc.func, ast.Name):
-                    self._check_raise_callable(node, exc, exc.func)
 
         self.generic_visit(node)
 
