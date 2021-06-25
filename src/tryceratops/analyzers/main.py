@@ -7,6 +7,7 @@ from tryceratops.violations import Violation
 
 from . import call as call_analyzers
 from . import exception_block as except_analyzers
+from . import try_block as try_analyzers
 from .base import BaseAnalyzer
 
 logger = logging.getLogger(__name__)
@@ -15,10 +16,13 @@ logger = logging.getLogger(__name__)
 ANALYZER_CLASSES = {
     call_analyzers.CallTooManyAnalyzer,
     call_analyzers.CallRaiseVanillaAnalyzer,
+    call_analyzers.CallRaiseLongArgsAnalyzer,
     call_analyzers.CallAvoidCheckingToContinueAnalyzer,
     except_analyzers.ExceptReraiseWithoutCauseAnalyzer,
     except_analyzers.ExceptVerboseReraiseAnalyzer,
     except_analyzers.ExceptBroadPassAnalyzer,
+    try_analyzers.TryConsiderElseAnalyzer,
+    try_analyzers.TryShouldntRaiseAnalyzer,
 }
 
 
