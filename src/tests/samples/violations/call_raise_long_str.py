@@ -7,10 +7,18 @@ customized.
 from somewhere import exceptions
 
 
+class CustomException(Exception):
+    pass
+
+
 def func():
     a = 1
     if a == 1:
-        raise Exception("Custom message")
+        raise CustomException("Long message")
+    elif a == 2:
+        raise CustomException("Short")  # This is acceptable
+    elif a == 3:
+        raise CustomException("its_code_not_message")  # This is acceptable
 
 
 def ignore():
@@ -24,4 +32,5 @@ def ignore():
 def anotherfunc():
     a = 1
     if a == 1:
-        raise exceptions.Exception("Another except")  # That's fine
+        # TODO: Handle this scenario later, it's a violation
+        raise exceptions.CustomException("Another except")

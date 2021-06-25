@@ -38,7 +38,8 @@ class CallRaiseLongArgsAnalyzer(BaseRaiseCallableAnalyzer):
                 first_arg.value, str
             )
 
-            if is_constant_str:
+            WHITESPACE = " "
+            if is_constant_str and WHITESPACE in first_arg.value:
                 self._mark_violation(node)
 
 

@@ -68,7 +68,7 @@ def test_raise_long_args():
     assert len(violations) == 1
     violation, *_ = violations
 
-    assert_args(13, 8, violation)
+    assert_args(17, 8, violation)
 
 
 def test_check_continue():
