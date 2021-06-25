@@ -1,6 +1,6 @@
 import ast
-from abc import ABC
-from typing import List, Protocol
+from abc import ABC, abstractmethod
+from typing import List, Protocol, Tuple
 
 from tryceratops.violations import Violation
 
@@ -12,6 +12,15 @@ class BaseAnalyzer(ABC):
 
     def __init__(self):
         self.violations: List[Violation] = []
+
+    @property
+    @abstractmethod
+    def violation_code() -> Tuple[str, str]:
+        pass
+
+    def _mark_violation(self, *nodes):
+        for node in nodes:
+            self.violations.append(Violation.build(self.filename, self.violation_code, node))
 
     def check(self, tree: ast.AST, filename: str) -> List[Violation]:
         self.filename = filename

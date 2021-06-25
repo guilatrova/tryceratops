@@ -1,11 +1,13 @@
 import ast
 
-from tryceratops.violations import Violation, codes
+from tryceratops.violations import codes
 
 from .base import BaseAnalyzer, visit_error_handler
 
 
 class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+    violation_code = codes.RERAISE_NO_CAUSE
+
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
         def is_raise_without_cause(node: ast.stmt):
@@ -14,16 +16,14 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
             return False
 
         reraises_no_cause = [stm for stm in ast.walk(node) if is_raise_without_cause(stm)]
-        violations = [
-            Violation.build(self.filename, codes.RERAISE_NO_CAUSE, block)
-            for block in reraises_no_cause
-        ]
-        self.violations += violations
+        self._mark_violation(*reraises_no_cause)
 
         self.generic_visit(node)
 
 
 class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+    violation_code = codes.VERBOSE_RERAISE
+
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
         def is_raise_with_name(stm: ast.stmt, name: str):
@@ -36,13 +36,14 @@ class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         if node.name:
             for child in ast.walk(node):
                 if is_raise_with_name(child, node.name):
-                    violation = Violation.build(self.filename, codes.VERBOSE_RERAISE, child)
-                    self.violations.append(violation)
+                    self._mark_violation(child)
 
         self.generic_visit(node)
 
 
 class ExceptBroadPassAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+    violation_code = codes.IGNORING_EXCEPTION
+
     def _is_vanilla_exception(self, node: ast.stmt) -> bool:
         if isinstance(node, ast.Name):
             return node.id == "Exception"
@@ -72,7 +73,6 @@ class ExceptBroadPassAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         is_ignoring_exception = isinstance(first_child, ast.Pass) or self._is_ellipsis(first_child)
 
         if is_ignoring_exception and self._wraps_vanilla_exception(node):
-            violation = Violation.build(self.filename, codes.IGNORING_EXCEPTION, first_child)
-            self.violations.append(violation)
+            self._mark_violation(first_child)
 
         self.generic_visit(node)

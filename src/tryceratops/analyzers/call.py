@@ -8,17 +8,15 @@ from .base import BaseAnalyzer, StmtBodyProtocol, visit_error_handler
 
 
 class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+    violation_code = codes.TOO_MANY_TRY
+
     @visit_error_handler
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         try_blocks = [stm for stm in ast.iter_child_nodes(node) if isinstance(stm, ast.Try)]
 
         if len(try_blocks) > 1:
             _, *violation_blocks = try_blocks
-            violations = [
-                Violation.build(self.filename, codes.TOO_MANY_TRY, block)
-                for block in violation_blocks
-            ]
-            self.violations += violations
+            self._mark_violation(*violation_blocks)
 
         self.generic_visit(node)
 
@@ -39,12 +37,16 @@ class BaseRaiseCallableAnalyzer(BaseAnalyzer, ast.NodeVisitor, ABC):
 
 
 class CallRaiseVanillaAnalyzer(BaseRaiseCallableAnalyzer):
+    violation_code = codes.RAISE_VANILLA_CLASS
+
     def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name):
         if func.id == "Exception":
-            self.violations.append(Violation.build(self.filename, codes.RAISE_VANILLA_CLASS, node))
+            self._mark_violation(node)
 
 
 class CallRaiseLongArgsAnalyzer(BaseRaiseCallableAnalyzer):
+    violation_code = codes.RAISE_VANILLA_ARGS
+
     def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name):
         if len(exc.args):
             first_arg, *_ = exc.args
@@ -53,13 +55,12 @@ class CallRaiseLongArgsAnalyzer(BaseRaiseCallableAnalyzer):
             )
 
             if is_constant_str:
-                self.violations.append(
-                    Violation.build(self.filename, codes.RAISE_VANILLA_ARGS, node)
-                )
+                self._mark_violation(node)
 
 
 class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
     EXPERIMENTAL = True
+    violation_code = codes.CHECK_TO_CONTINUE
 
     def __init__(self):
         self.assignments_from_calls: Dict[str, ast.Assign] = {}
