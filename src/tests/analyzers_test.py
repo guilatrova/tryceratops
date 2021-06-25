@@ -43,20 +43,32 @@ def test_raise_vanilla():
     tree = read_sample("call_raise_vanilla")
     analyzer = analyzers.CallRaiseVanillaAnalyzer()
 
-    assert_args = partial(
-        assert_violation, codes.RAISE_VANILLA_ARGS[0], codes.RAISE_VANILLA_ARGS[1]
-    )
-    assert_class = partial(
+    assert_vanilla = partial(
         assert_violation, codes.RAISE_VANILLA_CLASS[0], codes.RAISE_VANILLA_CLASS[1]
     )
 
     violations = analyzer.check(tree, "filename")
 
-    assert len(violations) == 2
-    class_vio, args_vio = violations
+    assert len(violations) == 1
+    violation = violations[0]
 
-    assert_class(13, 8, class_vio)
-    assert_args(13, 8, args_vio)
+    assert_vanilla(13, 8, violation)
+
+
+def test_raise_long_args():
+    tree = read_sample("call_raise_long_str")
+    analyzer = analyzers.CallRaiseLongArgsAnalyzer()
+
+    assert_args = partial(
+        assert_violation, codes.RAISE_VANILLA_ARGS[0], codes.RAISE_VANILLA_ARGS[1]
+    )
+
+    violations = analyzer.check(tree, "filename")
+
+    assert len(violations) == 1
+    violation, *_ = violations
+
+    assert_args(13, 8, violation)
 
 
 def test_check_continue():

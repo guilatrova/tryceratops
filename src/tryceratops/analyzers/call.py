@@ -1,4 +1,5 @@
 import ast
+from abc import ABC, abstractmethod
 from typing import Dict, List
 
 from tryceratops.violations import Violation, codes
@@ -22,32 +23,39 @@ class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         self.generic_visit(node)
 
 
-class CallRaiseVanillaAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+class BaseRaiseCallableAnalyzer(BaseAnalyzer, ast.NodeVisitor, ABC):
+    @abstractmethod
+    def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name):
+        pass
+
     @visit_error_handler
     def visit_Raise(self, node: ast.Raise):
         if exc := node.exc:
             if isinstance(exc, ast.Call):
                 if isinstance(exc.func, ast.Name):
-                    raise_class_id = exc.func.id
-                    args = exc.args
-
-                    if raise_class_id == "Exception":
-                        self.violations.append(
-                            Violation.build(self.filename, codes.RAISE_VANILLA_CLASS, node)
-                        )
-
-                    if len(args):
-                        first_arg, *_ = args
-                        is_constant_str = isinstance(first_arg, ast.Constant) and isinstance(
-                            first_arg.value, str
-                        )
-
-                        if is_constant_str:
-                            self.violations.append(
-                                Violation.build(self.filename, codes.RAISE_VANILLA_ARGS, node)
-                            )
+                    self._check_raise_callable(node, exc, exc.func)
 
         self.generic_visit(node)
+
+
+class CallRaiseVanillaAnalyzer(BaseRaiseCallableAnalyzer):
+    def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name):
+        if func.id == "Exception":
+            self.violations.append(Violation.build(self.filename, codes.RAISE_VANILLA_CLASS, node))
+
+
+class CallRaiseLongArgsAnalyzer(BaseRaiseCallableAnalyzer):
+    def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name):
+        if len(exc.args):
+            first_arg, *_ = exc.args
+            is_constant_str = isinstance(first_arg, ast.Constant) and isinstance(
+                first_arg.value, str
+            )
+
+            if is_constant_str:
+                self.violations.append(
+                    Violation.build(self.filename, codes.RAISE_VANILLA_ARGS, node)
+                )
 
 
 class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
