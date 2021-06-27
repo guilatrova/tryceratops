@@ -4,23 +4,23 @@ import tokenize
 from io import TextIOWrapper
 from typing import Generator, Optional, Tuple
 
-from tryceratops.filters.entities import FileFilter, IgnoreLine
+from tryceratops.filters.entities import FileFilter, IgnoreViolation
 
 IGNORE_TRYCERATOPS_TOKEN = "notc"
 IGNORE_TOKEN_PATT = r"notc(: ?((TC\d{3},? ?)+))?"
 
 
-def _build_ignore_line(match: re.Match, location: Tuple[int, int]) -> IgnoreLine:
+def _build_ignore_line(match: re.Match, location: Tuple[int, int]) -> IgnoreViolation:
     lineno, _ = location
     if match.group(2) is not None:
         print(match.groups())
         codes = [raw.strip() for raw in match.group(2).split(",")]
-        return IgnoreLine(lineno, codes)
+        return IgnoreViolation(lineno, codes)
 
-    return IgnoreLine(lineno)
+    return IgnoreViolation(lineno)
 
 
-def parse_ignore_comments(content: TextIOWrapper) -> Generator[IgnoreLine, None, None]:
+def parse_ignore_comments(content: TextIOWrapper) -> Generator[IgnoreViolation, None, None]:
     for toktype, tokval, start, *_ in tokenize.generate_tokens(content.readline):
         if toktype == tokenize.COMMENT:
             if match := re.search(IGNORE_TOKEN_PATT, tokval):

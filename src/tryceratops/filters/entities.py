@@ -5,7 +5,7 @@ ALL_FILE = -1
 
 
 @dataclass
-class IgnoreLine:
+class IgnoreViolation:
     line: int
     code: Optional[Iterable[str]] = None
 
@@ -17,4 +17,4 @@ class IgnoreLine:
 
 @dataclass
 class FileFilter:
-    ignore_lines: Iterable[IgnoreLine]
+    ignore_lines: Iterable[IgnoreViolation]
