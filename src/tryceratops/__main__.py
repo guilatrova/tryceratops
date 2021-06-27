@@ -4,8 +4,8 @@ import click
 
 import tryceratops
 from tryceratops.analyzers import Runner
+from tryceratops.files import parse_python_files
 from tryceratops.interfaces import CliInterface
-from tryceratops.main import parse_python_files
 from tryceratops.settings import LOGGING_CONFIG
 
 runner = Runner()
