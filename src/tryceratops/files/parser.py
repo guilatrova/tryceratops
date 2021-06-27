@@ -7,12 +7,13 @@ from typing import Generator, Optional, Tuple
 from tryceratops.filters.entities import FileFilter, IgnoreLine
 
 IGNORE_TRYCERATOPS_TOKEN = "notc"
-IGNORE_TOKEN_PATT = r"notc(: ?(TC\d{3},? ?)+)?"
+IGNORE_TOKEN_PATT = r"notc(: ?((TC\d{3},? ?)+))?"
 
 
 def _build_ignore_line(match: re.Match, location: Tuple[int, int]) -> IgnoreLine:
     lineno, _ = location
     if match.group(2) is not None:
+        print(match.groups())
         codes = [raw.strip() for raw in match.group(2).split(",")]
         return IgnoreLine(lineno, codes)
 

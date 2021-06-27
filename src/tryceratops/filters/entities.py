@@ -1,13 +1,11 @@
 from dataclasses import dataclass
-from typing import Iterable, Optional, Union
-
-OneOrManyCodes = Union[str, Iterable[str]]
+from typing import Iterable, Optional
 
 
 @dataclass
 class IgnoreLine:
     line: int
-    code: Optional[OneOrManyCodes] = None
+    code: Optional[Iterable[str]] = None
 
     @bool
     def is_ignoring(self, violation_code: str):
