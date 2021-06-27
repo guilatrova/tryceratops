@@ -45,6 +45,19 @@ def test_parse_specific_code_line():
     assert third.code == ["TC001"]
 
 
+def test_parse_ignore_file():
+    filename = get_full_path("ignore_file")
+    tree, filter = parse_file(filename)
+    ignore_lines = filter.ignore_lines
+
+    assert isinstance(tree, ast.AST)
+    assert len(ignore_lines) == 2
+
+    ignore, *_ = ignore_lines
+    assert ignore.line == 1
+    assert ignore.code is None
+
+
 def test_entity_ignores_all():
     ignore = IgnoreViolation(10)
 
@@ -67,3 +80,38 @@ def test_entity_ignores_specific():
     assert ignore.is_ignoring(10, "TC100") is False
     assert ignore.is_ignoring(10, "TC300") is False
     assert ignore.is_ignoring(10, "anything") is False
+
+
+def test_entity_ignore_all_whole_file():
+    ignore = IgnoreViolation(1)
+
+    assert ignore.is_ignoring(10, "TC200") is True
+    assert ignore.is_ignoring(10, "TC100") is True
+    assert ignore.is_ignoring(10, "TC300") is True
+    assert ignore.is_ignoring(10, "anything") is True
+
+    # Still true
+    assert ignore.is_ignoring(12, "TC200") is True
+    assert ignore.is_ignoring(12, "TC100") is True
+    assert ignore.is_ignoring(12, "TC300") is True
+    assert ignore.is_ignoring(12, "anything") is True
+
+
+def test_entity_ignore_specific_whole_file():
+    ignore = IgnoreViolation(1, ["TC200", "TC101"])
+
+    # Any line
+    assert ignore.is_ignoring(10, "TC200") is True
+    assert ignore.is_ignoring(10, "TC101") is True
+    assert ignore.is_ignoring(20, "TC200") is True
+    assert ignore.is_ignoring(20, "TC101") is True
+    assert ignore.is_ignoring(30, "TC200") is True
+    assert ignore.is_ignoring(30, "TC101") is True
+
+    # Any other violation
+    assert ignore.is_ignoring(10, "TC300") is False
+    assert ignore.is_ignoring(10, "anything") is False
+    assert ignore.is_ignoring(20, "TC001") is False
+    assert ignore.is_ignoring(20, "TC002") is False
+    assert ignore.is_ignoring(30, "TC301") is False
+    assert ignore.is_ignoring(30, "anything") is False
