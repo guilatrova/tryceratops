@@ -23,15 +23,15 @@ def find_files(dir: str) -> Generator[str, None, None]:
 
 def parse_python_files_from_dir(dir: str) -> Generator[ParsedFileType, None, None]:
     if is_python_file(dir):
-        parsed, filter = parse_file(dir)
+        parsed, filefilter = parse_file(dir)
         if parsed:
-            yield (dir, parsed, filter)
+            yield (dir, parsed, filefilter)
 
     elif isdir(dir):
         for filename in find_files(dir):
-            parsed, filter = parse_file(filename)
+            parsed, filefilter = parse_file(filename)
             if parsed:
-                yield (filename, parsed, filter)
+                yield (filename, parsed, filefilter)
 
 
 def parse_python_files(files: Iterable[str]) -> Generator[ParsedFileType, None, None]:

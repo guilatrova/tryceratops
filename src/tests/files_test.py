@@ -2,7 +2,7 @@ import ast
 import os
 
 from tryceratops.files.parser import parse_file
-from tryceratops.filters.entities import IgnoreViolation
+from tryceratops.filters import IgnoreViolation
 
 
 def get_full_path(filename: str):

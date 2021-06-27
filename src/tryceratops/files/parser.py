@@ -4,7 +4,7 @@ import tokenize
 from io import TextIOWrapper
 from typing import Generator, Optional, Tuple
 
-from tryceratops.filters.entities import FileFilter, IgnoreViolation
+from tryceratops.filters import FileFilter, IgnoreViolation
 
 IGNORE_TRYCERATOPS_TOKEN = "notc"
 IGNORE_TOKEN_PATT = r"notc(: ?((TC\d{3},? ?)+))?"

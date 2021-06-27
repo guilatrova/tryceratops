@@ -6,7 +6,7 @@ import click
 import tryceratops
 from tryceratops.analyzers import Runner
 from tryceratops.files import parse_python_files
-from tryceratops.filters.entities import GlobalFilter
+from tryceratops.filters import GlobalFilter
 from tryceratops.interfaces import CliInterface
 from tryceratops.settings import LOGGING_CONFIG
 

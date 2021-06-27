@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass
 from typing import List, Set, Type
 
-from tryceratops.filters.entities import GlobalFilter
+from tryceratops.filters import GlobalFilter
 from tryceratops.types import ParsedFilesType
 from tryceratops.violations import Violation
 
