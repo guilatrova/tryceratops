@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Iterable, Optional
 
+from tryceratops.violations import Violation
+
 
 @dataclass
 class IgnoreViolation:
@@ -25,3 +27,10 @@ class IgnoreViolation:
 @dataclass
 class FileFilter:
     ignore_lines: Iterable[IgnoreViolation]
+
+    def ignores_violation(self, violation: Violation):
+        for line in self.ignore_lines:
+            if line.is_ignoring(violation.line, violation.code):
+                return True
+
+        return False

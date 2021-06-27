@@ -63,7 +63,13 @@ class Runner:
         for filename, tree, filefilter in trees:
             for analyzer in analyzers:
                 try:
-                    self.violations += analyzer.check(tree, filename)
+                    found_violations = analyzer.check(tree, filename)
+                    valid_violations = [
+                        violation
+                        for violation in found_violations
+                        if not filefilter.ignores_violation(violation)
+                    ]
+                    self.violations += valid_violations
                 except Exception as ex:
                     logger.exception(
                         f"Exception raised when running {type(analyzer)} on {filename}"
