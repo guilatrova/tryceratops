@@ -41,6 +41,9 @@ class CliInterface:
         else:
             print("Nothing to check!")
 
+        if self.runner.excluded_files:
+            print(f"Skipped {self.runner.excluded_files} files")
+
         if self.runner.had_issues:
             print(
                 f"Had {len(self.runner.runtime_errors)} unexpected issues "

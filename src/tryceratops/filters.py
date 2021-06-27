@@ -50,10 +50,6 @@ class GlobalFilter:
     ignore_violations: Optional[Tuple[str]]
     exclude_dirs: Optional[Tuple[str]]
 
-    # def __post_init__(self):
-    #     self.ignore_violations = self.ignore_violations or ()
-    #     self.exclude_dirs = self.exclude_dirs or ()
-
     @property
     def exclude_experimental(self) -> bool:
         return not self.include_experimental
@@ -68,8 +64,8 @@ class GlobalFilter:
 
         return True
 
-    def should_include_file(self, filename: str) -> bool:
-        if self.exclude_dir in filename:
-            return False
+    def should_skip_file(self, filename: str) -> bool:
+        if any(excluded_filename in filename for excluded_filename in self.exclude_dirs):
+            return True
 
-        return True
+        return False

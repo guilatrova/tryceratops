@@ -48,10 +48,12 @@ class Runner:
         self.runtime_errors: List[RuntimeError] = []
         self.violations: List[Violation] = []
         self.analyzed_files: int = 0
+        self.excluded_files: int = 0
 
     def _clear(self):
         self.violations = []
         self.runtime_errors = []
+        self.excluded_files = 0
 
     def analyze(self, trees: ParsedFilesType, global_filter: GlobalFilter) -> List[Violation]:
         analyzers = _get_analyzer_chain(global_filter)
@@ -59,6 +61,11 @@ class Runner:
         self.analyzed_files = len(trees)
 
         for filename, tree, filefilter in trees:
+            if global_filter.should_skip_file(filename):
+                self.analyzed_files -= 1
+                self.excluded_files += 1
+                continue
+
             for analyzer in analyzers:
                 try:
                     found_violations = analyzer.check(tree, filename)
