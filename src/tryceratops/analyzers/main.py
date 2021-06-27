@@ -60,7 +60,7 @@ class Runner:
         self._clear()
         self.analyzed_files = len(trees)
 
-        for filename, tree in trees:
+        for filename, tree, filefilter in trees:
             for analyzer in analyzers:
                 try:
                     self.violations += analyzer.check(tree, filename)

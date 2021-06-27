@@ -1,5 +1,7 @@
 import ast
 from typing import Iterable, Tuple
 
-ParsedFileType = Tuple[str, ast.AST]
-ParsedFilesType = Iterable[Tuple[str, ast.AST]]
+from tryceratops.filters.entities import FileFilter
+
+ParsedFileType = Tuple[str, ast.AST, FileFilter]
+ParsedFilesType = Iterable[ParsedFileType]
