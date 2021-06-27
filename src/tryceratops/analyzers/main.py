@@ -2,6 +2,7 @@ import logging
 from dataclasses import dataclass
 from typing import List, Set, Type
 
+from tryceratops.filters.entities import GlobalFilter
 from tryceratops.types import ParsedFilesType
 from tryceratops.violations import Violation
 
@@ -26,15 +27,12 @@ ANALYZER_CLASSES = {
 }
 
 
-def _get_analyzer_chain(include_experimental=False) -> Set[BaseAnalyzer]:
-    if include_experimental:
-        analyzer_classes = ANALYZER_CLASSES
-    else:
-        analyzer_classes = {
-            analyzercls for analyzercls in ANALYZER_CLASSES if analyzercls.EXPERIMENTAL is False
-        }
-
-    analyzers = {analyzercls() for analyzercls in analyzer_classes}
+def _get_analyzer_chain(global_filter: GlobalFilter) -> Set[BaseAnalyzer]:
+    analyzers = {
+        analyzercls()
+        for analyzercls in ANALYZER_CLASSES
+        if global_filter.should_run_analyzer(analyzercls)
+    }
     return analyzers
 
 
@@ -55,8 +53,8 @@ class Runner:
         self.violations = []
         self.runtime_errors = []
 
-    def analyze(self, trees: ParsedFilesType, include_experimental: bool) -> List[Violation]:
-        analyzers = _get_analyzer_chain(include_experimental)
+    def analyze(self, trees: ParsedFilesType, global_filter: GlobalFilter) -> List[Violation]:
+        analyzers = _get_analyzer_chain(global_filter)
         self._clear()
         self.analyzed_files = len(trees)
 

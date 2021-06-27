@@ -1,10 +1,12 @@
 import logging.config
+from typing import Tuple
 
 import click
 
 import tryceratops
 from tryceratops.analyzers import Runner
 from tryceratops.files import parse_python_files
+from tryceratops.filters.entities import GlobalFilter
 from tryceratops.interfaces import CliInterface
 from tryceratops.settings import LOGGING_CONFIG
 
@@ -12,15 +14,23 @@ runner = Runner()
 interface = CliInterface(runner)
 
 EXPERIMENTAL_FLAG_OPTION = dict(is_flag=True, help="Whether to enable experimental analyzers.")
+IGNORE_OPTION = dict(multiple=True, help="A violation to be ignored. e.g. -i TC200 -i TC201")
+EXCLUDE_OPTION = dict(multiple=True, help="A dir to be ignored. e.g. -x tests/ -x fixtures/")
 
 
 @click.command()
 @click.argument("dir", nargs=-1)
 @click.option("--experimental", **EXPERIMENTAL_FLAG_OPTION)
+@click.option("-i", "--ignore", **IGNORE_OPTION)
+@click.option("-x", "--exclude", **EXCLUDE_OPTION)
 @click.version_option(tryceratops.__version__)
-def entrypoint(dir: str, experimental: bool):
+def entrypoint(dir: Tuple[str], experimental: bool, ignore: Tuple[str], exclude: Tuple[str]):
+    global_filter = GlobalFilter(experimental, ignore, exclude)
+
     parsed_files = list(parse_python_files(dir))
-    runner.analyze(parsed_files, experimental)
+    runner.analyze(parsed_files, global_filter)
+
+    # TODO: Process dir empty
     interface.present_and_exit()
 
 
