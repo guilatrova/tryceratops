@@ -48,17 +48,22 @@ def test_parse_specific_code_line():
 def test_entity_ignores_all():
     ignore = IgnoreViolation(10)
 
-    assert ignore.is_ignoring("TC200") is True
-    assert ignore.is_ignoring("TC100") is True
-    assert ignore.is_ignoring("TC300") is True
-    assert ignore.is_ignoring("anything") is True
+    assert ignore.is_ignoring(10, "TC200") is True
+    assert ignore.is_ignoring(10, "TC100") is True
+    assert ignore.is_ignoring(10, "TC300") is True
+    assert ignore.is_ignoring(10, "anything") is True
+
+    assert ignore.is_ignoring(12, "TC200") is False
+    assert ignore.is_ignoring(12, "TC100") is False
+    assert ignore.is_ignoring(12, "TC300") is False
+    assert ignore.is_ignoring(12, "anything") is False
 
 
 def test_entity_ignores_specific():
     ignore = IgnoreViolation(10, ["TC200", "TC001"])
 
-    assert ignore.is_ignoring("TC200") is True
-    assert ignore.is_ignoring("TC001") is True
-    assert ignore.is_ignoring("TC100") is False
-    assert ignore.is_ignoring("TC300") is False
-    assert ignore.is_ignoring("anything") is False
+    assert ignore.is_ignoring(10, "TC200") is True
+    assert ignore.is_ignoring(10, "TC001") is True
+    assert ignore.is_ignoring(10, "TC100") is False
+    assert ignore.is_ignoring(10, "TC300") is False
+    assert ignore.is_ignoring(10, "anything") is False

@@ -9,9 +9,13 @@ class IgnoreViolation:
     line: int
     code: Optional[Iterable[str]] = None
 
-    def is_ignoring(self, violation_code: str) -> bool:
+    def is_ignoring(self, line: int, violation_code: str) -> bool:
+        if self.line != line:
+            return False
+
         if not self.code:  # absense of code means ignore all rules
             return True
+
         return violation_code in self.code
 
 
