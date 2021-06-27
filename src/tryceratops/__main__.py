@@ -36,7 +36,6 @@ def entrypoint(dir: Tuple[str], experimental: bool, ignore: Tuple[str], exclude:
     parsed_files = list(parse_python_files(dir))
     runner.analyze(parsed_files, global_filter)
 
-    # TODO: Process dir empty
     interface.present_and_exit()
 
 
