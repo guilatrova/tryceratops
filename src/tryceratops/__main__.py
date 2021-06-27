@@ -9,12 +9,18 @@ from tryceratops.files import parse_python_files
 from tryceratops.filters import GlobalFilter
 from tryceratops.interfaces import CliInterface
 from tryceratops.settings import LOGGING_CONFIG
+from tryceratops.violations import CODE_CHOICES
 
 runner = Runner()
 interface = CliInterface(runner)
 
+
 EXPERIMENTAL_FLAG_OPTION = dict(is_flag=True, help="Whether to enable experimental analyzers.")
-IGNORE_OPTION = dict(multiple=True, help="A violation to be ignored. e.g. -i TC200 -i TC201")
+IGNORE_OPTION = dict(
+    multiple=True,
+    help="A violation to be ignored. e.g. -i TC200 -i TC201",
+    type=click.Choice(CODE_CHOICES),
+)
 EXCLUDE_OPTION = dict(multiple=True, help="A dir to be ignored. e.g. -x tests/ -x fixtures/")
 
 
