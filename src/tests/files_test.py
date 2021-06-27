@@ -2,6 +2,7 @@ import ast
 import os
 
 from tryceratops.files.parser import parse_file
+from tryceratops.filters.entities import IgnoreLine
 
 
 def get_full_path(filename: str):
@@ -42,3 +43,22 @@ def test_parse_specific_code_line():
 
     assert third.line == 30
     assert third.code == ["TC001"]
+
+
+def test_entity_ignores_all():
+    ignore = IgnoreLine(10)
+
+    assert ignore.is_ignoring("TC200") is True
+    assert ignore.is_ignoring("TC100") is True
+    assert ignore.is_ignoring("TC300") is True
+    assert ignore.is_ignoring("anything") is True
+
+
+def test_entity_ignores_specific():
+    ignore = IgnoreLine(10, ["TC200", "TC001"])
+
+    assert ignore.is_ignoring("TC200") is True
+    assert ignore.is_ignoring("TC001") is True
+    assert ignore.is_ignoring("TC100") is False
+    assert ignore.is_ignoring("TC300") is False
+    assert ignore.is_ignoring("anything") is False
