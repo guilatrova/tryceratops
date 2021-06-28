@@ -17,7 +17,7 @@
 
 </p>
 
-Currently in BETA (and very flaky).
+Currently in BETA.
 Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-python-like-a-pro/).
 
 > “For those who like dinosaurs 🦖 and clean try/except ✨ blocks.”
@@ -68,7 +68,7 @@ If you wish to use pre-commit, add this:
 
 ```yaml
   - repo: https://github.com/guilatrova/tryceratops
-    rev: v0.1.8
+    rev: v0.1.9
     hooks:
       - id: tryceratops
 ```
