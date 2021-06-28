@@ -1,5 +1,4 @@
 # TC0xx - Exceptions
-TOO_MANY_TRY = ("TC001", "Too many try blocks in your function")
 RAISE_VANILLA_CLASS = ("TC002", "Create your own exception")
 RAISE_VANILLA_ARGS = (
     "TC003",
@@ -11,6 +10,7 @@ CHECK_TO_CONTINUE = (
     "TC100",
     "Don't check to continue, make callable '{}' raise a exception instead",
 )
+TOO_MANY_TRY = ("TC101", "Too many try blocks in your function")
 
 # TC2xx - Except
 RERAISE_NO_CAUSE = ("TC200", "Use 'raise from' to specify exception cause")
@@ -26,10 +26,10 @@ RAISE_WITHIN_TRY = ("TC301", "Abstract raise to an inner function")
 
 
 CODE_CHOICES = {
-    "TC001",
     "TC002",
     "TC003",
     "TC100",
+    "TC101",
     "TC200",
     "TC201",
     "TC300",

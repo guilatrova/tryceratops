@@ -27,7 +27,7 @@ def too_many_try():
     except Exception:
         raise
 
-    try:  # notc:TC001 this is not a big deal
+    try:  # notc:TC101 this is not a big deal
         b = 2
     except Exception:
         raise

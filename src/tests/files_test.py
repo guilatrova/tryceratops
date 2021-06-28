@@ -42,7 +42,7 @@ def test_parse_specific_code_line():
     assert second.code == ["TC202", "TC200", "TC201"]
 
     assert third.line == 30
-    assert third.code == ["TC001"]
+    assert third.code == ["TC101"]
 
 
 def test_parse_ignore_file():
@@ -73,10 +73,10 @@ def test_entity_ignores_all():
 
 
 def test_entity_ignores_specific():
-    ignore = IgnoreViolation(10, ["TC200", "TC001"])
+    ignore = IgnoreViolation(10, ["TC200", "TC101"])
 
     assert ignore.is_ignoring(10, "TC200") is True
-    assert ignore.is_ignoring(10, "TC001") is True
+    assert ignore.is_ignoring(10, "TC101") is True
     assert ignore.is_ignoring(10, "TC100") is False
     assert ignore.is_ignoring(10, "TC300") is False
     assert ignore.is_ignoring(10, "anything") is False
@@ -111,7 +111,7 @@ def test_entity_ignore_specific_whole_file():
     # Any other violation
     assert ignore.is_ignoring(10, "TC300") is False
     assert ignore.is_ignoring(10, "anything") is False
-    assert ignore.is_ignoring(20, "TC001") is False
+    assert ignore.is_ignoring(20, "TC101") is False
     assert ignore.is_ignoring(20, "TC002") is False
     assert ignore.is_ignoring(30, "TC301") is False
     assert ignore.is_ignoring(30, "anything") is False
