@@ -21,7 +21,7 @@ IGNORE_OPTION = dict(
     help="A violation to be ignored. e.g. -i TC200 -i TC201",
     type=click.Choice(CODE_CHOICES),
 )
-EXCLUDE_OPTION = dict(multiple=True, help="A dir to be ignored. e.g. -x tests/ -x fixtures/")
+EXCLUDE_OPTION = dict(multiple=True, help="A dir to be excluded. e.g. -x tests/ -x fixtures/")
 
 
 @click.command()
