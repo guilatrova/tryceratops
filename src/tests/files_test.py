@@ -111,7 +111,6 @@ def test_entity_ignore_specific_whole_file():
     # Any other violation
     assert ignore.is_ignoring(10, "TC300") is False
     assert ignore.is_ignoring(10, "anything") is False
-    assert ignore.is_ignoring(20, "TC101") is False
     assert ignore.is_ignoring(20, "TC002") is False
     assert ignore.is_ignoring(30, "TC301") is False
     assert ignore.is_ignoring(30, "anything") is False
