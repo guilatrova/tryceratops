@@ -44,6 +44,18 @@ You can enable experimental analyzers by running:
 tryceratops --experimental [filename or dir]
 ```
 
+You can ignore specific violations by using: `--ignore TCXXX` repeatedly:
+
+```
+tryceratops --ignore TC201 --ignore TC202
+```
+
+You can exclude dirs by using: `--exclude dir/path` repeatedly:
+
+```
+tryceratops --exclude tests --exclude .venv
+```
+
 ![example](https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/tryceratops-example.gif)
 
 ## Violations
