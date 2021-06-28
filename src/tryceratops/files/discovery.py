@@ -1,21 +1,14 @@
-import ast
 from os import listdir
 from os.path import isdir, isfile, join
-from typing import Generator, Iterable, Optional
+from typing import Generator, Iterable
 
-from .types import ParsedFileType
+from tryceratops.types import ParsedFileType
+
+from .parser import parse_file
 
 
 def is_python_file(filename: str):
     return isfile(filename) and filename.endswith(".py")
-
-
-def parse_file(filename: str) -> Optional[ast.AST]:
-    with open(filename) as content:
-        try:
-            return ast.parse(content.read())
-        except Exception:
-            return None
 
 
 def find_files(dir: str) -> Generator[str, None, None]:
@@ -30,15 +23,15 @@ def find_files(dir: str) -> Generator[str, None, None]:
 
 def parse_python_files_from_dir(dir: str) -> Generator[ParsedFileType, None, None]:
     if is_python_file(dir):
-        parsed = parse_file(dir)
+        parsed, filefilter = parse_file(dir)
         if parsed:
-            yield (dir, parsed)
+            yield (dir, parsed, filefilter)
 
     elif isdir(dir):
         for filename in find_files(dir):
-            parsed = parse_file(filename)
+            parsed, filefilter = parse_file(filename)
             if parsed:
-                yield (filename, parsed)
+                yield (filename, parsed, filefilter)
 
 
 def parse_python_files(files: Iterable[str]) -> Generator[ParsedFileType, None, None]:

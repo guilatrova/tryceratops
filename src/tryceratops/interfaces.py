@@ -34,8 +34,15 @@ class CliInterface:
 
     def _present_status(self):
         print("Done processing! 🦖✨")
-        print(f"Processed {self.runner.analyzed_files} files")
-        print(f"Found {len(self.runner.violations)} violations")
+
+        if self.runner.analyzed_files:
+            print(f"Processed {self.runner.analyzed_files} files")
+            print(f"Found {len(self.runner.violations)} violations")
+        else:
+            print("Nothing to check!")
+
+        if self.runner.excluded_files:
+            print(f"Skipped {self.runner.excluded_files} files")
 
         if self.runner.had_issues:
             print(

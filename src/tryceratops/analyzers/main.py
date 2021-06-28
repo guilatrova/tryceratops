@@ -2,6 +2,7 @@ import logging
 from dataclasses import dataclass
 from typing import List, Set, Type
 
+from tryceratops.filters import GlobalFilter
 from tryceratops.types import ParsedFilesType
 from tryceratops.violations import Violation
 
@@ -26,15 +27,12 @@ ANALYZER_CLASSES = {
 }
 
 
-def _get_analyzer_chain(include_experimental=False) -> Set[BaseAnalyzer]:
-    if include_experimental:
-        analyzer_classes = ANALYZER_CLASSES
-    else:
-        analyzer_classes = {
-            analyzercls for analyzercls in ANALYZER_CLASSES if analyzercls.EXPERIMENTAL is False
-        }
-
-    analyzers = {analyzercls() for analyzercls in analyzer_classes}
+def _get_analyzer_chain(global_filter: GlobalFilter) -> Set[BaseAnalyzer]:
+    analyzers = {
+        analyzercls()
+        for analyzercls in ANALYZER_CLASSES
+        if global_filter.should_run_analyzer(analyzercls)
+    }
     return analyzers
 
 
@@ -50,20 +48,33 @@ class Runner:
         self.runtime_errors: List[RuntimeError] = []
         self.violations: List[Violation] = []
         self.analyzed_files: int = 0
+        self.excluded_files: int = 0
 
     def _clear(self):
         self.violations = []
         self.runtime_errors = []
+        self.excluded_files = 0
 
-    def analyze(self, trees: ParsedFilesType, include_experimental: bool) -> List[Violation]:
-        analyzers = _get_analyzer_chain(include_experimental)
+    def analyze(self, trees: ParsedFilesType, global_filter: GlobalFilter) -> List[Violation]:
+        analyzers = _get_analyzer_chain(global_filter)
         self._clear()
         self.analyzed_files = len(trees)
 
-        for filename, tree in trees:
+        for filename, tree, filefilter in trees:
+            if global_filter.should_skip_file(filename):
+                self.analyzed_files -= 1
+                self.excluded_files += 1
+                continue
+
             for analyzer in analyzers:
                 try:
-                    self.violations += analyzer.check(tree, filename)
+                    found_violations = analyzer.check(tree, filename)
+                    valid_violations = [
+                        violation
+                        for violation in found_violations
+                        if not filefilter.ignores_violation(violation)
+                    ]
+                    self.violations += valid_violations
                 except Exception as ex:
                     logger.exception(
                         f"Exception raised when running {type(analyzer)} on {filename}"
