@@ -13,7 +13,7 @@ class MyException(Exception):
     pass
 
 
-def good():
+def bad():
     try:
         a = 1
         b = process()
@@ -30,3 +30,10 @@ def good():
         logger.exception("process failed")
     else:
         return b
+
+
+def still_good():
+    try:
+        return process()
+    except MyException:
+        logger.exception("process failed")

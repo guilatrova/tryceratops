@@ -12,7 +12,9 @@ class TryConsiderElseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     @visit_error_handler
     def visit_Try(self, node: ast.Try) -> None:
         *_, last_child = node.body
-        if isinstance(last_child, ast.Return):
+        theres_more_children = len(node.body) > 1
+
+        if isinstance(last_child, ast.Return) and theres_more_children:
             self._mark_violation(last_child)
 
         self.generic_visit(node)
