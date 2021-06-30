@@ -76,7 +76,7 @@ If you wish to use pre-commit, add this:
 ### Configuration
 
 You can set up a `pyproject.toml` file to set rules.
-This is useful to avoid reusing the same CLI flags over and over again and helps defining the structure of your project.
+This is useful to avoid reusing the same CLI flags over and over again and helps to define the structure of your project.
 
 Example:
 
