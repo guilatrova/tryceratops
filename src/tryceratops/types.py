@@ -1,5 +1,5 @@
 import ast
-from typing import Iterable, Tuple, TypedDict
+from typing import Iterable, List, Tuple, TypedDict
 
 from tryceratops.filters import FileFilter
 
@@ -15,6 +15,6 @@ class PyprojectConfig(TypedDict):
         experimental: whether to enable experimental analyzers
     """
 
-    exclude: list[str]
-    ignore: list[str]
+    exclude: List[str]
+    ignore: List[str]
     experimental: bool
