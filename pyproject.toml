@@ -17,6 +17,7 @@ requires=[
 [tool.flit.metadata.requires-extra]
 test = [
     "pytest >=6.2.4",
+    "toml >=0.10.2",
 ]
 
 [tool.flit.entrypoints.console_scripts]

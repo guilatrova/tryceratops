@@ -6,6 +6,7 @@ import click
 import tryceratops
 from tryceratops.analyzers import Runner
 from tryceratops.files import parse_python_files
+from tryceratops.files.discovery import load_config
 from tryceratops.filters import GlobalFilter
 from tryceratops.interfaces import CliInterface
 from tryceratops.settings import LOGGING_CONFIG
@@ -30,8 +31,15 @@ EXCLUDE_OPTION = dict(multiple=True, help="A dir to be excluded. e.g. -x tests/ 
 @click.option("-i", "--ignore", **IGNORE_OPTION)
 @click.option("-x", "--exclude", **EXCLUDE_OPTION)
 @click.version_option(tryceratops.__version__)
-def entrypoint(dir: Tuple[str], experimental: bool, ignore: Tuple[str], exclude: Tuple[str]):
-    global_filter = GlobalFilter(experimental, ignore, exclude)
+def entrypoint(
+    dir: Tuple[str], experimental: bool, ignore: Tuple[str, ...], exclude: Tuple[str, ...]
+):
+    pyproj_config = load_config(dir)
+    if pyproj_config:
+        global_filter = GlobalFilter.create_from_config(pyproj_config)
+        global_filter.overwrite_from_cli(experimental, ignore, exclude)
+    else:
+        global_filter = GlobalFilter(experimental, ignore, exclude)
 
     parsed_files = list(parse_python_files(dir))
     runner.analyze(parsed_files, global_filter)

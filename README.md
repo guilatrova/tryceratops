@@ -73,6 +73,22 @@ If you wish to use pre-commit, add this:
       - id: tryceratops
 ```
 
+### Configuration
+
+You can set up a `pyproject.toml` file to set rules.
+This is useful to avoid reusing the same CLI flags over and over again and helps defining the structure of your project.
+
+Example:
+
+```toml
+[tool.tryceratops]
+exclude = ["samples"]
+ignore = ["TC002", "TC200", "TC300"]
+experimental = true
+```
+
+CLI flags always overwrite the config file.
+
 ## License
 
 MIT
@@ -82,3 +98,5 @@ MIT
 Thanks to God for the inspiration 🙌 ☁️ ☀️
 
 Logo icon was made by [https://www.freepik.com](Freepik)
+
+The [black](https://github.com/psf/black) project for insights.

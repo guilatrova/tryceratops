@@ -1,8 +1,13 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Iterable, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Iterable, Optional, Type
 
 from tryceratops.analyzers import BaseAnalyzer
 from tryceratops.violations import Violation
+
+if TYPE_CHECKING:
+    from tryceratops.types import PyprojectConfig
 
 
 @dataclass
@@ -47,8 +52,8 @@ class GlobalFilter:
     """
 
     include_experimental: bool
-    ignore_violations: Optional[Tuple[str]]
-    exclude_dirs: Optional[Tuple[str]]
+    ignore_violations: Optional[Iterable[str]]
+    exclude_dirs: Optional[Iterable[str]]
 
     @property
     def exclude_experimental(self) -> bool:
@@ -69,3 +74,27 @@ class GlobalFilter:
             return True
 
         return False
+
+    @classmethod
+    def create_from_config(cls, config: PyprojectConfig) -> GlobalFilter:
+        experimental = config.get("experimental", False)
+        ignore = config.get("ignore", [])
+        exclude = config.get("exclude", [])
+
+        return cls(experimental, ignore, exclude)
+
+    def overwrite_from_cli(
+        self,
+        include_experimental: bool,
+        ignore_violations: Iterable[str],
+        exclude_dirs: Iterable[str],
+    ):
+        """In case any value is set it overwrites the previous value"""
+        if include_experimental:
+            self.include_experimental = include_experimental
+
+        if ignore_violations:
+            self.ignore_violations = ignore_violations
+
+        if exclude_dirs:
+            self.exclude_dirs = exclude_dirs
