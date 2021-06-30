@@ -1,3 +1,4 @@
+import os
 import sys
 
 from tryceratops.analyzers import Runner
@@ -60,7 +61,16 @@ class CliInterface:
 
         sys.exit(exit_code)
 
+    def _delete_empty_logs(self):
+        cwd = os.getcwd()
+        log_file_path = f"{cwd}/{ERROR_LOG_FILENAME}"
+        is_log_empty = os.path.getsize(log_file_path) == 0
+
+        if is_log_empty:
+            os.remove(log_file_path)
+
     def present_and_exit(self):
         self._present_violations()
         self._present_status()
+        self._delete_empty_logs()
         self._exit()
