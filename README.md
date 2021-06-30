@@ -35,25 +35,25 @@ pip install tryceratops
 ### Usage
 
 ```
-tryceratops [filename or dir]
+tryceratops [filename or dir...]
 ```
 
 You can enable experimental analyzers by running:
 
 ```
-tryceratops --experimental [filename or dir]
+tryceratops --experimental [filename or dir...]
 ```
 
 You can ignore specific violations by using: `--ignore TCXXX` repeatedly:
 
 ```
-tryceratops --ignore TC201 --ignore TC202
+tryceratops --ignore TC201 --ignore TC202 [filename or dir...]
 ```
 
 You can exclude dirs by using: `--exclude dir/path` repeatedly:
 
 ```
-tryceratops --exclude tests --exclude .venv
+tryceratops --exclude tests --exclude .venv [filename or dir...]
 ```
 
 ![example](https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/tryceratops-example.gif)
