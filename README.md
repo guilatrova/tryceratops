@@ -56,7 +56,7 @@ You can exclude dirs by using: `--exclude dir/path` repeatedly:
 tryceratops --exclude tests --exclude .venv [filename or dir...]
 ```
 
-![example](https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/tryceratops-example.gif)
+![example](https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/tryceratops-example2.gif)
 
 ## Violations
 
