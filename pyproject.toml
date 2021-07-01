@@ -11,13 +11,13 @@ classifiers = [ "License :: OSI Approved :: MIT License",]
 description-file = "README.md"
 requires-python = ">=3.8"
 requires=[
-    "click>=8.0.1",
+    "click >=7",
+    "toml >=0.10.2",
 ]
 
 [tool.flit.metadata.requires-extra]
 test = [
     "pytest >=6.2.4",
-    "toml >=0.10.2",
 ]
 
 [tool.flit.entrypoints.console_scripts]
