@@ -62,6 +62,24 @@ tryceratops --exclude tests --exclude .venv [filename or dir...]
 
 All violations and its descriptions can be found in [docs](https://github.com/guilatrova/tryceratops/tree/main/docs/violations).
 
+### Ignoring violations
+
+If you want to ignore a violation in a specific file, you can either:
+
+- Add a comment with `notc` to the top of the file you want to ignore
+- Add a comment with `notc` to the line you want to ignore
+- Add a comment with `notc: CODE` to the line you want to ignore a specific violation
+
+Example:
+
+```py
+def verbose_reraise_1():
+    try:
+        a = 1
+    except Exception as ex:
+        raise ex  # notc: TC202
+```
+
 ## Pre-commit
 
 If you wish to use pre-commit, add this:
