@@ -20,6 +20,8 @@
 Currently in BETA.
 Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-python-like-a-pro/).
 
+I shared [the building process of this tool here](https://blog.guilatrova.dev/project-tryceratops/).
+
 > “For those who like dinosaurs 🦖 and clean try/except ✨ blocks.”
 
 ---
