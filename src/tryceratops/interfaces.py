@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 
@@ -66,6 +67,7 @@ class CliInterface:
         log_file_path = f"{cwd}/{ERROR_LOG_FILENAME}"
         is_log_empty = os.path.getsize(log_file_path) == 0
 
+        logging.shutdown()
         if is_log_empty:
             os.remove(log_file_path)
 
