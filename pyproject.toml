@@ -23,6 +23,9 @@ test = [
 [tool.flit.entrypoints.console_scripts]
 tryceratops = "tryceratops.__main__:main"
 
+[tool.flit.entrypoints."flake8.extension"]
+TC = "tryceratops.flake_plugin:TryceratopsAdapterPlugin"
+
 [tool.black]
 line-length = 100
 
