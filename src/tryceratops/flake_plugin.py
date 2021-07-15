@@ -1,36 +1,45 @@
 import ast
 import importlib.metadata
-from typing import Any, Generator, List, Tuple, Type
+from tokenize import TokenInfo
+from typing import Any, Generator, Iterable, List, Tuple, Type
 
 from tryceratops.analyzers.main import Runner
+from tryceratops.files.parser import parse_ignore_tokens
 from tryceratops.filters import FileFilter, GlobalFilter
 from tryceratops.violations.violations import Violation
 
 PACKAGE_NAME = "tryceratops"
-DUMMY_FILE_FILTER = FileFilter([])
-# line, offset, message, class
+GLOBAL_DUMMY_FILTER = GlobalFilter(False, ignore_violations=[], exclude_dirs=[])
 FLAKE8_VIOLATION_TYPE = Tuple[int, int, str, Type[Any]]
+# line, offset, message, class
 
 
 class TryceratopsAdapterPlugin:
     name = PACKAGE_NAME
     version = importlib.metadata.version(PACKAGE_NAME)
 
-    def __init__(self, tree: ast.AST, filename: str = None):
-        self._runner = Runner()
-        self._global_filter = GlobalFilter(False, ignore_violations=[], exclude_dirs=[])
-        self._filename = filename
+    def __init__(
+        self,
+        tree: ast.AST,
+        filename: str = None,
+        file_tokens: Iterable[TokenInfo] = None,
+    ):
         self._tree = tree
+        self._filename = filename
+        self._runner = Runner()
+
+        ignore_lines = list(parse_ignore_tokens(file_tokens))
+        self._file_filter = FileFilter(ignore_lines)
 
     def _execute_analyzer(self) -> List[Violation]:
         tryceratops_input = [
             (
                 self._filename,
                 self._tree,
-                DUMMY_FILE_FILTER,
+                self._file_filter,
             )
         ]
-        return self._runner.analyze(tryceratops_input, self._global_filter)
+        return self._runner.analyze(tryceratops_input, GLOBAL_DUMMY_FILTER)
 
     def run(self) -> Generator[FLAKE8_VIOLATION_TYPE, None, None]:
         violations = self._execute_analyzer()

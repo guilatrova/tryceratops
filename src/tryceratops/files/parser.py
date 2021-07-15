@@ -2,7 +2,7 @@ import ast
 import re
 import tokenize
 from io import TextIOWrapper
-from typing import Generator, Optional, Tuple
+from typing import Generator, Iterable, Optional, Tuple
 
 from tryceratops.filters import FileFilter, IgnoreViolation
 
@@ -19,11 +19,21 @@ def _build_ignore_line(match: re.Match, location: Tuple[int, int]) -> IgnoreViol
     return IgnoreViolation(lineno)
 
 
-def parse_ignore_comments(content: TextIOWrapper) -> Generator[IgnoreViolation, None, None]:
-    for toktype, tokval, start, *_ in tokenize.generate_tokens(content.readline):
+def parse_ignore_tokens(
+    tokens: Iterable[tokenize.TokenInfo],
+) -> Generator[IgnoreViolation, None, None]:
+    for token in tokens:
+        toktype, tokval, start, *_ = token
         if toktype == tokenize.COMMENT:
             if match := re.search(IGNORE_TOKEN_PATT, tokval):
                 yield _build_ignore_line(match, start)
+
+
+def parse_ignore_comments_from_file(
+    content: TextIOWrapper,
+) -> Generator[IgnoreViolation, None, None]:
+    tokens = tokenize.generate_tokens(content.readline)
+    yield from parse_ignore_tokens(tokens)
 
 
 def parse_tree(content: TextIOWrapper) -> Optional[ast.AST]:
@@ -38,7 +48,7 @@ def parse_file(filename: str) -> Optional[Tuple[ast.AST, FileFilter]]:
         tree = parse_tree(content)
         if tree:
             content.seek(0)
-            ignore_lines = list(parse_ignore_comments(content))
+            ignore_lines = list(parse_ignore_comments_from_file(content))
             return tree, FileFilter(ignore_lines)
 
         return None
