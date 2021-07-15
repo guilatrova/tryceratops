@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 
@@ -70,6 +71,7 @@ class CliInterface:
             os.remove(log_file_path)
 
     def present_and_exit(self):
+        logging.shutdown()
         self._present_violations()
         self._present_status()
         self._delete_empty_logs()
