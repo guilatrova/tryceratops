@@ -24,6 +24,17 @@ I shared [the building process of this tool here](https://blog.guilatrova.dev/pr
 
 > “For those who like dinosaurs 🦖 and clean try/except ✨ blocks.”
 
+- [Installation and usage](#installation-and-usage)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [`flake8` Plugin](#flake8-plugin)
+- [Violations](#violations)
+  - [Ignoring violations](#ignoring-violations)
+  - [Configuration](#configuration)
+- [Pre-commit](#pre-commit)
+- [License](#license)
+- [Credits](#credits)
+
 ---
 
 ## Installation and usage
@@ -60,6 +71,17 @@ tryceratops --exclude tests --exclude .venv [filename or dir...]
 
 ![example](https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/tryceratops-example2.gif)
 
+### [`flake8`](https://github.com/PyCQA/flake8) Plugin
+
+🦖 Tryceratops is also a plugin for `flake8`, so you can:
+
+```
+❯ flake8 --select TC src/tests/samples/violations/call_raise_vanilla.py
+src/tests/samples/violations/call_raise_vanilla.py:13:9: TC002 Create your own exception
+src/tests/samples/violations/call_raise_vanilla.py:13:9: TC003 Avoid specifying long messages outside the exception class
+src/tests/samples/violations/call_raise_vanilla.py:21:9: TC201 Simply use 'raise' without specifying exception object again
+```
+
 ## Violations
 
 All violations and its descriptions can be found in [docs](https://github.com/guilatrova/tryceratops/tree/main/docs/violations).
@@ -82,28 +104,6 @@ def verbose_reraise_1():
         raise ex  # notc: TC202
 ```
 
-## Pre-commit
-
-If you wish to use pre-commit, add this:
-
-```yaml
-  - repo: https://github.com/guilatrova/tryceratops
-    rev: v0.2.3
-    hooks:
-      - id: tryceratops
-```
-
-## [`flake8`](https://github.com/PyCQA/flake8) Plugin
-
-🦖 Tryceratops is also a plugin for `flake8`, so you can:
-
-```
-❯ flake8 --select TC src/tests/samples/violations/call_raise_vanilla.py
-src/tests/samples/violations/call_raise_vanilla.py:13:9: TC002 Create your own exception
-src/tests/samples/violations/call_raise_vanilla.py:13:9: TC003 Avoid specifying long messages outside the exception class
-src/tests/samples/violations/call_raise_vanilla.py:21:9: TC201 Simply use 'raise' without specifying exception object again
-```
-
 ### Configuration
 
 You can set up a `pyproject.toml` file to set rules.
@@ -119,6 +119,17 @@ experimental = true
 ```
 
 CLI flags always overwrite the config file.
+
+## Pre-commit
+
+If you wish to use pre-commit, add this:
+
+```yaml
+  - repo: https://github.com/guilatrova/tryceratops
+    rev: v0.2.3
+    hooks:
+      - id: tryceratops
+```
 
 ## License
 
