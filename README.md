@@ -39,6 +39,7 @@ I shared [the building process of this tool here](https://blog.guilatrova.dev/pr
   - [Ignoring violations](#ignoring-violations)
   - [Configuration](#configuration)
 - [Pre-commit](#pre-commit)
+- [Show your support :heart:](#show-your-support-heart)
 - [License](#license)
 - [Credits](#credits)
 
@@ -136,6 +137,16 @@ If you wish to use pre-commit, add this:
     rev: v0.2.5
     hooks:
       - id: tryceratops
+```
+
+## Show your support :heart:
+
+[![try except style](https://img.shields.io/badge/try%2Fexcept%20style-tryceratops%20%F0%9F%A6%96%E2%9C%A8-black)](https://github.com/guilatrova/tryceratops)
+
+Add this fancy badge to your project's `README.md`:
+
+```md
+[![try except style](https://img.shields.io/badge/try%2Fexcept%20style-tryceratops%20%F0%9F%A6%96%E2%9C%A8-black)](https://github.com/guilatrova/tryceratops)
 ```
 
 ## License
