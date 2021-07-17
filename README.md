@@ -93,6 +93,17 @@ If you wish to use pre-commit, add this:
       - id: tryceratops
 ```
 
+## [`flake8`](https://github.com/PyCQA/flake8) Plugin
+
+🦖 Tryceratops is also a plugin for `flake8`, so you can:
+
+```
+❯ flake8 --select TC src/tests/samples/violations/call_raise_vanilla.py
+src/tests/samples/violations/call_raise_vanilla.py:13:9: TC002 Create your own exception
+src/tests/samples/violations/call_raise_vanilla.py:13:9: TC003 Avoid specifying long messages outside the exception class
+src/tests/samples/violations/call_raise_vanilla.py:21:9: TC201 Simply use 'raise' without specifying exception object again
+```
+
 ### Configuration
 
 You can set up a `pyproject.toml` file to set rules.
