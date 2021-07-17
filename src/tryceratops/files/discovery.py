@@ -1,12 +1,16 @@
+import logging
 import toml
+from dataclasses import dataclass
 from os import listdir
 from os.path import isdir, isfile, join
 from pathlib import Path
-from typing import Generator, Iterable, Optional, Sequence, Tuple
+from typing import Generator, Iterable, List, Optional, Sequence, Tuple
 
 from tryceratops.types import ParsedFileType, PyprojectConfig
 
 from .parser import parse_file
+
+logger = logging.getLogger(__name__)
 
 
 def is_python_file(filename: str):
@@ -23,22 +27,41 @@ def find_files(dir: str) -> Generator[str, None, None]:
             yield full_path
 
 
-def parse_python_files_from_dir(dir: str) -> Generator[ParsedFileType, None, None]:
-    if is_python_file(dir):
-        parsed, filefilter = parse_file(dir)
-        if parsed:
-            yield (dir, parsed, filefilter)
-
-    elif isdir(dir):
-        for filename in find_files(dir):
-            parsed, filefilter = parse_file(filename)
-            if parsed:
-                yield (filename, parsed, filefilter)
+@dataclass
+class FileParseFailed:
+    filename: str
+    reason: str
+    exception: Exception
 
 
-def parse_python_files(files: Iterable[str]) -> Generator[ParsedFileType, None, None]:
-    for file in files:
-        yield from parse_python_files_from_dir(file)
+class FileDiscovery:
+    def __init__(self):
+        self.failures: List[FileParseFailed] = []
+
+    @property
+    def had_issues(self) -> bool:
+        return len(self.failures) > 0
+
+    def _parse_python_files_from_dir(self, dir: str) -> Generator[ParsedFileType, None, None]:
+        files = []
+        if is_python_file(dir):
+            files.append(dir)
+        elif isdir(dir):
+            files = find_files(dir)
+
+        for filename in files:
+            try:
+                parsed, filefilter = parse_file(filename)
+            except Exception as ex:
+                logger.exception(f"Failed to parse file {filename}, skipping it")
+                self.failures.append(FileParseFailed(filename, str(ex), ex))
+            else:
+                if parsed:
+                    yield (filename, parsed, filefilter)
+
+    def parse_python_files(self, files: Iterable[str]) -> Generator[ParsedFileType, None, None]:
+        for file in files:
+            yield from self._parse_python_files_from_dir(file)
 
 
 def find_project_root(srcs: Sequence[str]) -> Path:

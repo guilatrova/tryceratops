@@ -2,7 +2,7 @@ import ast
 import re
 import tokenize
 from io import TextIOWrapper
-from typing import Generator, Iterable, Optional, Tuple
+from typing import Generator, Iterable, Tuple
 
 from tryceratops.filters import FileFilter, IgnoreViolation
 
@@ -36,19 +36,15 @@ def parse_ignore_comments_from_file(
     yield from parse_ignore_tokens(tokens)
 
 
-def parse_tree(content: TextIOWrapper) -> Optional[ast.AST]:
-    try:
-        return ast.parse(content.read())
-    except Exception:
-        return None
+def parse_tree(content: TextIOWrapper) -> ast.AST:
+    return ast.parse(content.read())
 
 
-def parse_file(filename: str) -> Optional[Tuple[ast.AST, FileFilter]]:
+def parse_file(filename: str) -> Tuple[ast.AST, FileFilter]:
     with open(filename, "r") as content:
         tree = parse_tree(content)
-        if tree:
-            content.seek(0)
-            ignore_lines = list(parse_ignore_comments_from_file(content))
-            return tree, FileFilter(ignore_lines)
 
-        return None
+        content.seek(0)
+        ignore_lines = list(parse_ignore_comments_from_file(content))
+
+        return tree, FileFilter(ignore_lines)

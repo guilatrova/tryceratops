@@ -1,1 +1,1 @@
-from .discovery import parse_python_files
+from .discovery import FileDiscovery, load_config
