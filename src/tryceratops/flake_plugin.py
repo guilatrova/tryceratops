@@ -4,6 +4,7 @@ from tokenize import TokenInfo
 from typing import Any, Generator, Iterable, List, Tuple, Type
 
 from tryceratops.analyzers.main import Runner
+from tryceratops.files.discovery import load_config
 from tryceratops.files.parser import parse_ignore_tokens
 from tryceratops.filters import FileFilter, GlobalFilter
 from tryceratops.violations.violations import Violation
@@ -30,6 +31,14 @@ class TryceratopsAdapterPlugin:
 
         ignore_lines = list(parse_ignore_tokens(file_tokens))
         self._file_filter = FileFilter(ignore_lines)
+        self._global_filter = self._create_global_filter(filename)
+
+    def _create_global_filter(self, filename: str) -> GlobalFilter:
+        pyproj_config = load_config([filename])
+        if pyproj_config:
+            return GlobalFilter.create_from_config(pyproj_config)
+
+        return GLOBAL_DUMMY_FILTER
 
     def _execute_analyzer(self) -> List[Violation]:
         tryceratops_input = [
@@ -39,7 +48,7 @@ class TryceratopsAdapterPlugin:
                 self._file_filter,
             )
         ]
-        return self._runner.analyze(tryceratops_input, GLOBAL_DUMMY_FILTER)
+        return self._runner.analyze(tryceratops_input, self._global_filter)
 
     def run(self) -> Generator[FLAKE8_VIOLATION_TYPE, None, None]:
         violations = self._execute_analyzer()
