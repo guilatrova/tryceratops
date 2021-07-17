@@ -1,9 +1,8 @@
+import toml
 from os import listdir
 from os.path import isdir, isfile, join
 from pathlib import Path
 from typing import Generator, Iterable, Optional, Sequence, Tuple
-
-import toml
 
 from tryceratops.types import ParsedFileType, PyprojectConfig
 
