@@ -4,14 +4,14 @@ from typing import Tuple
 
 import tryceratops
 from tryceratops.analyzers import Runner
-from tryceratops.files import parse_python_files
-from tryceratops.files.discovery import load_config
+from tryceratops.files import FileDiscovery, load_config
 from tryceratops.filters import GlobalFilter
 from tryceratops.interfaces import CliInterface
 from tryceratops.settings import LOGGING_CONFIG
 from tryceratops.violations import CODE_CHOICES
 
 runner = Runner()
+discovery = FileDiscovery()
 interface = CliInterface(runner)
 
 
@@ -40,7 +40,7 @@ def entrypoint(
     else:
         global_filter = GlobalFilter(experimental, ignore, exclude)
 
-    parsed_files = list(parse_python_files(dir))
+    parsed_files = list(discovery.parse_python_files(dir))
     runner.analyze(parsed_files, global_filter)
 
     interface.present_and_exit()
