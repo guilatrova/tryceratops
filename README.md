@@ -6,14 +6,21 @@
 
 <p align="center">
   <a href="https://pypi.org/project/tryceratops/">
-    <img alt="PyPI" src="https://img.shields.io/pypi/v/tryceratops">
+    <img alt="PyPI" src="https://img.shields.io/pypi/v/tryceratops"/>
   </a>
-  <a href="https://github.com/psf/black">
-    <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
-  </a>
+
   <a href="https://pepy.tech/project/tryceratops/">
-    <img alt="Downloads" src="https://static.pepy.tech/personalized-badge/tryceratops?period=total&units=international_system&left_color=grey&right_color=blue&left_text=%F0%9F%A6%96%20Downloads">
+    <img alt="Downloads" src="https://static.pepy.tech/personalized-badge/tryceratops?period=total&units=international_system&left_color=grey&right_color=blue&left_text=%F0%9F%A6%96%20Downloads"/>
   </a>
+
+  <a href="https://github.com/psf/black">
+    <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"/>
+  </a>
+
+  <a href="https://open.vscode.dev/guilatrova/tryceratops">
+    <img alt="Open in Visual Studio Code" src="https://open.vscode.dev/badges/open-in-vscode.svg"/>
+  </a>
+
 
 </p>
 
