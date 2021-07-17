@@ -1,7 +1,6 @@
+import click
 import logging.config
 from typing import Tuple
-
-import click
 
 import tryceratops
 from tryceratops.analyzers import Runner
