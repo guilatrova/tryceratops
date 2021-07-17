@@ -12,7 +12,7 @@ from tryceratops.violations import CODE_CHOICES
 
 runner = Runner()
 discovery = FileDiscovery()
-interface = CliInterface(runner)
+interface = CliInterface(runner, discovery)
 
 
 EXPERIMENTAL_FLAG_OPTION = dict(is_flag=True, help="Whether to enable experimental analyzers.")

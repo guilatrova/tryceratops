@@ -3,6 +3,7 @@ import os
 import sys
 
 from tryceratops.analyzers import Runner
+from tryceratops.files.discovery import FileDiscovery
 from tryceratops.settings import ERROR_LOG_FILENAME
 from tryceratops.violations import Violation
 
@@ -10,6 +11,7 @@ from tryceratops.violations import Violation
 class COLORS:
     DESCR = "\033[91m"
     CODE = "\033[93m"
+    ERROR = "\033[91m"
 
     ENDC = "\033[0m"
 
@@ -27,8 +29,9 @@ def present_violation(violation: Violation):
 
 
 class CliInterface:
-    def __init__(self, runner: Runner):
+    def __init__(self, runner: Runner, discovery: FileDiscovery):
         self.runner = runner
+        self.discovery = discovery
 
     def _present_violations(self):
         for violation in self.runner.violations:
@@ -42,6 +45,11 @@ class CliInterface:
             print(f"Found {len(self.runner.violations)} violations")
         else:
             print("Nothing to check!")
+
+        if self.discovery.had_issues:
+            print(
+                wrap_color(f"Failed to process {len(self.discovery.failures)} files", COLORS.ERROR)
+            )
 
         if self.runner.excluded_files:
             print(f"Skipped {self.runner.excluded_files} files")
