@@ -44,6 +44,7 @@ I shared [the building process of this tool here](https://blog.guilatrova.dev/pr
   - [Configuration](#configuration)
 - [Pre-commit](#pre-commit)
 - [Show your style](#show-your-style)
+- [Extra Resources](#extra-resources)
 - [License](#license)
 - [Credits](#credits)
 
@@ -152,6 +153,13 @@ Add this fancy badge to your project's `README.md`:
 ```md
 [![try/except style: tryceratops](https://img.shields.io/badge/try%2Fexcept%20style-tryceratops%20%F0%9F%A6%96%E2%9C%A8-black)](https://github.com/guilatrova/tryceratops)
 ```
+
+## Extra Resources
+
+If you want to read more about:
+
+- [How to structure exceptions in Python 🐍 🏗️ 💣](https://blog.guilatrova.dev/how-to-structure-exception-in-python-like-a-pro/)
+- [Book: Effective Python](https://amzn.to/3bEVHpG)
 
 ## License
 
