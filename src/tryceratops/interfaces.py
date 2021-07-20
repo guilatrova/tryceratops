@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from enum import IntEnum
 
 from tryceratops.analyzers import Runner
 from tryceratops.files.discovery import FileDiscovery
@@ -14,6 +15,13 @@ class COLORS:
     ERROR = "\033[91m"
 
     ENDC = "\033[0m"
+
+
+class ExitCodes(IntEnum):
+    SUCCESS = 0
+    LINT_BROKEN = 1
+    UNPROCESSED_FILE = 2
+    RUNTIME_ISSUES = 100
 
 
 def wrap_color(msg: str, color: str):
@@ -61,12 +69,14 @@ class CliInterface:
             )
 
     def _exit(self):
-        exit_code = 0
+        exit_code = ExitCodes.SUCCESS
 
         if self.runner.had_issues:
-            exit_code = 2
+            exit_code = ExitCodes.RUNTIME_ISSUES
+        elif self.discovery.had_issues:
+            exit_code = ExitCodes.UNPROCESSED_FILE
         elif self.runner.any_violation:
-            exit_code = 1
+            exit_code = ExitCodes.LINT_BROKEN
 
         sys.exit(exit_code)
 
