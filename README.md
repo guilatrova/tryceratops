@@ -45,6 +45,7 @@ I shared [the building process of this tool here](https://blog.guilatrova.dev/pr
 - [Pre-commit](#pre-commit)
 - [Show your style](#show-your-style)
 - [Extra Resources](#extra-resources)
+- [Contributing](#contributing)
 - [License](#license)
 - [Credits](#credits)
 
@@ -160,6 +161,12 @@ If you want to read more about:
 
 - [How to structure exceptions in Python 🐍 🏗️ 💣](https://blog.guilatrova.dev/how-to-structure-exception-in-python-like-a-pro/)
 - [Book: Effective Python](https://amzn.to/3bEVHpG)
+
+## Contributing
+
+Thank you for considering making Tryceratops better for everyone!
+
+Refer to [Contributing docs](docs/CONTRIBUTING.md).
 
 ## License
 
