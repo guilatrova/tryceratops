@@ -29,6 +29,23 @@ tryceratops = 'tryceratops.__main__:main'
 [tool.poetry.plugins."flake8.extension"]
 TC = "tryceratops.flake_plugin:TryceratopsAdapterPlugin"
 
+[tool.semantic_release]
+version_variable = [
+    "src/tryceratops/__init__.py:__version__"
+]
+version_toml = [
+    "pyproject.toml:tool.poetry.version"
+]
+version_pattern = [
+    "README.md:rev: v{version}",
+    "docs/CONTRIBUTING:tryceratops, version {version}"
+]
+major_on_zero = false
+branch = "main"
+upload_to_pypi = true
+upload_to_release = true
+build_command = "pip install poetry && poetry build"
+
 [tool.poetry.dependencies]
 python = "^3.8"
 click = "^7"
@@ -42,6 +59,7 @@ isort = "^5.8.0"
 pre-commit = "^2.13.0"
 astpretty = "^2.1.0"
 pytest-cov = "^2.12.1"
+python-semantic-release = "^7.16.2"
 
 [tool.black]
 line-length = 100
