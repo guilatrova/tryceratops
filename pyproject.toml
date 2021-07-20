@@ -41,6 +41,7 @@ black = "^20.8b1"
 isort = "^5.8.0"
 pre-commit = "^2.13.0"
 astpretty = "^2.1.0"
+pytest-cov = "^2.12.1"
 
 [tool.black]
 line-length = 100
