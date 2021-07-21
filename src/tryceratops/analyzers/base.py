@@ -7,7 +7,7 @@ from tryceratops.violations import Violation
 from .exceptions import AnalyzerVisitException
 
 
-class BaseAnalyzer(ABC):
+class BaseAnalyzer(ABC, ast.NodeVisitor):
     EXPERIMENTAL = False
 
     def __init__(self):
@@ -15,7 +15,7 @@ class BaseAnalyzer(ABC):
 
     @property
     @abstractmethod
-    def violation_code() -> Tuple[str, str]:
+    def violation_code(self) -> Tuple[str, str]:
         pass
 
     def _mark_violation(self, *nodes):
@@ -45,7 +45,7 @@ def visit_error_handler(func):
     return _func
 
 
-class BaseRaiseCallableAnalyzer(BaseAnalyzer, ast.NodeVisitor, ABC):
+class BaseRaiseCallableAnalyzer(BaseAnalyzer, ABC):
     @abstractmethod
     def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name):
         pass

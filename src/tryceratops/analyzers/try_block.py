@@ -23,7 +23,7 @@ class TryConsiderElseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 class TryShouldntRaiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     violation_code = codes.RAISE_WITHIN_TRY
 
-    def _iter_body(self, node: ast.Try) -> Generator[ast.stmt, None, None]:
+    def _iter_body(self, node: ast.Try) -> Generator[ast.AST, None, None]:
         for body_child in node.body:
             yield body_child
             yield from ast.iter_child_nodes(body_child)
