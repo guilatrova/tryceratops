@@ -94,9 +94,9 @@ All violations and its descriptions can be found in [docs](https://github.com/gu
 
 If you want to ignore a violation in a specific file, you can either:
 
-- Add a comment with `notc` to the top of the file you want to ignore
-- Add a comment with `notc` to the line you want to ignore
-- Add a comment with `notc: CODE` to the line you want to ignore a specific violation
+- Add a comment with `noqa` to the top of the file you want to ignore
+- Add a comment with `noqa` to the line you want to ignore
+- Add a comment with `noqa: CODE` to the line you want to ignore a specific violation
 
 Example:
 
@@ -105,7 +105,7 @@ def verbose_reraise_1():
     try:
         a = 1
     except Exception as ex:
-        raise ex  # notc: TC202
+        raise ex  # noqa: TC202
 ```
 
 ### Configuration
