@@ -10,7 +10,7 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
-        def is_raise_without_cause(node: ast.stmt):
+        def is_raise_without_cause(node: ast.AST):
             if isinstance(node, ast.Raise):
                 return isinstance(node.exc, ast.Call) and node.cause is None
             return False
@@ -26,7 +26,7 @@ class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
-        def is_raise_with_name(stm: ast.stmt, name: str):
+        def is_raise_with_name(stm: ast.AST, name: str):
             if isinstance(stm, ast.Raise) and isinstance(stm.exc, ast.Name):
                 return stm.exc.id == name
             return False
@@ -44,7 +44,7 @@ class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 class ExceptBroadPassAnalyzer(BaseAnalyzer, ast.NodeVisitor):
     violation_code = codes.IGNORING_EXCEPTION
 
-    def _is_vanilla_exception(self, node: ast.stmt) -> bool:
+    def _is_vanilla_exception(self, node: ast.expr) -> bool:
         if isinstance(node, ast.Name):
             return node.id == "Exception"
         return False
