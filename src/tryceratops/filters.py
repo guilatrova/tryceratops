@@ -52,8 +52,8 @@ class GlobalFilter:
     """
 
     include_experimental: bool
-    ignore_violations: Optional[Iterable[str]]
-    exclude_dirs: Optional[Iterable[str]]
+    ignore_violations: Iterable[str]
+    exclude_dirs: Iterable[str]
 
     def _self_check(self):
         self.exclude_dirs = [excluded for excluded in self.exclude_dirs if excluded]
