@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.0 (2021-07-21)
+### Feature
+* Rename 'notc' tokens to become 'noqa' ([`0a2c1c5`](https://github.com/guilatrova/tryceratops/commit/0a2c1c5a9efe77c94a0080369ce2e18ae3e937b7))
+
+### Breaking
+* Any previous 'notc' token will stop working. Now you must use 'noqa' instead, which keeps consistent with flake8 standards  ([`0a2c1c5`](https://github.com/guilatrova/tryceratops/commit/0a2c1c5a9efe77c94a0080369ce2e18ae3e937b7))
+
+### Documentation
+* Add changelog to pypi and readme ([`9dac24b`](https://github.com/guilatrova/tryceratops/commit/9dac24b50b92e39abac63307345343189ccb24bf))
+
 ## v0.2.6 (2021-07-21)
 ### Fix
 * **cli:** Return exit code for unprocessed ([`50df1dc`](https://github.com/guilatrova/tryceratops/commit/50df1dcb3f671062a76b280c994672a2313b9d38))
