@@ -1,3 +1,4 @@
+# type: ignore
 import ast
 from typing import Dict, List
 

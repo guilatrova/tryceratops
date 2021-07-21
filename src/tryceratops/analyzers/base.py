@@ -9,14 +9,10 @@ from .exceptions import AnalyzerVisitException
 
 class BaseAnalyzer(ABC, ast.NodeVisitor):
     EXPERIMENTAL = False
+    violation_code: Tuple[str, str]
 
     def __init__(self):
         self.violations: List[Violation] = []
-
-    @property
-    @abstractmethod
-    def violation_code(self) -> Tuple[str, str]:
-        pass
 
     def _mark_violation(self, *nodes):
         for node in nodes:
