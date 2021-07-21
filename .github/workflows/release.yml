@@ -16,8 +16,25 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.TRYCERATOPS_GITHUB_TOKEN }}
 
-      - name: Python Semantic Release
-        uses: relekang/python-semantic-release@master
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
         with:
-          github_token: ${{ secrets.TRYCERATOPS_GITHUB_TOKEN }}
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install poetry --upgrade pip
+          poetry config virtualenvs.create false
+          poetry install
+
+      # Can't use: relekang/python-semantic-release@master because
+      # it's running Python 3.7, and Tryceratops requires >=3.8
+      - name: Python Semantic Release
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "action@github.com"
+
+          semantic-release publish -D commit_author="github-actions <action@github.com>"
+        env:
+          GH_TOKEN: ${{secrets.TRYCERATOPS_GITHUB_TOKEN}}
+          PYPI_TOKEN: ${{secrets.PYPI_TOKEN}}
