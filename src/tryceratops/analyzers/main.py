@@ -15,10 +15,10 @@ logger = logging.getLogger(__name__)
 
 
 ANALYZER_CLASSES = {
-    call_analyzers.CallTooManyAnalyzer,
-    call_analyzers.CallRaiseVanillaAnalyzer,
-    call_analyzers.CallRaiseLongArgsAnalyzer,
-    call_analyzers.CallAvoidCheckingToContinueAnalyzer,
+    call_analyzers.CallTooManyAnalyzer,  # type: ignore
+    call_analyzers.CallRaiseVanillaAnalyzer,  # type: ignore
+    call_analyzers.CallRaiseLongArgsAnalyzer,  # type: ignore
+    call_analyzers.CallAvoidCheckingToContinueAnalyzer,  # type: ignore
     except_analyzers.ExceptReraiseWithoutCauseAnalyzer,
     except_analyzers.ExceptVerboseReraiseAnalyzer,
     except_analyzers.ExceptBroadPassAnalyzer,
