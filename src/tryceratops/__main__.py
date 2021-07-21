@@ -13,6 +13,7 @@ from tryceratops.violations import CODE_CHOICES
 runner = Runner()
 discovery = FileDiscovery()
 interface = CliInterface(runner, discovery)
+logger = logging.getLogger("tryceratops")
 
 
 EXPERIMENTAL_FLAG_OPTION = dict(is_flag=True, help="Whether to enable experimental analyzers.")
@@ -22,6 +23,7 @@ IGNORE_OPTION = dict(
     type=click.Choice(CODE_CHOICES),
 )
 EXCLUDE_OPTION = dict(multiple=True, help="A dir to be excluded. e.g. -x tests/ -x fixtures/")
+VERBOSE_OPTION = dict(is_flag=True, help="Will print more logging messages.")
 
 
 @click.command()
@@ -29,9 +31,14 @@ EXCLUDE_OPTION = dict(multiple=True, help="A dir to be excluded. e.g. -x tests/ 
 @click.option("--experimental", **EXPERIMENTAL_FLAG_OPTION)
 @click.option("-i", "--ignore", **IGNORE_OPTION)
 @click.option("-x", "--exclude", **EXCLUDE_OPTION)
+@click.option("-v", "--verbose", **VERBOSE_OPTION)
 @click.version_option(tryceratops.__version__)
 def entrypoint(
-    dir: Tuple[str], experimental: bool, ignore: Tuple[str, ...], exclude: Tuple[str, ...]
+    dir: Tuple[str],
+    experimental: bool,
+    ignore: Tuple[str, ...],
+    exclude: Tuple[str, ...],
+    verbose: bool,
 ):
     pyproj_config = load_config(dir)
     if pyproj_config:
@@ -39,6 +46,10 @@ def entrypoint(
         global_filter.overwrite_from_cli(experimental, ignore, exclude)
     else:
         global_filter = GlobalFilter(experimental, ignore, exclude)
+
+    if verbose:
+        logger = logging.getLogger("tryceratops")
+        logger.setLevel(logging.DEBUG)
 
     parsed_files = list(discovery.parse_python_files(dir))
     runner.analyze(parsed_files, global_filter)
