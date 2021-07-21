@@ -35,6 +35,7 @@ I shared [the building process of this tool here](https://blog.guilatrova.dev/pr
 - [Show your style](#show-your-style)
 - [Extra Resources](#extra-resources)
 - [Contributing](#contributing)
+- [Change log](#change-log)
 - [License](#license)
 - [Credits](#credits)
 
@@ -156,6 +157,10 @@ If you want to read more about:
 Thank you for considering making Tryceratops better for everyone!
 
 Refer to [Contributing docs](docs/CONTRIBUTING.md).
+
+## Change log
+
+See [CHANGELOG](CHANGELOG.md).
 
 ## License
 
