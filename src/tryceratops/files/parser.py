@@ -5,8 +5,8 @@ from typing import Generator, Iterable, TextIO, Tuple
 
 from tryceratops.filters import FileFilter, IgnoreViolation
 
-IGNORE_TRYCERATOPS_TOKEN = "notc"
-IGNORE_TOKEN_PATT = r"notc(: ?((TC\d{3},? ?)+))?"
+IGNORE_TRYCERATOPS_TOKEN = "noqa"
+IGNORE_TOKEN_PATT = r"noqa(: ?((TC\d{3},? ?)+))?"
 
 
 def _build_ignore_line(match: re.Match, location: Tuple[int, int]) -> IgnoreViolation:

@@ -1,4 +1,4 @@
-# notc
+# noqa
 class MyException(Exception):
     pass
 
@@ -24,7 +24,7 @@ def verbose_reraise_2():
 
 def too_many_try():
     try:
-        a = 1  # notc <- it doesnt matter because I ignored the whole file
+        a = 1  # noqa <- it doesnt matter because I ignored the whole file
     except Exception:
         raise
 
