@@ -38,7 +38,7 @@ version_toml = [
 ]
 version_pattern = [
     "README.md:rev: v{version}",
-    "docs/CONTRIBUTING:tryceratops, version {version}"
+    "docs/CONTRIBUTING.md:tryceratops, version {version}"
 ]
 major_on_zero = false
 branch = "main"
