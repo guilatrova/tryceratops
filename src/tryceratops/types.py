@@ -1,10 +1,10 @@
 import ast
-from typing import Iterable, List, Tuple, TypedDict
+from typing import Collection, List, Tuple, TypedDict
 
 from tryceratops.filters import FileFilter
 
 ParsedFileType = Tuple[str, ast.AST, FileFilter]
-ParsedFilesType = Iterable[ParsedFileType]
+ParsedFilesType = Collection[ParsedFileType]
 
 
 class PyprojectConfig(TypedDict):

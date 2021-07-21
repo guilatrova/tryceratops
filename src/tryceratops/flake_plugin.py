@@ -22,8 +22,8 @@ class TryceratopsAdapterPlugin:
     def __init__(
         self,
         tree: ast.AST,
-        filename: str = None,
-        file_tokens: Iterable[TokenInfo] = None,
+        filename: str = "undefined",
+        file_tokens: Iterable[TokenInfo] = [],
     ):
         self._tree = tree
         self._filename = filename
