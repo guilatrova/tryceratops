@@ -1,8 +1,7 @@
 import ast
 import re
 import tokenize
-from io import TextIOWrapper
-from typing import Generator, Iterable, Tuple
+from typing import Generator, Iterable, TextIO, Tuple
 
 from tryceratops.filters import FileFilter, IgnoreViolation
 
@@ -29,14 +28,12 @@ def parse_ignore_tokens(
                 yield _build_ignore_line(match, start)
 
 
-def parse_ignore_comments_from_file(
-    content: TextIOWrapper,
-) -> Generator[IgnoreViolation, None, None]:
+def parse_ignore_comments_from_file(content: TextIO) -> Generator[IgnoreViolation, None, None]:
     tokens = tokenize.generate_tokens(content.readline)
     yield from parse_ignore_tokens(tokens)
 
 
-def parse_tree(content: TextIOWrapper) -> ast.AST:
+def parse_tree(content: TextIO) -> ast.AST:
     return ast.parse(content.read())
 
 
