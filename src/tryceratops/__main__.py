@@ -48,7 +48,7 @@ def entrypoint(
 
 def main():
     logging.config.dictConfig(LOGGING_CONFIG)
-    entrypoint()
+    entrypoint(prog_name="tryceratops")
 
 
 if __name__ == "__main__":
