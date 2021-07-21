@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from os import listdir
 from os.path import isdir, isfile, join
 from pathlib import Path
-from typing import Generator, Iterable, List, Optional, Sequence, Tuple
+from typing import Generator, Iterable, List, Optional, Sequence
 
 from tryceratops.types import ParsedFileType, PyprojectConfig
 
@@ -47,7 +47,7 @@ class FileDiscovery:
         if is_python_file(dir):
             files.append(dir)
         elif isdir(dir):
-            files = find_files(dir)
+            files = list(find_files(dir))
 
         for filename in files:
             try:
@@ -100,12 +100,15 @@ def find_project_root(srcs: Sequence[str]) -> Path:
     return directory
 
 
-def find_pyproject_toml(path_search_start: Tuple[str, ...]) -> Optional[str]:
+def find_pyproject_toml(path_search_start: Sequence[str]) -> Optional[str]:
     """Find the absolute filepath to a pyproject.toml if it exists"""
     path_project_root = find_project_root(path_search_start)
     path_pyproject_toml = path_project_root / "pyproject.toml"
+
     if path_pyproject_toml.is_file():
         return str(path_pyproject_toml)
+
+    return None
 
 
 def load_config(dir: Sequence[str]) -> Optional[PyprojectConfig]:
@@ -114,3 +117,5 @@ def load_config(dir: Sequence[str]) -> Optional[PyprojectConfig]:
     if toml_file:
         config = toml.load(toml_file)
         return config.get("tool", {}).get("tryceratops", {})
+
+    return None
