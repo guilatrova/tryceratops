@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.0 (2021-07-30)
+### Feature
+* Add verbose flag ([`95a34b6`](https://github.com/guilatrova/tryceratops/commit/95a34b643ad71c392d419006607ba4d3cbb68375))
+
 ## v0.3.0 (2021-07-21)
 ### Feature
 * Rename 'notc' tokens to become 'noqa' ([`0a2c1c5`](https://github.com/guilatrova/tryceratops/commit/0a2c1c5a9efe77c94a0080369ce2e18ae3e937b7))
