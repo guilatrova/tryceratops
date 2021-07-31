@@ -32,3 +32,10 @@
 | ----------------- | --------------------------------- |
 | [TC300](TC300.md) | Consider adding an `else` block   |
 | [TC301](TC301.md) | Avoid direct raises in `try` body |
+
+## `TC4xx` - Logging usage
+
+
+| Code              | Description                                 |
+| ----------------- | ------------------------------------------- |
+| [TC400](TC400.md) | Use logging '.exception' instead of 'error' |
