@@ -1,4 +1,5 @@
 import ast
+from typing import Optional
 
 from tryceratops.violations import codes
 
@@ -81,16 +82,21 @@ class ExceptBroadPassAnalyzer(BaseAnalyzer, ast.NodeVisitor):
 class LogErrorAnalyzer(BaseAnalyzer):
     violation_code = codes.USE_LOGGING_EXCEPTION
 
+    def _maybe_get_possible_log_node(self, node: ast.AST) -> Optional[ast.Attribute]:
+        if isinstance(node, ast.Expr):
+            if isinstance(node.value, ast.Call):
+                if isinstance(node.value.func, ast.Attribute):
+                    return node.value.func
+
+        return None
+
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
         for stm in ast.walk(node):
-            if isinstance(stm, ast.Expr):
-                if isinstance(stm.value, ast.Call):
-                    if isinstance(stm.value.func, ast.Attribute):
-                        possible_log_node = stm.value.func
-                        object_method = possible_log_node.attr
+            if possible_log_node := self._maybe_get_possible_log_node(stm):
+                object_method = possible_log_node.attr
 
-                        if object_method == "error":
-                            self._mark_violation(possible_log_node)
+                if object_method == "error":
+                    self._mark_violation(possible_log_node)
 
         self.generic_visit(node)
