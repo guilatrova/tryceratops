@@ -170,4 +170,4 @@ def test_log_error():
     assert len(violations) == 1
     violation = violations[0]
 
-    assert_log_error(10, 8, violation)
+    assert_log_error(15, 8, violation)

@@ -1,3 +1,8 @@
+"""
+Violation:
+
+Use '.exception' over '.error' inside except blocks
+"""
 import logging
 
 logger = logging.getLogger(__name__)

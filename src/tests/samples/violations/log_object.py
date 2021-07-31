@@ -1,7 +1,7 @@
 """
 Violation:
 
-Use '.exception' over '.error' inside except blocks
+Do not log exception object
 """
 
 import logging
@@ -9,10 +9,22 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def func():
+def func_fstr():
     try:
-        a = 1
+        ...
     except Exception as ex:
         logger.exception(f"log message {ex}")
-        logger.exception("log message: " + ex)
+
+
+def func_concat():
+    try:
+        ...
+    except Exception as ex:
+        logger.exception("log message: " + str(ex))
+
+
+def func_comma():
+    try:
+        ...
+    except Exception as ex:
         logger.exception("log message", ex)
