@@ -6,7 +6,7 @@ from tryceratops.violations import codes
 from .base import BaseAnalyzer, visit_error_handler
 
 
-class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer):
     violation_code = codes.RERAISE_NO_CAUSE
 
     @visit_error_handler
@@ -22,7 +22,7 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         self.generic_visit(node)
 
 
-class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+class ExceptVerboseReraiseAnalyzer(BaseAnalyzer):
     violation_code = codes.VERBOSE_RERAISE
 
     @visit_error_handler
@@ -42,7 +42,7 @@ class ExceptVerboseReraiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         self.generic_visit(node)
 
 
-class ExceptBroadPassAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+class ExceptBroadPassAnalyzer(BaseAnalyzer):
     violation_code = codes.IGNORING_EXCEPTION
 
     def _is_vanilla_exception(self, node: ast.expr) -> bool:
