@@ -36,6 +36,7 @@
 ## `TC4xx` - Logging usage
 
 
-| Code              | Description                                 |
-| ----------------- | ------------------------------------------- |
-| [TC400](TC400.md) | Use logging '.exception' instead of 'error' |
+| Code              | Description                                  |
+| ----------------- | -------------------------------------------- |
+| [TC400](TC400.md) | Use logging `.exception` instead of `.error` |
+| [TC401](TC401.md) | Do not log the exception object              |
