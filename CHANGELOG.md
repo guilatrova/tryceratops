@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.0 (2021-07-31)
+### Feature
+* **analyzers:** Add analyzer log exception object ([`b7385da`](https://github.com/guilatrova/tryceratops/commit/b7385da16ff68fa5320a86adf02ebd03efeb1c22))
+* **analyzers:** Add analyzer for log error ([`4c755e5`](https://github.com/guilatrova/tryceratops/commit/4c755e54d7f324eb3e5937cd501bb09e9493fae3))
+
+### Documentation
+* Add sample for TC401 (logging w/o object) ([`875ce09`](https://github.com/guilatrova/tryceratops/commit/875ce09f5efbaccdd555ffe4bd3cdb4ab6c38b4b))
+* Add sample for TC400 (logging.exception) ([`a74d97b`](https://github.com/guilatrova/tryceratops/commit/a74d97be73bb1e12e50d2bb3721a0169c0a40ade))
+
 ## v0.4.0 (2021-07-30)
 ### Feature
 * Add verbose flag ([`95a34b6`](https://github.com/guilatrova/tryceratops/commit/95a34b643ad71c392d419006607ba4d3cbb68375))
