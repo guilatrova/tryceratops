@@ -76,3 +76,21 @@ class ExceptBroadPassAnalyzer(BaseAnalyzer, ast.NodeVisitor):
             self._mark_violation(first_child)
 
         self.generic_visit(node)
+
+
+class LogErrorAnalyzer(BaseAnalyzer):
+    violation_code = codes.USE_LOGGING_EXCEPTION
+
+    @visit_error_handler
+    def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
+        for stm in ast.walk(node):
+            if isinstance(stm, ast.Expr):
+                if isinstance(stm.value, ast.Call):
+                    if isinstance(stm.value.func, ast.Attribute):
+                        possible_log_node = stm.value.func
+                        object_method = possible_log_node.attr
+
+                        if object_method == "error":
+                            self._mark_violation(possible_log_node)
+
+        self.generic_visit(node)
