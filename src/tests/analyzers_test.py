@@ -171,3 +171,19 @@ def test_log_error():
     violation = violations[0]
 
     assert_log_error(15, 8, violation)
+
+
+def test_log_object():
+    tree = read_sample("log_object")
+    analyzer = analyzers.LogObjectAnalyzer()
+    code, msg = codes.VERBOSE_LOG_MESSAGE
+
+    assert_log_error = partial(assert_violation, code, msg)
+
+    violations = analyzer.check(tree, "filename")
+    assert len(violations) == 3
+    fstr, concat, comma = violations
+
+    assert_log_error(16, 40, fstr)
+    assert_log_error(23, 47, concat)
+    assert_log_error(30, 40, comma)
