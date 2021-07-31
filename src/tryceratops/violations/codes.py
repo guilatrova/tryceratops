@@ -25,7 +25,8 @@ CONSIDER_ELSE = ("TC300", "Consider moving this statement to an 'else' block")
 RAISE_WITHIN_TRY = ("TC301", "Abstract raise to an inner function")
 
 # TC4xx - Logging
-USE_LOGGING_EXCEPTION = ("TC400", "Use logging '.exception' instead of 'error'")
+USE_LOGGING_EXCEPTION = ("TC400", "Use logging '.exception' instead of '.error'")
+VERBOSE_LOG_MESSAGE = ("TC401", "Do not log exception object, give context instead")
 
 CODE_CHOICES = {
     "TC002",
@@ -38,4 +39,5 @@ CODE_CHOICES = {
     "TC300",
     "TC301",
     "TC400",
+    "TC401",
 }
