@@ -157,3 +157,17 @@ def test_try_inner_raise():
     violation = violations[0]
 
     assert_inner_raise(21, 12, violation)
+
+
+def test_log_error():
+    tree = read_sample("log_error")
+    analyzer = analyzers.LogErrorAnalyzer()
+    code, msg = codes.USE_LOGGING_EXCEPTION
+
+    assert_log_error = partial(assert_violation, code, msg)
+
+    violations = analyzer.check(tree, "filename")
+    assert len(violations) == 1
+    violation = violations[0]
+
+    assert_log_error(10, 8, violation)

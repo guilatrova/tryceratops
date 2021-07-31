@@ -22,6 +22,7 @@ ANALYZER_CLASSES = {
     except_analyzers.ExceptReraiseWithoutCauseAnalyzer,
     except_analyzers.ExceptVerboseReraiseAnalyzer,
     except_analyzers.ExceptBroadPassAnalyzer,
+    except_analyzers.LogErrorAnalyzer,
     try_analyzers.TryConsiderElseAnalyzer,
     try_analyzers.TryShouldntRaiseAnalyzer,
 }

@@ -24,6 +24,8 @@ IGNORING_EXCEPTION = ("TC202", "You're ignoring a broad exception without even l
 CONSIDER_ELSE = ("TC300", "Consider moving this statement to an 'else' block")
 RAISE_WITHIN_TRY = ("TC301", "Abstract raise to an inner function")
 
+# TC4xx - Logging
+USE_LOGGING_EXCEPTION = ("TC400", "Use logging '.exception' instead of 'error'")
 
 CODE_CHOICES = {
     "TC002",
@@ -35,4 +37,5 @@ CODE_CHOICES = {
     "TC202",
     "TC300",
     "TC301",
+    "TC400",
 }
