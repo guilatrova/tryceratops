@@ -105,7 +105,7 @@ class LogErrorAnalyzer(BaseAnalyzer):
 class LogObjectAnalyzer(BaseAnalyzer):
     violation_code = codes.VERBOSE_LOG_MESSAGE
 
-    def _maybe_get_possible_log_func(self, node: ast.AST) -> Optional[ast.Call]:
+    def _maybe_get_possible_log_wrap(self, node: ast.AST) -> Optional[ast.Call]:
         if isinstance(node, ast.Expr):
             if isinstance(node.value, ast.Call):
                 if isinstance(node.value.func, ast.Attribute):
@@ -113,35 +113,36 @@ class LogObjectAnalyzer(BaseAnalyzer):
 
         return None
 
-    def _has_object_reference(self, exception_object_name: str, node: ast.AST) -> bool:
+    def _has_object_reference(self, node: ast.AST) -> bool:
         if isinstance(node, ast.Name):
-            if node.id == exception_object_name:
+            if node.id == self.exception_object_name:
                 return True
 
         return False
 
-    def _check_args(self, exception_object_name: str, log_args: Iterable[ast.AST]):
+    def _check_args(self, log_args: Iterable[ast.AST]):
         for arg in log_args:
             for node in ast.walk(arg):
-                if self._has_object_reference(exception_object_name, node):
+                if self._has_object_reference(node):
                     self._mark_violation(node)
 
-    def _find_violations(self, exception_object_name: str, node: ast.ExceptHandler):
+    def _find_violations(self, node: ast.ExceptHandler):
         for stm in ast.walk(node):
-            if possible_log_func := self._maybe_get_possible_log_func(stm):
-                possible_log_node = possible_log_func.func
+            if possible_log_wrap := self._maybe_get_possible_log_wrap(stm):
+                possible_log_node = possible_log_wrap.func
 
                 if isinstance(possible_log_node, ast.Attribute):
                     object_method = possible_log_node.attr
 
                     if object_method == "exception":
-                        self._check_args(exception_object_name, possible_log_func.args)
+                        self._check_args(possible_log_wrap.args)
 
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
         # If no name is set, then it's impossible to be verbose
         # since you don't have the object
         if node.name:
-            self._find_violations(node.name, node)
+            self.exception_object_name = node.name
+            self._find_violations(node)
 
         self.generic_visit(node)
