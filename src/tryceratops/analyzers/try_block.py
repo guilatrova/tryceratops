@@ -6,7 +6,7 @@ from tryceratops.violations import codes
 from .base import BaseAnalyzer, visit_error_handler
 
 
-class TryConsiderElseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+class TryConsiderElseAnalyzer(BaseAnalyzer):
     violation_code = codes.CONSIDER_ELSE
 
     @visit_error_handler
@@ -20,7 +20,7 @@ class TryConsiderElseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
         self.generic_visit(node)
 
 
-class TryShouldntRaiseAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+class TryShouldntRaiseAnalyzer(BaseAnalyzer):
     violation_code = codes.RAISE_WITHIN_TRY
 
     def _iter_body(self, node: ast.Try) -> Generator[ast.AST, None, None]:

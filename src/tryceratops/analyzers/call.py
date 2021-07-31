@@ -7,7 +7,7 @@ from tryceratops.violations import Violation, codes
 from .base import BaseAnalyzer, BaseRaiseCallableAnalyzer, StmtBodyProtocol, visit_error_handler
 
 
-class CallTooManyAnalyzer(BaseAnalyzer, ast.NodeVisitor):
+class CallTooManyAnalyzer(BaseAnalyzer):
     violation_code = codes.TOO_MANY_TRY
 
     @visit_error_handler
