@@ -4,7 +4,7 @@ from typing import Dict, List
 
 from tryceratops.violations import Violation, codes
 
-from .base import BaseAnalyzer, BaseRaiseCallableAnalyzer, StmtBodyProtocol, visit_error_handler
+from .base import BaseAnalyzer, BaseRaiseCallableAnalyzer, visit_error_handler
 
 
 class CallTooManyAnalyzer(BaseAnalyzer):
@@ -52,84 +52,55 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
         self.assignments_from_calls: Dict[str, ast.Assign] = {}
         super().__init__()
 
-    def _scan_assignments(self, node: StmtBodyProtocol):
-        def is_assigned_from_call(node: ast.stmt) -> bool:
-            if isinstance(node, ast.Assign):
-                if isinstance(node.value, ast.Call):
-                    return True
-                else:
-                    if hasattr(node.targets[0], "id"):
-                        self.assignments_from_calls.pop(node.targets[0].id, None)
-            return False
-
-        raw_assignments = [stm for stm in node.body if is_assigned_from_call(stm)]
-        # TODO: What if there's more targets?
-        assignments = {
-            raw.targets[0].id: raw for raw in raw_assignments if hasattr(raw.targets[0], "id")
-        }
-        self.assignments_from_calls.update(assignments)
-
-    def _find_violations(self, node: StmtBodyProtocol):
+    def _mark_violation(self, node: ast.AST, callable_name: str):
         code, rawmsg = codes.CHECK_TO_CONTINUE
+        msg = rawmsg.format(callable_name)
 
-        def is_if_returning(node: ast.stmt) -> bool:
-            if isinstance(node, ast.If):
-                for child in node.body:
-                    if isinstance(child, ast.Return):
-                        return True
-            return False
+        violation = Violation(code, node.lineno, node.col_offset, msg, self.filename)
+        self.violations.append(violation)
 
-        ifs_stmt = [stm for stm in node.body if is_if_returning(stm)]
-        if is_if_returning(node):
-            ifs_stmt.append(node)
+    def _get_callable_name(self, node: ast.Assign) -> str:
+        return getattr(node.value.func, "id", "")
 
-        for if_stmt in ifs_stmt:
-            test = if_stmt.test
-            if isinstance(test, ast.Name):
-                if assignment := self.assignments_from_calls.get(test.id):
-                    if hasattr(assignment.value.func, "id"):
-                        callable_name = assignment.value.func.id
-                        msg = rawmsg.format(callable_name)
-                        self.violations.append(
-                            Violation(code, if_stmt.lineno, if_stmt.col_offset, msg, self.filename)
-                        )
-            elif isinstance(test, ast.UnaryOp):
-                if isinstance(test.operand, ast.Name):
-                    if assignment := self.assignments_from_calls.get(test.operand.id):
-                        if hasattr(assignment.value.func, "id"):
-                            callable_name = assignment.value.func.id
-                            msg = rawmsg.format(callable_name)
-                            self.violations.append(
-                                Violation(
-                                    code,
-                                    if_stmt.lineno,
-                                    if_stmt.col_offset,
-                                    msg,
-                                    self.filename,
-                                )
-                            )
+    def _scan_if(self, node: ast.If):
+        is_checking_a_variable = isinstance(node.test, ast.Name)
+        is_unary_checking_a_variable = isinstance(node.test, ast.UnaryOp) and isinstance(
+            node.test.operand, ast.Name
+        )
 
-    def _scan_deeper(self, node: StmtBodyProtocol, may_contain_violations: bool):
-        self._scan_assignments(node)
+        if is_checking_a_variable:
+            target_name = node.test.id
+        elif is_unary_checking_a_variable:
+            target_name = node.test.operand.id
 
-        if may_contain_violations:
-            self._find_violations(node)
+        if target_name:
+            if known_assignment := self.assignments_from_calls.get(target_name):
+                if callable_name := self._get_callable_name(known_assignment):
+                    self._mark_violation(node, callable_name)
+
+    def visit_Assign(self, node: ast.Assign):
+        named_targets = [target for target in node.targets if hasattr(target, "id")]
+
+        if isinstance(node.value, ast.Call):
+            # check for "assign = call()"
+            targets = {target.id: node for target in named_targets}
+            self.assignments_from_calls.update(targets)
         else:
-            if node.body:
-                *_, last_stm = node.body
-                if isinstance(last_stm, ast.Return):
-                    may_contain_violations = True
+            # clear reference for "assign = x"
+            for target in named_targets:
+                self.assignments_from_calls.pop(target.id, None)
 
-        for child in node.body:
-            if hasattr(child, "body"):
-                self._scan_deeper(child, may_contain_violations)
+        self.generic_visit(node)
+
+    def visit_If(self, node: ast.If):
+        returning_nodes = (isinstance(child, ast.Return) for child in ast.iter_child_nodes(node))
+        if any(returning_nodes):
+            self._scan_if(node)
+
+        self.generic_visit(node)
 
     def check(self, tree: ast.AST, filename: str) -> List[Violation]:
-        self.filename = filename
-        self.violations = []
+        result = super().check(tree, filename)
+        self.assignments_from_calls = {}
 
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Module):
-                self._scan_deeper(node, False)
-
-        return self.violations
+        return result
