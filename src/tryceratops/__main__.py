@@ -3,10 +3,10 @@ import logging.config
 from typing import Tuple
 
 import tryceratops
-from tryceratops.analyzers import Runner
 from tryceratops.files import FileDiscovery, load_config
 from tryceratops.filters import GlobalFilter
 from tryceratops.interfaces import CliInterface
+from tryceratops.runners import Runner
 from tryceratops.settings import LOGGING_CONFIG
 from tryceratops.violations import CODE_CHOICES
 

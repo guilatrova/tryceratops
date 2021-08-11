@@ -3,8 +3,8 @@ import os
 import sys
 from enum import IntEnum
 
-from tryceratops.analyzers import Runner
 from tryceratops.files.discovery import FileDiscovery
+from tryceratops.runners import Runner
 from tryceratops.settings import ERROR_LOG_FILENAME
 from tryceratops.violations import Violation
 

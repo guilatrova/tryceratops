@@ -25,7 +25,7 @@ def assert_violation(code: str, msg: str, line: int, col: int, violation: Violat
 
 def test_too_many_calls():
     tree = read_sample("call_too_many_try")
-    analyzer = analyzers.CallTooManyAnalyzer()
+    analyzer = analyzers.call.CallTooManyAnalyzer()
     expected_code, expected_msg = codes.TOO_MANY_TRY
     assert_too_many = partial(assert_violation, expected_code, expected_msg)
 
@@ -41,7 +41,7 @@ def test_too_many_calls():
 
 def test_raise_vanilla():
     tree = read_sample("call_raise_vanilla")
-    analyzer = analyzers.CallRaiseVanillaAnalyzer()
+    analyzer = analyzers.call.CallRaiseVanillaAnalyzer()
 
     assert_vanilla = partial(
         assert_violation, codes.RAISE_VANILLA_CLASS[0], codes.RAISE_VANILLA_CLASS[1]
@@ -57,7 +57,7 @@ def test_raise_vanilla():
 
 def test_raise_long_args():
     tree = read_sample("call_raise_long_str")
-    analyzer = analyzers.CallRaiseLongArgsAnalyzer()
+    analyzer = analyzers.call.CallRaiseLongArgsAnalyzer()
 
     assert_args = partial(
         assert_violation, codes.RAISE_VANILLA_ARGS[0], codes.RAISE_VANILLA_ARGS[1]
@@ -73,7 +73,7 @@ def test_raise_long_args():
 
 def test_check_continue():
     tree = read_sample("call_check_continue")
-    analyzer = analyzers.CallAvoidCheckingToContinueAnalyzer()
+    analyzer = analyzers.call.CallAvoidCheckingToContinueAnalyzer()
     msg = codes.CHECK_TO_CONTINUE[1].format("another_func")
 
     assert_check = partial(assert_violation, codes.CHECK_TO_CONTINUE[0], msg)
@@ -89,7 +89,7 @@ def test_check_continue():
 
 def test_reraise_no_cause():
     tree = read_sample("except_reraise_no_cause")
-    analyzer = analyzers.ExceptReraiseWithoutCauseAnalyzer()
+    analyzer = analyzers.exception_block.ExceptReraiseWithoutCauseAnalyzer()
     code, msg = codes.RERAISE_NO_CAUSE
 
     assert_no_cause = partial(assert_violation, code, msg)
@@ -102,7 +102,7 @@ def test_reraise_no_cause():
 
 def test_verbose_reraise():
     tree = read_sample("except_verbose_reraise")
-    analyzer = analyzers.ExceptVerboseReraiseAnalyzer()
+    analyzer = analyzers.exception_block.ExceptVerboseReraiseAnalyzer()
     code, msg = codes.VERBOSE_RERAISE
 
     assert_verbose = partial(assert_violation, code, msg)
@@ -117,7 +117,7 @@ def test_verbose_reraise():
 
 def test_broad_pass():
     tree = read_sample("except_pass")
-    analyzer = analyzers.ExceptBroadPassAnalyzer()
+    analyzer = analyzers.exception_block.ExceptBroadPassAnalyzer()
     code, msg = codes.IGNORING_EXCEPTION
 
     assert_broad = partial(assert_violation, code, msg)
@@ -133,7 +133,7 @@ def test_broad_pass():
 
 def test_consider_else():
     tree = read_sample("try_consider_else")
-    analyzer = analyzers.TryConsiderElseAnalyzer()
+    analyzer = analyzers.try_block.TryConsiderElseAnalyzer()
     code, msg = codes.CONSIDER_ELSE
 
     assert_consider = partial(assert_violation, code, msg)
@@ -147,7 +147,7 @@ def test_consider_else():
 
 def test_try_inner_raise():
     tree = read_sample("try_inner_raise")
-    analyzer = analyzers.TryShouldntRaiseAnalyzer()
+    analyzer = analyzers.try_block.TryShouldntRaiseAnalyzer()
     code, msg = codes.RAISE_WITHIN_TRY
 
     assert_inner_raise = partial(assert_violation, code, msg)
@@ -161,7 +161,7 @@ def test_try_inner_raise():
 
 def test_log_error():
     tree = read_sample("log_error")
-    analyzer = analyzers.LogErrorAnalyzer()
+    analyzer = analyzers.exception_block.LogErrorAnalyzer()
     code, msg = codes.USE_LOGGING_EXCEPTION
 
     assert_log_error = partial(assert_violation, code, msg)
@@ -175,7 +175,7 @@ def test_log_error():
 
 def test_log_object():
     tree = read_sample("log_object")
-    analyzer = analyzers.LogObjectAnalyzer()
+    analyzer = analyzers.exception_block.LogObjectAnalyzer()
     code, msg = codes.VERBOSE_LOG_MESSAGE
 
     assert_log_error = partial(assert_violation, code, msg)

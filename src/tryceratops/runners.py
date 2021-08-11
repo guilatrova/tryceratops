@@ -1,41 +1,13 @@
 import logging
 from dataclasses import dataclass
-from typing import List, Set, Type
+from typing import List, Type
 
+from tryceratops.analyzers import BaseAnalyzer, get_analyzer_chain
 from tryceratops.filters import GlobalFilter
 from tryceratops.types import ParsedFilesType
 from tryceratops.violations import Violation
 
-from . import call as call_analyzers
-from . import exception_block as except_analyzers
-from . import try_block as try_analyzers
-from .base import BaseAnalyzer
-
 logger = logging.getLogger(__name__)
-
-
-ANALYZER_CLASSES = {
-    call_analyzers.CallTooManyAnalyzer,  # type: ignore
-    call_analyzers.CallRaiseVanillaAnalyzer,  # type: ignore
-    call_analyzers.CallRaiseLongArgsAnalyzer,  # type: ignore
-    call_analyzers.CallAvoidCheckingToContinueAnalyzer,  # type: ignore
-    except_analyzers.ExceptReraiseWithoutCauseAnalyzer,
-    except_analyzers.ExceptVerboseReraiseAnalyzer,
-    except_analyzers.ExceptBroadPassAnalyzer,
-    except_analyzers.LogErrorAnalyzer,
-    except_analyzers.LogObjectAnalyzer,
-    try_analyzers.TryConsiderElseAnalyzer,
-    try_analyzers.TryShouldntRaiseAnalyzer,
-}
-
-
-def _get_analyzer_chain(global_filter: GlobalFilter) -> Set[BaseAnalyzer]:
-    analyzers = {
-        analyzercls()
-        for analyzercls in ANALYZER_CLASSES
-        if global_filter.should_run_analyzer(analyzercls)
-    }
-    return analyzers
 
 
 @dataclass
@@ -58,7 +30,7 @@ class Runner:
         self.excluded_files = 0
 
     def analyze(self, trees: ParsedFilesType, global_filter: GlobalFilter) -> List[Violation]:
-        analyzers = _get_analyzer_chain(global_filter)
+        analyzers = get_analyzer_chain(global_filter)
         self._clear()
         self.analyzed_files = len(trees)
 
