@@ -4,6 +4,7 @@ from typing import List, Type
 
 from tryceratops.analyzers import BaseAnalyzer, get_analyzer_chain
 from tryceratops.filters import GlobalFilter
+from tryceratops.fixers import VerboseReraiseFixer
 from tryceratops.types import ParsedFilesType
 from tryceratops.violations import Violation
 
@@ -21,8 +22,9 @@ class Runner:
     def __init__(self):
         self.runtime_errors: List[RuntimeError] = []
         self.violations: List[Violation] = []
-        self.analyzed_files: int = 0
-        self.excluded_files: int = 0
+        self.analyzed_files = 0
+        self.excluded_files = 0
+        self.fixes_made = 0
 
     def _clear(self):
         self.violations = []
@@ -54,6 +56,11 @@ class Runner:
                         f"Exception raised when running {type(analyzer)} on {filename}"
                     )
                     self.runtime_errors.append(RuntimeError(filename, type(analyzer), ex))
+
+            if global_filter.autofix and self.any_violation:
+                fixer = VerboseReraiseFixer()
+                fixer.fix(self.violations)
+                self.fixes_made += 1
 
         return self.violations
 

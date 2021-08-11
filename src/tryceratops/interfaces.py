@@ -54,6 +54,9 @@ class CliInterface:
         else:
             print("Nothing to check!")
 
+        if self.runner.fixes_made:
+            print(f"Fixed {self.runner.fixes_made} violations")
+
         if self.discovery.had_issues:
             print(
                 wrap_color(f"Failed to process {len(self.discovery.failures)} files", COLORS.ERROR)
