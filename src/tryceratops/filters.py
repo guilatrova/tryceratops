@@ -54,6 +54,7 @@ class GlobalFilter:
     include_experimental: bool
     ignore_violations: Iterable[str]
     exclude_dirs: Iterable[str]
+    autofix: bool = False
 
     def _self_check(self):
         self.exclude_dirs = [excluded for excluded in self.exclude_dirs if excluded]
@@ -86,14 +87,16 @@ class GlobalFilter:
         experimental = config.get("experimental", False)
         ignore = config.get("ignore", [])
         exclude = config.get("exclude", [])
+        autofix = config.get("autofix", False)
 
-        return cls(experimental, ignore, exclude)
+        return cls(experimental, ignore, exclude, autofix)
 
     def overwrite_from_cli(
         self,
         include_experimental: bool,
         ignore_violations: Iterable[str],
         exclude_dirs: Iterable[str],
+        autofix: bool,
     ):
         """In case any value is set it overwrites the previous value"""
         if include_experimental:
@@ -104,5 +107,8 @@ class GlobalFilter:
 
         if exclude_dirs:
             self.exclude_dirs = exclude_dirs
+
+        if autofix:
+            self.autofix = autofix
 
         self._self_check()

@@ -17,6 +17,9 @@ logger = logging.getLogger("tryceratops")
 
 
 EXPERIMENTAL_FLAG_OPTION = dict(is_flag=True, help="Whether to enable experimental analyzers.")
+AUTOFIX_FLAG_OPTION = dict(
+    is_flag=True, help="Whether to fix violations (that support it) automatically."
+)
 IGNORE_OPTION = dict(
     multiple=True,
     help="A violation to be ignored. e.g. -i TC200 -i TC201",
@@ -32,6 +35,7 @@ VERBOSE_OPTION = dict(is_flag=True, help="Will print more logging messages.")
 @click.option("-i", "--ignore", **IGNORE_OPTION)
 @click.option("-x", "--exclude", **EXCLUDE_OPTION)
 @click.option("-v", "--verbose", **VERBOSE_OPTION)
+@click.option("-a", "--autofix", **AUTOFIX_FLAG_OPTION)
 @click.version_option(tryceratops.__version__)
 def entrypoint(
     dir: Tuple[str],
@@ -39,13 +43,14 @@ def entrypoint(
     ignore: Tuple[str, ...],
     exclude: Tuple[str, ...],
     verbose: bool,
+    autofix: bool,
 ):
     pyproj_config = load_config(dir)
     if pyproj_config:
         global_filter = GlobalFilter.create_from_config(pyproj_config)
-        global_filter.overwrite_from_cli(experimental, ignore, exclude)
+        global_filter.overwrite_from_cli(experimental, ignore, exclude, autofix)
     else:
-        global_filter = GlobalFilter(experimental, ignore, exclude)
+        global_filter = GlobalFilter(experimental, ignore, exclude, autofix)
 
     if verbose:
         logger = logging.getLogger("tryceratops")

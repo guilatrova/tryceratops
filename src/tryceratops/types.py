@@ -18,3 +18,4 @@ class PyprojectConfig(TypedDict):
     exclude: List[str]
     ignore: List[str]
     experimental: bool
+    autofix: bool
