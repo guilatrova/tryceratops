@@ -3,10 +3,10 @@ import importlib.metadata
 from tokenize import TokenInfo
 from typing import Any, Generator, Iterable, List, Tuple, Type
 
-from tryceratops.analyzers.main import Runner
 from tryceratops.files.discovery import load_config
 from tryceratops.files.parser import parse_ignore_tokens
 from tryceratops.filters import FileFilter, GlobalFilter
+from tryceratops.runners import Runner
 from tryceratops.violations.violations import Violation
 
 PACKAGE_NAME = "tryceratops"

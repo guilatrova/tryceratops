@@ -1,5 +1,33 @@
-from .base import *
-from .call import *
-from .exception_block import *
-from .main import Runner
-from .try_block import *
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Set
+
+from . import call, exception_block, try_block
+from .base import BaseAnalyzer
+
+if TYPE_CHECKING:
+    from tryceratops.filters import GlobalFilter
+
+
+ANALYZER_CLASSES = {
+    call.CallTooManyAnalyzer,  # type: ignore
+    call.CallRaiseVanillaAnalyzer,  # type: ignore
+    call.CallRaiseLongArgsAnalyzer,  # type: ignore
+    call.CallAvoidCheckingToContinueAnalyzer,  # type: ignore
+    exception_block.ExceptReraiseWithoutCauseAnalyzer,
+    exception_block.ExceptVerboseReraiseAnalyzer,
+    exception_block.ExceptBroadPassAnalyzer,
+    exception_block.LogErrorAnalyzer,
+    exception_block.LogObjectAnalyzer,
+    try_block.TryConsiderElseAnalyzer,
+    try_block.TryShouldntRaiseAnalyzer,
+}
+
+
+def get_analyzer_chain(global_filter: GlobalFilter) -> Set[BaseAnalyzer]:
+    analyzers = {
+        analyzercls()
+        for analyzercls in ANALYZER_CLASSES
+        if global_filter.should_run_analyzer(analyzercls)
+    }
+    return analyzers
