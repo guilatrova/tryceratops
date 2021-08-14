@@ -1,8 +1,31 @@
 import re
 from abc import ABC, abstractmethod
-from typing import List, Tuple
+from collections import defaultdict
+from typing import Iterable, List, Tuple
 
 from tryceratops.violations import Violation, codes
+
+GroupedViolations = dict[str, List[Violation]]
+
+
+class FileFixerHandler:
+    def __init__(self, filename: str):
+        self.file = open(filename, "r+")
+
+    def __enter__(self):
+        return self
+
+    def read_lines(self) -> Iterable[str]:
+        lines = self.file.readlines()
+        self.file.seek(0)
+        return lines
+
+    def write_fix(self, new_lines: Iterable[str]):
+        self.file.writelines(new_lines)
+        self.file.truncate()
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        self.file.close()
 
 
 class BaseFixer(ABC):
@@ -14,29 +37,42 @@ class BaseFixer(ABC):
         relevant = [vio for vio in violations if vio.code == scope_code]
         return relevant
 
+    def _group_violations_by_filename(self, violations: List[Violation]) -> GroupedViolations:
+        group: GroupedViolations = defaultdict(list)
+        for violation in violations:
+            group[violation.filename].append(violation)
+
+        return group
+
+    def _process_group(self, filename: str, violations: List[Violation]):
+        with FileFixerHandler(filename) as file:
+            for violation in violations:
+                file_lines = file.read_lines()
+                resulting_lines = self.perform_fix(file_lines, violation)
+                file.write_fix(resulting_lines)
+
+                self.fixes_made += 1
+
     @abstractmethod
-    def _perform_fix(self, violation: Violation):
+    def perform_fix(self, lines: List[str], violation: Violation) -> List[str]:
         pass
 
     def fix(self, violations: List[Violation]):
         relevant_violations = self._filter_violations_in_scope(violations)
+        grouped = self._group_violations_by_filename(relevant_violations)
 
-        for violation in relevant_violations:
-            self._perform_fix(violation)
-            self.fixes_made += 1
+        for filename, file_violations in grouped.items():
+            self._process_group(filename, file_violations)
 
 
 class VerboseReraiseFixer(BaseFixer):
     violation_code = codes.VERBOSE_RERAISE
 
-    def _perform_fix(self, violation: Violation):
-        with open(violation.filename, "r+") as file:
-            all_lines = file.readlines()
+    def perform_fix(self, lines: List[str], violation: Violation) -> List[str]:
+        all_lines = lines[:]
 
-            guilty_line = all_lines[violation.line - 1]
-            new_line = re.sub(r"raise.*", "raise", guilty_line)
-            all_lines[violation.line - 1] = new_line
+        guilty_line = all_lines[violation.line - 1]
+        new_line = re.sub(r"raise.*", "raise", guilty_line)
+        all_lines[violation.line - 1] = new_line
 
-            file.seek(0)
-            file.writelines(all_lines)
-            file.truncate()
+        return all_lines
