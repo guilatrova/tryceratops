@@ -2,6 +2,7 @@ import ast
 from typing import Iterable, Optional
 
 from tryceratops.violations import codes
+from tryceratops.violations.violations import VerboseReraiseViolation
 
 from .base import BaseAnalyzer, visit_error_handler
 
@@ -24,6 +25,7 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer):
 
 class ExceptVerboseReraiseAnalyzer(BaseAnalyzer):
     violation_code = codes.VERBOSE_RERAISE
+    violation_type = VerboseReraiseViolation
 
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
@@ -37,7 +39,7 @@ class ExceptVerboseReraiseAnalyzer(BaseAnalyzer):
         if node.name:
             for child in ast.walk(node):
                 if is_raise_with_name(child, node.name):
-                    self._mark_violation(child)
+                    self._mark_violation(child, exception_name=node.name)
 
         self.generic_visit(node)
 

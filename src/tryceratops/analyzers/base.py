@@ -1,6 +1,6 @@
 import ast
 from abc import ABC, abstractmethod
-from typing import List, Protocol, Tuple
+from typing import List, Protocol, Tuple, Type
 
 from tryceratops.violations import Violation
 
@@ -9,14 +9,17 @@ from .exceptions import AnalyzerVisitException
 
 class BaseAnalyzer(ABC, ast.NodeVisitor):
     EXPERIMENTAL = False
+    violation_type: Type[Violation] = Violation
     violation_code: Tuple[str, str]
 
     def __init__(self):
         self.violations: List[Violation] = []
 
-    def _mark_violation(self, *nodes):
+    def _mark_violation(self, *nodes, **kwargs):
+        klass = self.violation_type
         for node in nodes:
-            self.violations.append(Violation.build(self.filename, self.violation_code, node))
+            violation = klass.build(self.filename, self.violation_code, node, **kwargs)
+            self.violations.append(violation)
 
     def check(self, tree: ast.AST, filename: str) -> List[Violation]:
         self.filename = filename

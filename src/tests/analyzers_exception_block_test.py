@@ -31,7 +31,9 @@ def test_verbose_reraise():
     first, second = violations
 
     assert_verbose(20, 8, first)
+    assert first.exception_name == "ex"
     assert_verbose(28, 12, second)
+    assert second.exception_name == "ex"
 
 
 def test_broad_pass():
