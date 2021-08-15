@@ -2,14 +2,13 @@ import ast
 from typing import List, Tuple
 
 from tryceratops.fixers import VerboseReraiseFixer
-from tryceratops.violations import codes
-from tryceratops.violations.violations import Violation
+from tryceratops.violations import VerboseReraiseViolation, codes
 
 from .analyzer_helpers import read_sample_lines
 
 
-def create_violation(code: Tuple[str, str], line: int):
-    return Violation(code[0], line, 0, "", "")
+def create_verbose_reraise_violation(code: Tuple[str, str], line: int):
+    return VerboseReraiseViolation(code[0], line, 0, "", "", None, "ex")
 
 
 def assert_ast_is_valid(results: List[str]):
@@ -29,10 +28,9 @@ def test_verbose_fixer():
     lines = read_sample_lines("except_verbose_reraise")
     expected_modified_line = 20
     expected_modified_offset = expected_modified_line - 1
-    violation = create_violation(codes.VERBOSE_RERAISE, expected_modified_line)
+    violation = create_verbose_reraise_violation(codes.VERBOSE_RERAISE, expected_modified_line)
 
     results = fixer.perform_fix(lines, violation)
-    print(f"result: '{results[expected_modified_offset]}'")
 
     assert_ast_is_valid(results)
     assert_unmodified_lines(lines, results, expected_modified_offset)
