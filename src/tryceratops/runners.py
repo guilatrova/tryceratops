@@ -26,7 +26,7 @@ class Runner:
         self.violations: List[Violation] = []
         self.analyzed_files = 0
         self.excluded_files = 0
-        self.fixes_made = 0
+        self.fixed_violations = 0
 
     def _clear(self):
         self.violations = []
@@ -60,7 +60,7 @@ class Runner:
                 logger.exception(f"Exception raised when running Fixer: {type(fixer)}")
                 self.runtime_errors.append(RuntimeError("unknown", type(fixer), ex))
             else:
-                self.fixes_made += 1
+                self.fixed_violations += fixer.fixes_made
 
     def analyze(self, trees: ParsedFilesType, global_filter: GlobalFilter) -> List[Violation]:
         analyzers = get_analyzer_chain(global_filter)
