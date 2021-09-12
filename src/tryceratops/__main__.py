@@ -53,7 +53,6 @@ def entrypoint(
         global_settings = GlobalSettings(experimental, ignore, exclude, autofix)
 
     if verbose:
-        logger = logging.getLogger("tryceratops")
         logger.setLevel(logging.DEBUG)
 
     parsed_files = list(discovery.parse_python_files(dir))
