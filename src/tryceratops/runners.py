@@ -31,6 +31,19 @@ class Runner:
         self.runtime_errors = []
         self.excluded_files = 0
 
+    def _run_analyzer(self, analyzer, filename, filefilter, tree):
+        try:
+            found_violations = analyzer.check(tree, filename)
+            valid_violations = [
+                violation
+                for violation in found_violations
+                if not filefilter.ignores_violation(violation)
+            ]
+            self.violations += valid_violations
+        except Exception as ex:
+            logger.exception(f"Exception raised when running {type(analyzer)} on {filename}")
+            self.runtime_errors.append(RuntimeError(filename, type(analyzer), ex))
+
     def analyze(self, trees: ParsedFilesType, global_filter: GlobalFilter) -> List[Violation]:
         analyzers = get_analyzer_chain(global_filter)
         self._clear()
@@ -43,19 +56,7 @@ class Runner:
                 continue
 
             for analyzer in analyzers:
-                try:
-                    found_violations = analyzer.check(tree, filename)
-                    valid_violations = [
-                        violation
-                        for violation in found_violations
-                        if not filefilter.ignores_violation(violation)
-                    ]
-                    self.violations += valid_violations
-                except Exception as ex:
-                    logger.exception(
-                        f"Exception raised when running {type(analyzer)} on {filename}"
-                    )
-                    self.runtime_errors.append(RuntimeError(filename, type(analyzer), ex))
+                self._run_analyzer(analyzer, filename, filefilter, tree)
 
             if global_filter.autofix and self.any_violation:
                 fixer = VerboseReraiseFixer()
