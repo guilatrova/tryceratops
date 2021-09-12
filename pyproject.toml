@@ -43,7 +43,6 @@ version_pattern = [
     "README.md:rev: v{version}",
     "docs/CONTRIBUTING.md:tryceratops, version {version}"
 ]
-major_on_zero = false
 branch = "main"
 upload_to_pypi = true
 upload_to_release = true
