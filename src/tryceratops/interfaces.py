@@ -13,6 +13,7 @@ class COLORS:
     DESCR = "\033[91m"
     CODE = "\033[93m"
     ERROR = "\033[91m"
+    BOLD = "\033[1m"
 
     ENDC = "\033[0m"
 
@@ -50,7 +51,11 @@ class CliInterface:
 
         if self.runner.analyzed_files:
             print(f"Processed {self.runner.analyzed_files} files")
-            print(f"Found {len(self.runner.violations)} violations")
+
+            if self.runner.violations:
+                print(f"Found {len(self.runner.violations)} violations")
+            else:
+                print(wrap_color("✨ Everything clean! ✨", COLORS.BOLD))
         else:
             print("Nothing to check!")
 
