@@ -160,6 +160,7 @@ Add this fancy badge to your project's `README.md`:
 If you want to read more about:
 
 - [How to structure exceptions in Python 🐍 🏗️ 💣](https://blog.guilatrova.dev/how-to-structure-exception-in-python-like-a-pro/)
+- [How to log in Python 🐍🌴](https://blog.guilatrova.dev/how-to-log-in-python-like-a-pro/)
 - [Book: Effective Python](https://amzn.to/3bEVHpG)
 
 ## Contributing
