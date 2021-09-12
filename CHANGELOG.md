@@ -2,6 +2,29 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.0 (2021-09-12)
+### Feature
+* Add cheerful message when no violations ([`bff695c`](https://github.com/guilatrova/tryceratops/commit/bff695c90bf08d9e5489376407f64e1af71d26ad))
+* Block autofix when using flake8 ([`77d6af3`](https://github.com/guilatrova/tryceratops/commit/77d6af33b60bef51f7f0a5ed80ee6f0965d57856))
+* **fixers:** Implement fixer for logging error ([`f488cee`](https://github.com/guilatrova/tryceratops/commit/f488cee1181610d40f65bc328a802c2a772a951c))
+* **fixers:** Capture exceptions ([`ee708a4`](https://github.com/guilatrova/tryceratops/commit/ee708a42ca1b154a00a9ccae26c87d0243f184c5))
+* **fixers:** Run all fixers when enabled ([`3db7e05`](https://github.com/guilatrova/tryceratops/commit/3db7e056981fcf8a4a7926bf97245540728f56f0))
+* **fixers:** Handle multiline reraise ([`c1f14b0`](https://github.com/guilatrova/tryceratops/commit/c1f14b03d28bef2626d451cbffd3c93faee19461))
+* **fixers:** Implement fixer for reraise no cause ([`2f9d46d`](https://github.com/guilatrova/tryceratops/commit/2f9d46d864b35f8ad4af6b8aac240c6dcb79a775))
+* Include fixers to run ([`e885b34`](https://github.com/guilatrova/tryceratops/commit/e885b34ca0d2354735f5d89f0a6f488ace24cb2c))
+* **fixers:** Add fixer for reraise ([`041f67f`](https://github.com/guilatrova/tryceratops/commit/041f67ffc1df900b3d0e1ea37c27f73ab7f45097))
+* Add --autofix flag ([`1428958`](https://github.com/guilatrova/tryceratops/commit/142895827a3da801a470efb54a2d4e4b9687952a))
+
+### Fix
+* Use Dict to support Python 3.8 ([`22e4119`](https://github.com/guilatrova/tryceratops/commit/22e4119802db8a205929bf70c2c2657cb36a290d))
+* **fixers:** Count fixed violations correctly ([`825794c`](https://github.com/guilatrova/tryceratops/commit/825794c76cb6c7b712e52e8ec4989d7edf98f8ee))
+* **fixers:** Reset offset between writes ([`dc3a070`](https://github.com/guilatrova/tryceratops/commit/dc3a070f1a51eadaaec3fbf623d0d99a71b964e0))
+* Trim only exception name ([`18af429`](https://github.com/guilatrova/tryceratops/commit/18af429a89537f543652cb4fddf757d9073c68d9))
+
+### Documentation
+* Update sample image ([`dd4ff40`](https://github.com/guilatrova/tryceratops/commit/dd4ff40f47c17412b46bafcbc96131c37b0f2c99))
+* Add autofix instructions ([`3c64f36`](https://github.com/guilatrova/tryceratops/commit/3c64f36d29ebe18dc568b5c985b73512f5d46e2a))
+
 ## v0.5.0 (2021-07-31)
 ### Feature
 * **analyzers:** Add analyzer log exception object ([`b7385da`](https://github.com/guilatrova/tryceratops/commit/b7385da16ff68fa5320a86adf02ebd03efeb1c22))
