@@ -17,7 +17,6 @@
 
 </p>
 
-Currently in BETA.
 Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-python-like-a-pro/).
 
 I shared [the building process of this tool here](https://blog.guilatrova.dev/project-tryceratops/).
@@ -29,6 +28,7 @@ I shared [the building process of this tool here](https://blog.guilatrova.dev/pr
   - [Usage](#usage)
   - [`flake8` Plugin](#flake8-plugin)
 - [Violations](#violations)
+  - [Autofix support](#autofix-support)
   - [Ignoring violations](#ignoring-violations)
   - [Configuration](#configuration)
 - [Pre-commit](#pre-commit)
@@ -73,6 +73,12 @@ You can exclude dirs by using: `--exclude dir/path` repeatedly:
 tryceratops --exclude tests --exclude .venv [filename or dir...]
 ```
 
+You can also autofix some violations:
+
+```
+tryceratops --autofix [filename or dir...]
+```
+
 ![example](https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/tryceratops-example2.gif)
 
 ### [`flake8`](https://github.com/PyCQA/flake8) Plugin
@@ -89,6 +95,10 @@ src/tests/samples/violations/call_raise_vanilla.py:21:9: TC201 Simply use 'raise
 ## Violations
 
 All violations and its descriptions can be found in [docs](https://github.com/guilatrova/tryceratops/tree/main/docs/violations).
+
+### Autofix support
+
+So far, autofix only supports violations: [TC200](docs/violations/TC200.md), [TC201](docs/violations/TC201.md), and [TC400](docs/violations/TC400.md).
 
 ### Ignoring violations
 
