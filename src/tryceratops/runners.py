@@ -1,10 +1,12 @@
+import ast
 import logging
 from dataclasses import dataclass
-from typing import List, Type
+from typing import List, Set, Type
 
 from tryceratops.analyzers import BaseAnalyzer, get_analyzer_chain
-from tryceratops.filters import GlobalFilter
-from tryceratops.fixers import VerboseReraiseFixer
+from tryceratops.filters import FileFilter, GlobalFilter
+from tryceratops.fixers import BaseFixer, get_fixers_chain
+from tryceratops.processors import Processor
 from tryceratops.types import ParsedFilesType
 from tryceratops.violations import Violation
 
@@ -14,7 +16,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class RuntimeError:
     filename: str
-    analyzer: Type[BaseAnalyzer]
+    processor: Type[Processor]
     exception: Exception
 
 
@@ -31,21 +33,38 @@ class Runner:
         self.runtime_errors = []
         self.excluded_files = 0
 
-    def _run_analyzer(self, analyzer, filename, filefilter, tree):
-        try:
-            found_violations = analyzer.check(tree, filename)
-            valid_violations = [
-                violation
-                for violation in found_violations
-                if not filefilter.ignores_violation(violation)
-            ]
-            self.violations += valid_violations
-        except Exception as ex:
-            logger.exception(f"Exception raised when running {type(analyzer)} on {filename}")
-            self.runtime_errors.append(RuntimeError(filename, type(analyzer), ex))
+    def _run_analyzers(
+        self, analyzers: Set[BaseAnalyzer], filename: str, filefilter: FileFilter, tree: ast.AST
+    ):
+        for analyzer in analyzers:
+            try:
+                found_violations = analyzer.check(tree, filename)
+                valid_violations = [
+                    violation
+                    for violation in found_violations
+                    if not filefilter.ignores_violation(violation)
+                ]
+            except Exception as ex:
+                logger.exception(
+                    f"Exception raised when running Analyzer: {type(analyzer)} on {filename}"
+                )
+                self.runtime_errors.append(RuntimeError(filename, type(analyzer), ex))
+            else:
+                self.violations += valid_violations
+
+    def _run_fixers(self, fixers: Set[BaseFixer]):
+        for fixer in fixers:
+            try:
+                fixer.fix(self.violations)
+            except Exception as ex:
+                logger.exception(f"Exception raised when running Fixer: {type(fixer)}")
+                self.runtime_errors.append(RuntimeError("unknown", type(fixer), ex))
+            else:
+                self.fixes_made += 1
 
     def analyze(self, trees: ParsedFilesType, global_filter: GlobalFilter) -> List[Violation]:
         analyzers = get_analyzer_chain(global_filter)
+        fixers = get_fixers_chain(global_filter)
         self._clear()
         self.analyzed_files = len(trees)
 
@@ -55,13 +74,10 @@ class Runner:
                 self.excluded_files += 1
                 continue
 
-            for analyzer in analyzers:
-                self._run_analyzer(analyzer, filename, filefilter, tree)
+            self._run_analyzers(analyzers, filename, filefilter, tree)
 
-            if global_filter.autofix and self.any_violation:
-                fixer = VerboseReraiseFixer()
-                fixer.fix(self.violations)
-                self.fixes_made += 1
+        if global_filter.autofix and self.any_violation:
+            self._run_fixers(fixers)
 
         return self.violations
 
