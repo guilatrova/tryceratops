@@ -3,7 +3,11 @@ import re
 from typing import List
 
 from tryceratops.violations import codes
-from tryceratops.violations.violations import RaiseWithoutCauseViolation, VerboseReraiseViolation
+from tryceratops.violations.violations import (
+    RaiseWithoutCauseViolation,
+    VerboseReraiseViolation,
+    Violation,
+)
 
 from .base import BaseFixer
 
@@ -61,5 +65,18 @@ class RaiseWithoutCauseFixer(BaseFixer[RaiseWithoutCauseViolation]):
             exception_name = self.exception_name_to_create
 
         self._fix_raise_no_cause(all_lines, violation, exception_name)
+
+        return all_lines
+
+
+class LoggerErrorFixer(BaseFixer[Violation]):
+    violation_code = codes.USE_LOGGING_EXCEPTION
+
+    def perform_fix(self, lines: List[str], violation: Violation) -> List[str]:
+        all_lines = lines[:]
+
+        guilty_line = all_lines[violation.line - 1]
+        new_line = guilty_line.replace(".error(", ".exception(")
+        all_lines[violation.line - 1] = new_line
 
         return all_lines
