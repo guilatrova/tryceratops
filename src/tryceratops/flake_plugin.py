@@ -10,7 +10,9 @@ from tryceratops.runners import Runner
 from tryceratops.violations.violations import Violation
 
 PACKAGE_NAME = "tryceratops"
-GLOBAL_DUMMY_FILTER = GlobalFilter(False, ignore_violations=[], exclude_dirs=[])
+GLOBAL_DUMMY_FILTER = GlobalFilter(
+    include_experimental=False, ignore_violations=[], exclude_dirs=[], autofix=False
+)
 FLAKE8_VIOLATION_TYPE = Tuple[int, int, str, Type[Any]]
 # line, offset, message, class
 
@@ -36,7 +38,9 @@ class TryceratopsAdapterPlugin:
     def _create_global_filter(self, filename: str) -> GlobalFilter:
         pyproj_config = load_config([filename])
         if pyproj_config:
-            return GlobalFilter.create_from_config(pyproj_config)
+            filter = GlobalFilter.create_from_config(pyproj_config)
+            filter.autofix = False  # Do not allow this option for flake8 to avoid confusion
+            return filter
 
         return GLOBAL_DUMMY_FILTER
 
