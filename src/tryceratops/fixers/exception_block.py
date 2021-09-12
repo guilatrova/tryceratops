@@ -99,10 +99,19 @@ class RaiseWithoutCauseFixer(BaseFixer[RaiseWithoutCauseViolation]):
     def _fix_raise_no_cause(
         self, all_lines: List[str], violation: RaiseWithoutCauseViolation, exception_name: str
     ):
-        # TODO: What if this raise is multi-line?
-        guilty_line = all_lines[violation.line - 1]
-        new_line = re.sub(r"raise (.*)", rf"raise \1 from {exception_name}", guilty_line)
-        all_lines[violation.line - 1] = new_line
+        endline = violation.node.end_lineno or violation.line
+        is_singleline = violation.line == endline
+
+        if is_singleline:
+            fix_offset = violation.line - 1
+            guilty_line = all_lines[fix_offset]
+            new_line = re.sub(r"raise (.*)", rf"raise \1 from {exception_name}", guilty_line)
+        else:
+            fix_offset = endline - 1
+            guilty_line = all_lines[fix_offset]
+            new_line = re.sub(r"(\))(.*)", rf"\1 from {exception_name}\2", guilty_line)
+
+        all_lines[fix_offset] = new_line
 
     def perform_fix(self, lines: List[str], violation: RaiseWithoutCauseViolation) -> List[str]:
         all_lines = lines[:]
