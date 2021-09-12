@@ -1,3 +1,4 @@
+import ast
 import re
 from abc import ABC, abstractmethod
 from collections import defaultdict
@@ -85,26 +86,32 @@ class RaiseWithoutCauseFixer(BaseFixer[RaiseWithoutCauseViolation]):
     violation_code = codes.RERAISE_NO_CAUSE
     exception_name_to_create = "ex"
 
-    def _add_name_to_except_handler(self, line: str) -> str:
-        # TODO: refactor function name
-        new_line = re.sub(r"except (.*):", rf"except \1 as {self.exception_name_to_create}:", line)
-        return new_line
+    def _fix_except_handler(self, all_lines: List[str], offending_node: ast.ExceptHandler):
+        line_offset = offending_node.lineno - 1
+        offending_line = all_lines[line_offset]
+
+        new_line = re.sub(
+            r"except (.*):", rf"except \1 as {self.exception_name_to_create}:", offending_line
+        )
+
+        all_lines[line_offset] = new_line
+
+    def _fix_raise_no_cause(
+        self, all_lines: List[str], violation: RaiseWithoutCauseViolation, exception_name: str
+    ):
+        # TODO: What if this raise is multi-line?
+        guilty_line = all_lines[violation.line - 1]
+        new_line = re.sub(r"raise (.*)", rf"raise \1 from {exception_name}", guilty_line)
+        all_lines[violation.line - 1] = new_line
 
     def perform_fix(self, lines: List[str], violation: RaiseWithoutCauseViolation) -> List[str]:
         all_lines = lines[:]
         exception_name = violation.exception_name
 
-        if violation.except_node and exception_name is None:
-            # TODO: refactor: calc line, get line, modify line, write line
-            dependent_line_offset = violation.except_node.lineno - 1
-            dependent_line = all_lines[dependent_line_offset]
-            dependent_fixed_line = self._add_name_to_except_handler(dependent_line)
-            all_lines[dependent_line_offset] = dependent_fixed_line
+        if exception_name is None:
+            self._fix_except_handler(all_lines, violation.except_node)
             exception_name = self.exception_name_to_create
 
-        guilty_line = all_lines[violation.line - 1]
-        # TODO: What if this raise is multi-line?
-        new_line = re.sub(r"raise (.*)", rf"raise \1 from {exception_name}", guilty_line)
-        all_lines[violation.line - 1] = new_line
+        self._fix_raise_no_cause(all_lines, violation, exception_name)
 
         return all_lines

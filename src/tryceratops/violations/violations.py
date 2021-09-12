@@ -38,7 +38,7 @@ class VerboseReraiseViolation(Violation):
 
 @dataclass
 class RaiseWithoutCauseViolation(Violation):
-    except_node: ast.AST
+    except_node: ast.ExceptHandler
     exception_name: Optional[str] = None
 
     @classmethod
@@ -47,7 +47,7 @@ class RaiseWithoutCauseViolation(Violation):
         filename: str,
         vio_details: Tuple[str, str],
         node: ast.AST,
-        except_node: Optional[ast.AST] = None,
+        except_node: Optional[ast.ExceptHandler] = None,
         exception_name: Optional[str] = None,
         *args,
         **kwargs
