@@ -24,10 +24,10 @@ ANALYZER_CLASSES = {
 }
 
 
-def get_analyzer_chain(global_filter: GlobalSettings) -> Set[BaseAnalyzer]:
+def get_analyzer_chain(global_settings: GlobalSettings) -> Set[BaseAnalyzer]:
     analyzers = {
         analyzercls()
         for analyzercls in ANALYZER_CLASSES
-        if global_filter.should_run_processor(analyzercls)
+        if global_settings.should_run_processor(analyzercls)
     }
     return analyzers

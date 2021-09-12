@@ -15,8 +15,8 @@ FIXER_CLASSES: Set[Type[BaseFixer]] = {
 }
 
 
-def get_fixers_chain(global_filter: GlobalSettings) -> Set[BaseFixer]:
+def get_fixers_chain(global_settings: GlobalSettings) -> Set[BaseFixer]:
     fixers = {
-        fixercls() for fixercls in FIXER_CLASSES if global_filter.should_run_processor(fixercls)
+        fixercls() for fixercls in FIXER_CLASSES if global_settings.should_run_processor(fixercls)
     }
     return fixers
