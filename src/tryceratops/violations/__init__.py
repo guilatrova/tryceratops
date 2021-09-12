@@ -1,2 +1,2 @@
 from .codes import *
-from .violations import VerboseReraiseViolation, Violation
+from .violations import RaiseWithoutCauseViolation, VerboseReraiseViolation, Violation

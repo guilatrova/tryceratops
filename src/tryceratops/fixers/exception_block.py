@@ -4,7 +4,7 @@ from collections import defaultdict
 from typing import Generic, Iterable, List, Tuple, TypeVar
 
 from tryceratops.violations import Violation, codes
-from tryceratops.violations.violations import VerboseReraiseViolation
+from tryceratops.violations.violations import RaiseWithoutCauseViolation, VerboseReraiseViolation
 
 
 class FileFixerHandler:
@@ -76,6 +76,35 @@ class VerboseReraiseFixer(BaseFixer[VerboseReraiseViolation]):
 
         guilty_line = all_lines[violation.line - 1]
         new_line = re.sub(rf"raise {violation.exception_name}", "raise", guilty_line)
+        all_lines[violation.line - 1] = new_line
+
+        return all_lines
+
+
+class RaiseWithoutCauseFixer(BaseFixer[RaiseWithoutCauseViolation]):
+    violation_code = codes.RERAISE_NO_CAUSE
+    exception_name_to_create = "ex"
+
+    def _add_name_to_except_handler(self, line: str) -> str:
+        # TODO: refactor function name
+        new_line = re.sub(r"except (.*):", rf"except \1 as {self.exception_name_to_create}:", line)
+        return new_line
+
+    def perform_fix(self, lines: List[str], violation: RaiseWithoutCauseViolation) -> List[str]:
+        all_lines = lines[:]
+        exception_name = violation.exception_name
+
+        if violation.except_node and exception_name is None:
+            # TODO: refactor: calc line, get line, modify line, write line
+            dependent_line_offset = violation.except_node.lineno - 1
+            dependent_line = all_lines[dependent_line_offset]
+            dependent_fixed_line = self._add_name_to_except_handler(dependent_line)
+            all_lines[dependent_line_offset] = dependent_fixed_line
+            exception_name = self.exception_name_to_create
+
+        guilty_line = all_lines[violation.line - 1]
+        # TODO: What if this raise is multi-line?
+        new_line = re.sub(r"raise (.*)", rf"raise \1 from {exception_name}", guilty_line)
         all_lines[violation.line - 1] = new_line
 
         return all_lines

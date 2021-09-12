@@ -1,14 +1,14 @@
 import ast
 from typing import Iterable, Optional
 
-from tryceratops.violations import codes
-from tryceratops.violations.violations import VerboseReraiseViolation
+from tryceratops.violations import RaiseWithoutCauseViolation, VerboseReraiseViolation, codes
 
 from .base import BaseAnalyzer, visit_error_handler
 
 
 class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer):
     violation_code = codes.RERAISE_NO_CAUSE
+    violation_type = RaiseWithoutCauseViolation
 
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
@@ -18,7 +18,7 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer):
             return False
 
         reraises_no_cause = [stm for stm in ast.walk(node) if is_raise_without_cause(stm)]
-        self._mark_violation(*reraises_no_cause)
+        self._mark_violation(*reraises_no_cause, exception_name=node.name, except_node=node)
 
         self.generic_visit(node)
 

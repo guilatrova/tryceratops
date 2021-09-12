@@ -33,3 +33,24 @@ class VerboseReraiseViolation(Violation):
     ):
         code, msg = vio_details
         return cls(code, node.lineno, node.col_offset, msg, filename, node, exception_name)
+
+
+@dataclass
+class RaiseWithoutCauseViolation(Violation):
+    except_node: Optional[ast.AST] = None
+    exception_name: Optional[str] = None
+
+    @classmethod
+    def build(
+        cls,
+        filename: str,
+        vio_details: Tuple[str, str],
+        node: ast.AST,
+        except_node: Optional[ast.AST] = None,
+        exception_name: Optional[str] = None,
+        **kwargs
+    ):
+        code, msg = vio_details
+        return cls(
+            code, node.lineno, node.col_offset, msg, filename, node, except_node, exception_name
+        )

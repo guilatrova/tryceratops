@@ -1,3 +1,4 @@
+import ast
 from functools import partial
 
 from tryceratops import analyzers
@@ -15,8 +16,11 @@ def test_reraise_no_cause():
 
     violations = analyzer.check(tree, "filename")
     assert len(violations) == 1
+    single = violations[0]
 
-    assert_no_cause(16, 8, violations[0])
+    assert_no_cause(16, 8, single)
+    assert single.exception_name is None
+    assert isinstance(single.except_node, ast.ExceptHandler)
 
 
 def test_verbose_reraise():
