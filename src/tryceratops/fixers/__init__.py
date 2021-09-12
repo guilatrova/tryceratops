@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Set, Type
 
-from .exception_block import BaseFixer, RaiseWithoutCauseFixer, VerboseReraiseFixer
+from .base import BaseFixer
+from .exception_block import RaiseWithoutCauseFixer, VerboseReraiseFixer
 
 if TYPE_CHECKING:
     from tryceratops.filters import GlobalFilter
