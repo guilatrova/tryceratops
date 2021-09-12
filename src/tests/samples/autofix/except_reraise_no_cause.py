@@ -43,4 +43,4 @@ def longer_reraise():
             2,
             3,
             4,
-        )
+        )  # multiline end!

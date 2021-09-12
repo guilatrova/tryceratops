@@ -49,10 +49,17 @@ class TestReraiseWithoutCauseFixer:
         self.fixer = RaiseWithoutCauseFixer()
 
     def create_raise_no_cause_violation(
-        self, line: int, except_line: int = -1, exception_name: Optional[str] = None
+        self,
+        line: int,
+        except_line: int = -1,
+        exception_name: Optional[str] = None,
+        end_lineno: Optional[int] = None,
     ):
         code, _ = codes.RERAISE_NO_CAUSE
-        node_mock = MagicMock(spec=ast.Raise, lineno=line)
+        if not end_lineno:
+            end_lineno = line
+
+        node_mock = MagicMock(spec=ast.Raise, lineno=line, end_lineno=end_lineno)
         except_node_mock = MagicMock(spec=ast.ExceptHandler, lineno=except_line)
         return RaiseWithoutCauseViolation(
             code, line, 0, "msg", "filename", node_mock, except_node_mock, exception_name
@@ -83,3 +90,19 @@ class TestReraiseWithoutCauseFixer:
         assert_ast_is_valid(results)
         assert_unmodified_lines(lines, results, offending_offset)
         assert results[offending_offset].endswith("raise MyException() from error\n")
+
+    def test_multiline_raise(self):
+        lines = read_sample_lines("except_reraise_no_cause", dir="autofix")
+        expected_modified_offsets = (38, 45)
+        offending_offset = 40
+        dependent_offset, ending_modified_offset = expected_modified_offsets
+        violation = self.create_raise_no_cause_violation(
+            offending_offset + 1, dependent_offset + 1, end_lineno=ending_modified_offset + 1
+        )
+
+        results = self.fixer.perform_fix(lines, violation)
+
+        assert_ast_is_valid(results)
+        assert_unmodified_lines(lines, results, *expected_modified_offsets)
+        assert results[dependent_offset].endswith("except Exception as ex:\n")
+        assert results[ending_modified_offset].endswith(") from ex  # multiline end!\n")
