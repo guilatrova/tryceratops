@@ -2,8 +2,9 @@ import ast
 import re
 from abc import ABC, abstractmethod
 from collections import defaultdict
-from typing import Generic, Iterable, List, Tuple, TypeVar
+from typing import Generic, Iterable, List, TypeVar
 
+from tryceratops.processors import Processor
 from tryceratops.violations import Violation, codes
 from tryceratops.violations.violations import RaiseWithoutCauseViolation, VerboseReraiseViolation
 
@@ -32,8 +33,7 @@ ViolationType = TypeVar("ViolationType", bound=Violation)
 GroupedViolations = dict[str, List[ViolationType]]
 
 
-class BaseFixer(Generic[ViolationType], ABC):
-    violation_code: Tuple[str, str]
+class BaseFixer(ABC, Processor, Generic[ViolationType]):
     fixes_made = 0
 
     def _filter_violations_in_scope(self, violations: List[Violation]) -> List[Violation]:
