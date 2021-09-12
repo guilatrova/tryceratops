@@ -79,7 +79,7 @@ You can also autofix some violations:
 tryceratops --autofix [filename or dir...]
 ```
 
-![example](https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/tryceratops-example2.gif)
+![example](https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/tryceratops-example3.gif)
 
 ### [`flake8`](https://github.com/PyCQA/flake8) Plugin
 
