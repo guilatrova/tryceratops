@@ -4,9 +4,16 @@ from typing import List, Optional, Tuple
 from unittest.mock import MagicMock
 
 from tryceratops.fixers import RaiseWithoutCauseFixer, VerboseReraiseFixer
+from tryceratops.fixers.exception_block import LoggerErrorFixer
 from tryceratops.violations import RaiseWithoutCauseViolation, VerboseReraiseViolation, codes
+from tryceratops.violations.violations import Violation
 
 from .analyzer_helpers import read_sample_lines
+
+
+def create_violation(code: Tuple[str, str], line: int):
+    node_mock = MagicMock(spec=ast.Raise, lineno=line)
+    return Violation(code[0], line, 0, code[1], "filename", node_mock)
 
 
 def create_verbose_reraise_violation(code: Tuple[str, str], line: int):
@@ -41,6 +48,22 @@ def test_verbose_fixer():
     assert_ast_is_valid(results)
     assert_unmodified_lines(lines, results, expected_modified_offset)
     assert results[expected_modified_offset].endswith("raise  # This is verbose\n")
+
+
+def test_logger_error_fixer():
+    fixer = LoggerErrorFixer()
+    lines = read_sample_lines("log_error")
+    expected_modified_line = 15
+    expected_modified_offset = expected_modified_line - 1
+    violation = create_violation(codes.USE_LOGGING_EXCEPTION, expected_modified_line)
+
+    results = fixer.perform_fix(lines, violation)
+
+    assert_ast_is_valid(results)
+    assert_unmodified_lines(lines, results, expected_modified_offset)
+    assert results[expected_modified_offset].endswith(
+        "logger.exception(\"I'm using 'error', but should be using 'exception'\")\n"
+    )
 
 
 class TestReraiseWithoutCauseFixer:
