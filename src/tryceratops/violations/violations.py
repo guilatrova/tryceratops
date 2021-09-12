@@ -10,17 +10,17 @@ class Violation:
     col: int
     description: str
     filename: str
-    node: Optional[ast.AST] = None
+    node: ast.AST
 
     @classmethod
-    def build(cls, filename: str, vio_details: Tuple[str, str], node: ast.AST, **kwargs):
+    def build(cls, filename: str, vio_details: Tuple[str, str], node: ast.AST, *args, **kwargs):
         code, msg = vio_details
         return cls(code, node.lineno, node.col_offset, msg, filename, node)
 
 
 @dataclass
 class VerboseReraiseViolation(Violation):
-    exception_name: str = ""
+    exception_name: str
 
     @classmethod
     def build(
@@ -29,6 +29,7 @@ class VerboseReraiseViolation(Violation):
         vio_details: Tuple[str, str],
         node: ast.AST,
         exception_name: str = "",
+        *args,
         **kwargs
     ):
         code, msg = vio_details
@@ -37,7 +38,7 @@ class VerboseReraiseViolation(Violation):
 
 @dataclass
 class RaiseWithoutCauseViolation(Violation):
-    except_node: Optional[ast.AST] = None
+    except_node: ast.AST
     exception_name: Optional[str] = None
 
     @classmethod
@@ -48,8 +49,12 @@ class RaiseWithoutCauseViolation(Violation):
         node: ast.AST,
         except_node: Optional[ast.AST] = None,
         exception_name: Optional[str] = None,
+        *args,
         **kwargs
     ):
+        if except_node is None:
+            raise ValueError("except_node")
+
         code, msg = vio_details
         return cls(
             code, node.lineno, node.col_offset, msg, filename, node, except_node, exception_name
