@@ -24,6 +24,7 @@ class FileFixerHandler:
     def write_fix(self, new_lines: Iterable[str]):
         self.file.writelines(new_lines)
         self.file.truncate()
+        self.file.seek(0)
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
         self.file.close()
