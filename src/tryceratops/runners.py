@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import List, Set, Type
 
 from tryceratops.analyzers import BaseAnalyzer, get_analyzer_chain
-from tryceratops.filters import FileFilter, GlobalFilter
+from tryceratops.filters import FileFilter, GlobalSettings
 from tryceratops.fixers import BaseFixer, get_fixers_chain
 from tryceratops.processors import Processor
 from tryceratops.types import ParsedFilesType
@@ -62,7 +62,7 @@ class Runner:
             else:
                 self.fixed_violations += fixer.fixes_made
 
-    def analyze(self, trees: ParsedFilesType, global_filter: GlobalFilter) -> List[Violation]:
+    def analyze(self, trees: ParsedFilesType, global_filter: GlobalSettings) -> List[Violation]:
         analyzers = get_analyzer_chain(global_filter)
         fixers = get_fixers_chain(global_filter)
         self._clear()

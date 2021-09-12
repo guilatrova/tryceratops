@@ -45,10 +45,10 @@ class FileFilter:
 
 
 @dataclass
-class GlobalFilter:
+class GlobalSettings:
     """
     Represents a filter applied to the runner
-    (i.e. all analyzers and all files).
+    (i.e. which processes to run, and what files to ignore).
     """
 
     include_experimental: bool
@@ -83,7 +83,7 @@ class GlobalFilter:
         return False
 
     @classmethod
-    def create_from_config(cls, config: PyprojectConfig) -> GlobalFilter:
+    def create_from_config(cls, config: PyprojectConfig) -> GlobalSettings:
         experimental = config.get("experimental", False)
         ignore = config.get("ignore", [])
         exclude = config.get("exclude", [])
