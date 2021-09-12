@@ -15,8 +15,8 @@ def read_sample(filename: str) -> ast.AST:
         return loaded
 
 
-def read_sample_lines(filename: str) -> Iterable[str]:
-    ref_dir = f"{os.path.dirname(__file__)}/samples/violations/"
+def read_sample_lines(filename: str, dir: str = "violations") -> Iterable[str]:
+    ref_dir = f"{os.path.dirname(__file__)}/samples/{dir}/"
     path = f"{ref_dir}{filename}.py"
 
     with open(path) as sample:

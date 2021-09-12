@@ -1,5 +1,6 @@
 import ast
-from typing import List, Tuple
+import pytest
+from typing import List, Optional, Tuple
 from unittest.mock import MagicMock
 
 from tryceratops.fixers import RaiseWithoutCauseFixer, VerboseReraiseFixer
@@ -9,14 +10,8 @@ from .analyzer_helpers import read_sample_lines
 
 
 def create_verbose_reraise_violation(code: Tuple[str, str], line: int):
-    return VerboseReraiseViolation(code[0], line, 0, "", "", None, "ex")
-
-
-def create_raise_no_cause_violation(line: int, except_line: int):
-    code, _ = codes.RERAISE_NO_CAUSE
     node_mock = MagicMock(spec=ast.Raise, lineno=line)
-    except_node_mock = MagicMock(spec=ast.ExceptHandler, lineno=except_line)
-    return RaiseWithoutCauseViolation(code, line, 0, "", "", node_mock, except_node_mock)
+    return VerboseReraiseViolation(code[0], line, 0, "", "", node_mock, "ex")
 
 
 def assert_ast_is_valid(results: List[str]):
@@ -48,16 +43,30 @@ def test_verbose_fixer():
     assert results[expected_modified_offset].endswith("raise  # This is verbose\n")
 
 
-def test_raise_without_cause_fixer_without_exception_name():
-    fixer = RaiseWithoutCauseFixer()
-    lines = read_sample_lines("except_reraise_no_cause")
-    expected_modified_offsets = {14, 15}
-    dependent_offset, offending_offset = expected_modified_offsets
-    violation = create_raise_no_cause_violation(offending_offset + 1, dependent_offset + 1)
+class TestReraiseWithoutCauseFixer:
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        self.fixer = RaiseWithoutCauseFixer()
 
-    results = fixer.perform_fix(lines, violation)
+    def create_raise_no_cause_violation(
+        self, line: int, except_line: int = -1, exception_name: Optional[str] = None
+    ):
+        code, _ = codes.RERAISE_NO_CAUSE
+        node_mock = MagicMock(spec=ast.Raise, lineno=line)
+        except_node_mock = MagicMock(spec=ast.ExceptHandler, lineno=except_line)
+        return RaiseWithoutCauseViolation(
+            code, line, 0, "msg", "filename", node_mock, except_node_mock, exception_name
+        )
 
-    assert_ast_is_valid(results)
-    assert_unmodified_lines(lines, results, *expected_modified_offsets)
-    assert results[dependent_offset].endswith("except Exception as ex:\n")
-    assert results[offending_offset].endswith("raise MyException() from ex\n")
+    def test_without_exception_name(self):
+        lines = read_sample_lines("except_reraise_no_cause", dir="autofix")
+        expected_modified_offsets = {14, 15}
+        dependent_offset, offending_offset = expected_modified_offsets
+        violation = self.create_raise_no_cause_violation(offending_offset + 1, dependent_offset + 1)
+
+        results = self.fixer.perform_fix(lines, violation)
+
+        assert_ast_is_valid(results)
+        assert_unmodified_lines(lines, results, *expected_modified_offsets)
+        assert results[dependent_offset].endswith("except Exception as ex:\n")
+        assert results[offending_offset].endswith("raise MyException() from ex\n")
