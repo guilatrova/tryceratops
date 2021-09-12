@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from collections import defaultdict
-from typing import Generic, Iterable, List, TypeVar
+from typing import Dict, Generic, Iterable, List, TypeVar
 
 from tryceratops.processors import Processor
 from tryceratops.violations import Violation
@@ -8,7 +8,7 @@ from tryceratops.violations import Violation
 from .exceptions import FixerFixException
 
 ViolationType = TypeVar("ViolationType", bound=Violation)
-GroupedViolations = dict[str, List[ViolationType]]
+GroupedViolations = Dict[str, List[ViolationType]]
 
 
 class FileFixerHandler:
