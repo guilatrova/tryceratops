@@ -54,8 +54,8 @@ class CliInterface:
         else:
             print("Nothing to check!")
 
-        if self.runner.fixes_made:
-            print(f"Fixed {self.runner.fixes_made} violations")
+        if self.runner.fixed_violations:
+            print(f"Fixed {self.runner.fixed_violations} violations")
 
         if self.discovery.had_issues:
             print(
