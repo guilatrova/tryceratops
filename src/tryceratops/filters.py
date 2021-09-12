@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Iterable, Optional, Type
 
-from tryceratops.analyzers import BaseAnalyzer
+from tryceratops.processors import Processor
 from tryceratops.violations import Violation
 
 if TYPE_CHECKING:
@@ -66,12 +66,12 @@ class GlobalFilter:
     def exclude_experimental(self) -> bool:
         return not self.include_experimental
 
-    def should_run_analyzer(self, analyzer: Type[BaseAnalyzer]) -> bool:
-        code, _ = analyzer.violation_code
+    def should_run_processor(self, processor: Type[Processor]) -> bool:
+        code, _ = processor.violation_code
         if code in self.ignore_violations:
             return False
 
-        if self.exclude_experimental and analyzer.EXPERIMENTAL:
+        if self.exclude_experimental and processor.EXPERIMENTAL:
             return False
 
         return True

@@ -1,16 +1,15 @@
 import ast
 from abc import ABC, abstractmethod
-from typing import List, Protocol, Tuple, Type
+from typing import List, Protocol, Type
 
+from tryceratops.processors import Processor
 from tryceratops.violations import Violation
 
 from .exceptions import AnalyzerVisitException
 
 
-class BaseAnalyzer(ABC, ast.NodeVisitor):
-    EXPERIMENTAL = False
+class BaseAnalyzer(ABC, Processor, ast.NodeVisitor):
     violation_type: Type[Violation] = Violation
-    violation_code: Tuple[str, str]
 
     def __init__(self):
         self.violations: List[Violation] = []

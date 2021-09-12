@@ -28,6 +28,6 @@ def get_analyzer_chain(global_filter: GlobalFilter) -> Set[BaseAnalyzer]:
     analyzers = {
         analyzercls()
         for analyzercls in ANALYZER_CLASSES
-        if global_filter.should_run_analyzer(analyzercls)
+        if global_filter.should_run_processor(analyzercls)
     }
     return analyzers
