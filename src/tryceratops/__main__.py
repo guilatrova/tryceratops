@@ -47,17 +47,17 @@ def entrypoint(
 ):
     pyproj_config = load_config(dir)
     if pyproj_config:
-        global_filter = GlobalSettings.create_from_config(pyproj_config)
-        global_filter.overwrite_from_cli(experimental, ignore, exclude, autofix)
+        global_settings = GlobalSettings.create_from_config(pyproj_config)
+        global_settings.overwrite_from_cli(experimental, ignore, exclude, autofix)
     else:
-        global_filter = GlobalSettings(experimental, ignore, exclude, autofix)
+        global_settings = GlobalSettings(experimental, ignore, exclude, autofix)
 
     if verbose:
         logger = logging.getLogger("tryceratops")
         logger.setLevel(logging.DEBUG)
 
     parsed_files = list(discovery.parse_python_files(dir))
-    runner.analyze(parsed_files, global_filter)
+    runner.analyze(parsed_files, global_settings)
 
     interface.present_and_exit()
 

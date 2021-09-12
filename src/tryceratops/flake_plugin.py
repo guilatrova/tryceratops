@@ -33,9 +33,9 @@ class TryceratopsAdapterPlugin:
 
         ignore_lines = list(parse_ignore_tokens(file_tokens))
         self._file_filter = FileFilter(ignore_lines)
-        self._global_filter = self._create_global_filter(filename)
+        self._global_settings = self._create_global_settings(filename)
 
-    def _create_global_filter(self, filename: str) -> GlobalSettings:
+    def _create_global_settings(self, filename: str) -> GlobalSettings:
         pyproj_config = load_config([filename])
         if pyproj_config:
             filter = GlobalSettings.create_from_config(pyproj_config)
@@ -52,7 +52,7 @@ class TryceratopsAdapterPlugin:
                 self._file_filter,
             )
         ]
-        return self._runner.analyze(tryceratops_input, self._global_filter)
+        return self._runner.analyze(tryceratops_input, self._global_settings)
 
     def run(self) -> Generator[FLAKE8_VIOLATION_TYPE, None, None]:
         violations = self._execute_analyzer()

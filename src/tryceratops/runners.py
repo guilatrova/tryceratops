@@ -62,21 +62,21 @@ class Runner:
             else:
                 self.fixed_violations += fixer.fixes_made
 
-    def analyze(self, trees: ParsedFilesType, global_filter: GlobalSettings) -> List[Violation]:
-        analyzers = get_analyzer_chain(global_filter)
-        fixers = get_fixers_chain(global_filter)
+    def analyze(self, trees: ParsedFilesType, global_settings: GlobalSettings) -> List[Violation]:
+        analyzers = get_analyzer_chain(global_settings)
+        fixers = get_fixers_chain(global_settings)
         self._clear()
         self.analyzed_files = len(trees)
 
         for filename, tree, filefilter in trees:
-            if global_filter.should_skip_file(filename):
+            if global_settings.should_skip_file(filename):
                 self.analyzed_files -= 1
                 self.excluded_files += 1
                 continue
 
             self._run_analyzers(analyzers, filename, filefilter, tree)
 
-        if global_filter.autofix and self.any_violation:
+        if global_settings.autofix and self.any_violation:
             self._run_fixers(fixers)
 
         return self.violations
