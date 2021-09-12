@@ -6,7 +6,7 @@ from .base import BaseFixer
 from .exception_block import LoggerErrorFixer, RaiseWithoutCauseFixer, VerboseReraiseFixer
 
 if TYPE_CHECKING:
-    from tryceratops.filters import GlobalFilter
+    from tryceratops.filters import GlobalSettings
 
 FIXER_CLASSES: Set[Type[BaseFixer]] = {
     RaiseWithoutCauseFixer,
@@ -15,7 +15,7 @@ FIXER_CLASSES: Set[Type[BaseFixer]] = {
 }
 
 
-def get_fixers_chain(global_filter: GlobalFilter) -> Set[BaseFixer]:
+def get_fixers_chain(global_filter: GlobalSettings) -> Set[BaseFixer]:
     fixers = {
         fixercls() for fixercls in FIXER_CLASSES if global_filter.should_run_processor(fixercls)
     }

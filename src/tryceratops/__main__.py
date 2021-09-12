@@ -4,7 +4,7 @@ from typing import Tuple
 
 import tryceratops
 from tryceratops.files import FileDiscovery, load_config
-from tryceratops.filters import GlobalFilter
+from tryceratops.filters import GlobalSettings
 from tryceratops.interfaces import CliInterface
 from tryceratops.runners import Runner
 from tryceratops.settings import LOGGING_CONFIG
@@ -47,10 +47,10 @@ def entrypoint(
 ):
     pyproj_config = load_config(dir)
     if pyproj_config:
-        global_filter = GlobalFilter.create_from_config(pyproj_config)
+        global_filter = GlobalSettings.create_from_config(pyproj_config)
         global_filter.overwrite_from_cli(experimental, ignore, exclude, autofix)
     else:
-        global_filter = GlobalFilter(experimental, ignore, exclude, autofix)
+        global_filter = GlobalSettings(experimental, ignore, exclude, autofix)
 
     if verbose:
         logger = logging.getLogger("tryceratops")

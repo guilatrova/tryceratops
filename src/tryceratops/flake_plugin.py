@@ -5,12 +5,12 @@ from typing import Any, Generator, Iterable, List, Tuple, Type
 
 from tryceratops.files.discovery import load_config
 from tryceratops.files.parser import parse_ignore_tokens
-from tryceratops.filters import FileFilter, GlobalFilter
+from tryceratops.filters import FileFilter, GlobalSettings
 from tryceratops.runners import Runner
 from tryceratops.violations.violations import Violation
 
 PACKAGE_NAME = "tryceratops"
-GLOBAL_DUMMY_FILTER = GlobalFilter(
+GLOBAL_DUMMY_FILTER = GlobalSettings(
     include_experimental=False, ignore_violations=[], exclude_dirs=[], autofix=False
 )
 FLAKE8_VIOLATION_TYPE = Tuple[int, int, str, Type[Any]]
@@ -35,10 +35,10 @@ class TryceratopsAdapterPlugin:
         self._file_filter = FileFilter(ignore_lines)
         self._global_filter = self._create_global_filter(filename)
 
-    def _create_global_filter(self, filename: str) -> GlobalFilter:
+    def _create_global_filter(self, filename: str) -> GlobalSettings:
         pyproj_config = load_config([filename])
         if pyproj_config:
-            filter = GlobalFilter.create_from_config(pyproj_config)
+            filter = GlobalSettings.create_from_config(pyproj_config)
             filter.autofix = False  # Do not allow this option for flake8 to avoid confusion
             return filter
 

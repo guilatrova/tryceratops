@@ -6,7 +6,7 @@ from . import call, exception_block, try_block
 from .base import BaseAnalyzer
 
 if TYPE_CHECKING:
-    from tryceratops.filters import GlobalFilter
+    from tryceratops.filters import GlobalSettings
 
 
 ANALYZER_CLASSES = {
@@ -24,7 +24,7 @@ ANALYZER_CLASSES = {
 }
 
 
-def get_analyzer_chain(global_filter: GlobalFilter) -> Set[BaseAnalyzer]:
+def get_analyzer_chain(global_filter: GlobalSettings) -> Set[BaseAnalyzer]:
     analyzers = {
         analyzercls()
         for analyzercls in ANALYZER_CLASSES
