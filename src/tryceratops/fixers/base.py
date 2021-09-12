@@ -5,6 +5,8 @@ from typing import Generic, Iterable, List, TypeVar
 from tryceratops.processors import Processor
 from tryceratops.violations import Violation
 
+from .exceptions import FixerFixException
+
 ViolationType = TypeVar("ViolationType", bound=Violation)
 GroupedViolations = dict[str, List[ViolationType]]
 
@@ -48,11 +50,14 @@ class BaseFixer(ABC, Processor, Generic[ViolationType]):
     def _process_group(self, filename: str, violations: List[ViolationType]):
         with FileFixerHandler(filename) as file:
             for violation in violations:
-                file_lines = file.read_lines()
-                resulting_lines = self.perform_fix(file_lines, violation)
-                file.write_fix(resulting_lines)
-
-                self.fixes_made += 1
+                try:
+                    file_lines = file.read_lines()
+                    resulting_lines = self.perform_fix(file_lines, violation)
+                    file.write_fix(resulting_lines)
+                except Exception as ex:
+                    raise FixerFixException(violation, filename) from ex
+                else:
+                    self.fixes_made += 1
 
     @abstractmethod
     def perform_fix(self, lines: List[str], violation: ViolationType) -> List[str]:
