@@ -70,3 +70,16 @@ class TestReraiseWithoutCauseFixer:
         assert_unmodified_lines(lines, results, *expected_modified_offsets)
         assert results[dependent_offset].endswith("except Exception as ex:\n")
         assert results[offending_offset].endswith("raise MyException() from ex\n")
+
+    def test_with_exception_name(self):
+        lines = read_sample_lines("except_reraise_no_cause", dir="autofix")
+        offending_offset = 22
+        violation = self.create_raise_no_cause_violation(
+            offending_offset + 1, exception_name="error"
+        )
+
+        results = self.fixer.perform_fix(lines, violation)
+
+        assert_ast_is_valid(results)
+        assert_unmodified_lines(lines, results, offending_offset)
+        assert results[offending_offset].endswith("raise MyException() from error\n")
