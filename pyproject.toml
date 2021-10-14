@@ -52,6 +52,8 @@ build_command = "pip install poetry && poetry build"
 python = "^3.7"
 click = "^7"
 toml = "^0.10.2"
+typing_extensions = { version = "^3.10", python = "3.7" }
+
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"

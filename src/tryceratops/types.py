@@ -1,5 +1,10 @@
 import ast
-from typing import Collection, List, Tuple, TypedDict
+import sys
+from typing import Collection, List, Tuple
+if sys.version_info >= (3, 8):
+    from typing import TypedDict
+else:
+    from typing_extensions import TypedDict
 
 from tryceratops.filters import FileFilter
 
