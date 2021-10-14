@@ -95,7 +95,8 @@ class LogErrorAnalyzer(BaseAnalyzer):
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
         for stm in ast.walk(node):
-            if possible_log_node := self._maybe_get_possible_log_node(stm):
+            possible_log_node = self._maybe_get_possible_log_node(stm)
+            if possible_log_node:
                 object_method = possible_log_node.attr
 
                 if object_method == "error":
@@ -130,7 +131,8 @@ class LogObjectAnalyzer(BaseAnalyzer):
 
     def _find_violations(self, node: ast.ExceptHandler):
         for stm in ast.walk(node):
-            if possible_log_wrap := self._maybe_get_possible_log_wrap(stm):
+            possible_log_wrap = self._maybe_get_possible_log_wrap(stm)
+            if possible_log_wrap:
                 possible_log_node = possible_log_wrap.func
 
                 if isinstance(possible_log_node, ast.Attribute):

@@ -24,7 +24,8 @@ def parse_ignore_tokens(
     for token in tokens:
         toktype, tokval, start, *_ = token
         if toktype == tokenize.COMMENT:
-            if match := re.search(IGNORE_TOKEN_PATT, tokval):
+            match = re.search(IGNORE_TOKEN_PATT, tokval)
+            if match:
                 yield _build_ignore_line(match, start)
 
 

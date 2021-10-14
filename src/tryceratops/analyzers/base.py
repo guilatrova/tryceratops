@@ -55,7 +55,8 @@ class BaseRaiseCallableAnalyzer(BaseAnalyzer, ABC):
 
     @visit_error_handler
     def visit_Raise(self, node: ast.Raise):
-        if exc := node.exc:
+        exc = node.exc
+        if exc:
             if isinstance(exc, ast.Call):
                 if isinstance(exc.func, ast.Name):
                     self._check_raise_callable(node, exc, exc.func)

@@ -86,7 +86,8 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
         for if_stmt in ifs_stmt:
             test = if_stmt.test
             if isinstance(test, ast.Name):
-                if assignment := self.assignments_from_calls.get(test.id):
+                assignment = self.assignments_from_calls.get(test.id)
+                if assignment:
                     if hasattr(assignment.value.func, "id"):
                         callable_name = assignment.value.func.id
                         msg = rawmsg.format(callable_name)
@@ -102,7 +103,8 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
                         )
             elif isinstance(test, ast.UnaryOp):
                 if isinstance(test.operand, ast.Name):
-                    if assignment := self.assignments_from_calls.get(test.operand.id):
+                    assignment = self.assignments_from_calls.get(test.operand.id)
+                    if assignment:
                         if hasattr(assignment.value.func, "id"):
                             callable_name = assignment.value.func.id
                             msg = rawmsg.format(callable_name)
