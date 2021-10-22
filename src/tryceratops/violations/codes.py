@@ -4,6 +4,7 @@ RAISE_VANILLA_ARGS = (
     "TC003",
     "Avoid specifying long messages outside the exception class",
 )
+PREFER_TYPE_ERROR = ("TC004", "Prefer TypeError exception for invalid type")
 
 # TC1xx - General
 CHECK_TO_CONTINUE = (
