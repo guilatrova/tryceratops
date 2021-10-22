@@ -7,6 +7,7 @@
 | ----------------- | ---------------------------------------------------------- |
 | [TC002](TC002.md) | Create your own exception                                  |
 | [TC003](TC003.md) | Avoid specifying long messages outside the exception class |
+| [TC004](TC004.md) | Prefer `TypeError` exception for invalid type              |
 
 ## `TC1xx` - General
 
