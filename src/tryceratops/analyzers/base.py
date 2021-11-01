@@ -2,6 +2,7 @@ import ast
 import sys
 from abc import ABC, abstractmethod
 from typing import List, Type
+
 if sys.version_info >= (3, 8):
     from typing import Protocol
 else:
