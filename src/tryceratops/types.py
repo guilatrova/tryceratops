@@ -1,6 +1,7 @@
 import ast
 import sys
 from typing import Collection, List, Tuple
+
 if sys.version_info >= (3, 8):
     from typing import TypedDict
 else:
