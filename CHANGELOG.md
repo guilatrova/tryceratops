@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.1 (2021-11-17)
+### Fix
+* **windows:** Remove emojis from presentation ([`e7f6bbe`](https://github.com/guilatrova/tryceratops/commit/e7f6bbec1dfb525aacd1a30c8e737b27ef93efd9))
+
+### Documentation
+* Add extra resource ([`259bf9c`](https://github.com/guilatrova/tryceratops/commit/259bf9c1eb357f2ebf737f5b3f9c52220645490f))
+
 ## v0.6.0 (2021-09-12)
 ### Feature
 * Add cheerful message when no violations ([`bff695c`](https://github.com/guilatrova/tryceratops/commit/bff695c90bf08d9e5489376407f64e1af71d26ad))
