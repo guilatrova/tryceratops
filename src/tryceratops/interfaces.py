@@ -3,19 +3,12 @@ import os
 import sys
 from enum import IntEnum
 
+from rich import print
+
 from tryceratops.files.discovery import FileDiscovery
 from tryceratops.runners import Runner
 from tryceratops.settings import ERROR_LOG_FILENAME
 from tryceratops.violations import Violation
-
-
-class COLORS:
-    DESCR = "\033[91m"
-    CODE = "\033[93m"
-    ERROR = "\033[91m"
-    BOLD = "\033[1m"
-
-    ENDC = "\033[0m"
 
 
 class ExitCodes(IntEnum):
@@ -25,16 +18,12 @@ class ExitCodes(IntEnum):
     RUNTIME_ISSUES = 100
 
 
-def wrap_color(msg: str, color: str):
-    return f"{color}{msg}{COLORS.ENDC}"
-
-
 def present_violation(violation: Violation):
-    codestr = wrap_color(violation.code, COLORS.CODE)
-    descstr = wrap_color(violation.description, COLORS.DESCR)
+    codestr = violation.code
+    descstr = violation.description
     location = f"{violation.filename}:{violation.line}:{violation.col}"
 
-    return f"[{codestr}] {descstr} - {location}"
+    return f"[[yellow]{codestr}[/yellow]] [red]{descstr}[/red] - {location}"
 
 
 class CliInterface:
@@ -55,7 +44,7 @@ class CliInterface:
             if self.runner.violations:
                 print(f"Found {len(self.runner.violations)} violations")
             else:
-                print(wrap_color("Everything clean!", COLORS.BOLD))
+                print("[bold]Everything clean![/bold]")
         else:
             print("Nothing to check!")
 
@@ -63,9 +52,7 @@ class CliInterface:
             print(f"Fixed {self.runner.fixed_violations} violations")
 
         if self.discovery.had_issues:
-            print(
-                wrap_color(f"Failed to process {len(self.discovery.failures)} files", COLORS.ERROR)
-            )
+            print(f"[bold red]Failed to process {len(self.discovery.failures)} files[/bold red]")
 
         if self.runner.excluded_files:
             print(f"Skipped {self.runner.excluded_files} files")
