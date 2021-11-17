@@ -47,7 +47,7 @@ class CliInterface:
             print(present_violation(violation))
 
     def _present_status(self):
-        print("Done processing! 🦖✨")
+        print("Done processing!")
 
         if self.runner.analyzed_files:
             print(f"Processed {self.runner.analyzed_files} files")
@@ -55,7 +55,7 @@ class CliInterface:
             if self.runner.violations:
                 print(f"Found {len(self.runner.violations)} violations")
             else:
-                print(wrap_color("✨ Everything clean! ✨", COLORS.BOLD))
+                print(wrap_color("Everything clean!", COLORS.BOLD))
         else:
             print("Nothing to check!")
 
