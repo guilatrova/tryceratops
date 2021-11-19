@@ -2,7 +2,7 @@
     <img src="https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/logo.png">
 </p>
 
-<h2 align="center">Manage your exceptions in Python like a PRO</h2>
+<h2 align="center">Prevent Exception Handling AntiPatterns in Python</h2>
 
 <p align="center">
   <a href="https://github.com/guilatrova/tryceratops/actions"><img alt="Actions Status" src="https://github.com/guilatrova/tryceratops/workflows/CI/badge.svg"></a>
@@ -16,12 +16,11 @@
   <a href="https://twitter.com/intent/user?screen_name=guilatrova"><img alt="Follow guilatrova" src="https://img.shields.io/twitter/follow/guilatrova?style=social"/></a>
 </p>
 
-Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-python-like-a-pro/).
-
-I shared [the building process of this tool here](https://blog.guilatrova.dev/project-tryceratops/).
+Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-python-like-a-pro/). I described [the building process of this tool here](https://blog.guilatrova.dev/project-tryceratops/).
 
 > “For those who like dinosaurs 🦖 and clean try/except ✨ blocks.”
 
+**Summary**
 - [Installation and usage](#installation-and-usage)
   - [Installation](#installation)
   - [Usage](#usage)
