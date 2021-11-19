@@ -50,7 +50,7 @@ build_command = "pip install poetry && poetry build"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-click = "^7"
+click = ">= 7, <9"
 toml = "^0.10.2"
 rich = "^10.14.0"
 
