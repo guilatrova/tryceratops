@@ -2,6 +2,25 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.0 (2021-11-22)
+### Feature
+* Add prefer `TypeError` analyzer ([`ac75e37`](https://github.com/guilatrova/tryceratops/commit/ac75e377b8c6213f549fccc45a4d34db2c73404c))
+
+### Breaking
+* add prefer `TypeError` analyzer ([`ac75e37`](https://github.com/guilatrova/tryceratops/commit/ac75e377b8c6213f549fccc45a4d34db2c73404c))
+
+### Documentation
+* Add `TypeError` violation ([`d424e7c`](https://github.com/guilatrova/tryceratops/commit/d424e7c0bd4ce8364ad6dd8f47c08619e5bbd6de))
+* Make tryceratops use case more obvious ([`36f1292`](https://github.com/guilatrova/tryceratops/commit/36f1292e3e4bbd6a2bb1201069d1a902e8b68360))
+* Update badges ([`eb3c162`](https://github.com/guilatrova/tryceratops/commit/eb3c1624c9a79e4341151ecc884d338f51217ac2))
+
+## v0.6.1 (2021-11-17)
+### Fix
+* **windows:** Remove emojis from presentation ([`e7f6bbe`](https://github.com/guilatrova/tryceratops/commit/e7f6bbec1dfb525aacd1a30c8e737b27ef93efd9))
+
+### Documentation
+* Add extra resource ([`259bf9c`](https://github.com/guilatrova/tryceratops/commit/259bf9c1eb357f2ebf737f5b3f9c52220645490f))
+
 ## v0.6.0 (2021-09-12)
 ### Feature
 * Add cheerful message when no violations ([`bff695c`](https://github.com/guilatrova/tryceratops/commit/bff695c90bf08d9e5489376407f64e1af71d26ad))

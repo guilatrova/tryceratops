@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Set
 
-from . import call, exception_block, try_block
+from . import call, conditional, exception_block, try_block
 from .base import BaseAnalyzer
 
 if TYPE_CHECKING:
@@ -14,6 +14,7 @@ ANALYZER_CLASSES = {
     call.CallRaiseVanillaAnalyzer,  # type: ignore
     call.CallRaiseLongArgsAnalyzer,  # type: ignore
     call.CallAvoidCheckingToContinueAnalyzer,  # type: ignore
+    conditional.PreferTypeErrorAnalyzer,
     exception_block.ExceptReraiseWithoutCauseAnalyzer,
     exception_block.ExceptVerboseReraiseAnalyzer,
     exception_block.ExceptBroadPassAnalyzer,

@@ -2,10 +2,9 @@
     <img src="https://raw.githubusercontent.com/guilatrova/tryceratops/main/img/logo.png">
 </p>
 
-<h2 align="center">Manage your exceptions in Python like a PRO</h2>
+<h2 align="center">Prevent Exception Handling AntiPatterns in Python</h2>
 
 <p align="center">
-
   <a href="https://github.com/guilatrova/tryceratops/actions"><img alt="Actions Status" src="https://github.com/guilatrova/tryceratops/workflows/CI/badge.svg"></a>
   <a href="https://pypi.org/project/tryceratops/"><img alt="PyPI" src="https://img.shields.io/pypi/v/tryceratops"/></a>
   <a href="https://github.com/relekang/python-semantic-release"><img alt="Semantic Release" src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg"></a>
@@ -14,15 +13,14 @@
   <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"/></a>
   <a href="https://github.com/guilatrova/tryceratops"><img alt="try/except style: tryceratops" src="https://img.shields.io/badge/try%2Fexcept%20style-tryceratops%20%F0%9F%A6%96%E2%9C%A8-black" /></a>
   <a href="https://open.vscode.dev/guilatrova/tryceratops"><img alt="Open in Visual Studio Code" src="https://open.vscode.dev/badges/open-in-vscode.svg"/></a>
-
+  <a href="https://twitter.com/intent/user?screen_name=guilatrova"><img alt="Follow guilatrova" src="https://img.shields.io/twitter/follow/guilatrova?style=social"/></a>
 </p>
 
-Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-python-like-a-pro/).
-
-I shared [the building process of this tool here](https://blog.guilatrova.dev/project-tryceratops/).
+Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-python-like-a-pro/). I described [the building process of this tool here](https://blog.guilatrova.dev/project-tryceratops/).
 
 > “For those who like dinosaurs 🦖 and clean try/except ✨ blocks.”
 
+**Summary**
 - [Installation and usage](#installation-and-usage)
   - [Installation](#installation)
   - [Usage](#usage)
@@ -140,7 +138,7 @@ If you wish to use pre-commit, add this:
 
 ```yaml
   - repo: https://github.com/guilatrova/tryceratops
-    rev: v0.6.0
+    rev: v1.0.0
     hooks:
       - id: tryceratops
 ```
