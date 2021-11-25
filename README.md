@@ -7,6 +7,7 @@
 <p align="center">
   <a href="https://github.com/guilatrova/tryceratops/actions"><img alt="Actions Status" src="https://github.com/guilatrova/tryceratops/workflows/CI/badge.svg"></a>
   <a href="https://pypi.org/project/tryceratops/"><img alt="PyPI" src="https://img.shields.io/pypi/v/tryceratops"/></a>
+  <img src="https://badgen.net/pypi/python/tryceratops" />
   <a href="https://github.com/relekang/python-semantic-release"><img alt="Semantic Release" src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg"></a>
   <a href="https://github.com/guilatrova/tryceratops/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/guilatrova/tryceratops"/></a>
   <a href="https://pepy.tech/project/tryceratops/"><img alt="Downloads" src="https://static.pepy.tech/personalized-badge/tryceratops?period=total&units=international_system&left_color=grey&right_color=blue&left_text=%F0%9F%A6%96%20Downloads"/></a>
