@@ -13,7 +13,7 @@ GroupedViolations = Dict[str, List[ViolationType]]
 
 class FileFixerHandler:
     def __init__(self, filename: str):
-        self.file = open(filename, "r+")
+        self.file = open(filename, "r+", encoding="utf-8")
 
     def __enter__(self):
         return self

@@ -38,7 +38,7 @@ def parse_tree(content: TextIO) -> ast.AST:
 
 
 def parse_file(filename: str) -> Tuple[ast.AST, FileFilter]:
-    with open(filename, "r") as content:
+    with open(filename, "r", encoding="utf-8") as content:
         tree = parse_tree(content)
 
         content.seek(0)
