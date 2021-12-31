@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tryceratops"
-version = "1.0.0"
+version = "1.0.1"
 description = "A linter to manage your exception like a PRO!"
 authors = ["Guilherme Latrova <hello@guilatrova.dev>"]
 license = "MIT"

@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.1 (2021-12-31)
+### Fix
+* Open files with utf-8 encoding for windows ([`a46636c`](https://github.com/guilatrova/tryceratops/commit/a46636ccce68742cf83f035507c4680357cabb14))
+
+### Documentation
+* Update badges ([`2308e9d`](https://github.com/guilatrova/tryceratops/commit/2308e9ddbbc320b0ad43a7e959cba2d6eaa14526))
+
 ## v1.0.0 (2021-11-22)
 ### Feature
 * Add prefer `TypeError` analyzer ([`ac75e37`](https://github.com/guilatrova/tryceratops/commit/ac75e377b8c6213f549fccc45a4d34db2c73404c))
