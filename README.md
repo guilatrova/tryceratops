@@ -180,6 +180,4 @@ MIT
 
 Thanks to God for the inspiration 🙌 ☁️ ☀️
 
-Logo icon was made by [https://www.freepik.com](Freepik)
-
 The [black](https://github.com/psf/black) project for insights.
