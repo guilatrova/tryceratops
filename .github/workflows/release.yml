@@ -21,8 +21,11 @@ jobs:
         with:
           python-version: 3.8
 
-      - uses: Gr1N/setup-poetry@v7
-      - uses: actions/cache@v2
+      - name: Install poetry
+        uses: Gr1N/setup-poetry@v7
+
+      - name: Cache poetry dependencies
+        uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
