@@ -1,0 +1,16 @@
+# Every commit in this project should follow https://www.conventionalcommits.org/en/v1.0.0/
+# >>> Otherwise, you may be requested to rewrite your commit.
+
+# <type>[optional scope]: <description>
+#   |    |                 |
+#   |    |                 +-> Summary in present tense
+#   |    |
+#   |    +-> Refers to story/card/issue #
+#   |
+#   +-> Type: feat|chore|fix|refactor|ci|test
+#
+# Commit subject line should not exceed 50 characters.
+# Remainder of gitmessage should wrap at 72 characters.
+
+# [optional body]
+# Read docs/CONTRIBUTING.md for more details
