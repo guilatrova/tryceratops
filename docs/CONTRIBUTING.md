@@ -14,11 +14,12 @@ Install the dependency manager (if not already done):
 pip3 install poetry
 ```
 
-Install all dependencies and pre-commit hooks:
+Install all dependencies, pre-commit hooks, and git config:
 
 ```sh
 poetry install
 pre-commit install
+git config commit.template .gitmessage
 ```
 
 and you should be ready to go!
