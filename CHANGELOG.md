@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.0 (2022-04-30)
+### Feature
+* Reduce dependencies contraints ([`1a71007`](https://github.com/guilatrova/tryceratops/commit/1a710072c86f4747a375e0bcd88766e856baeaf9))
+
+### Documentation
+* Update contributing with gitmessage ([`0bd7c61`](https://github.com/guilatrova/tryceratops/commit/0bd7c61e4004919483ae86611a1a1a5ea1555486))
+* Replace logo ([`38bd6cd`](https://github.com/guilatrova/tryceratops/commit/38bd6cdb95e57bd9674fd5b061abef63ec94c85e))
+
 ## v1.0.1 (2021-12-31)
 ### Fix
 * Open files with utf-8 encoding for windows ([`a46636c`](https://github.com/guilatrova/tryceratops/commit/a46636ccce68742cf83f035507c4680357cabb14))
