@@ -44,7 +44,7 @@ def entrypoint(
     exclude: Tuple[str, ...],
     verbose: bool,
     autofix: bool,
-):
+) -> None:
     pyproj_config = load_config(dir)
     if pyproj_config:
         global_settings = GlobalSettings.create_from_config(pyproj_config)
@@ -61,7 +61,7 @@ def entrypoint(
     interface.present_and_exit()
 
 
-def main():
+def main() -> None:
     logging.config.dictConfig(LOGGING_CONFIG)
     entrypoint(prog_name="tryceratops")
 

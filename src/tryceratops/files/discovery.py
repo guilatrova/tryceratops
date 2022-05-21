@@ -13,7 +13,7 @@ from .parser import parse_file
 logger = logging.getLogger(__name__)
 
 
-def is_python_file(filename: str):
+def is_python_file(filename: str) -> bool:
     return isfile(filename) and filename.endswith(".py")
 
 

@@ -51,7 +51,7 @@ class PreferTypeErrorAnalyzer(BaseAnalyzer):
             if node.exc.id in STANDARD_NON_TYPE_ERROR_IDS:
                 self._mark_violation(node.exc)
 
-    def _check_for_raises(self, node):
+    def _check_for_raises(self, node: ast.stmt) -> None:
         for stm in ast.iter_child_nodes(node):
             if isinstance(stm, ast.Raise):
                 self._check_is_raise_other_than_typeerror(stm)

@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import ast
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 
 
 @dataclass
@@ -13,7 +15,14 @@ class Violation:
     node: ast.AST
 
     @classmethod
-    def build(cls, filename: str, vio_details: Tuple[str, str], node: ast.AST, *args, **kwargs):
+    def build(
+        cls,
+        filename: str,
+        vio_details: Tuple[str, str],
+        node: ast.AST,
+        *args: Any,  # noqa: ANN401
+        **kwargs: Any,  # noqa: ANN401
+    ) -> Violation:
         code, msg = vio_details
         return cls(code, node.lineno, node.col_offset, msg, filename, node)
 
@@ -29,9 +38,9 @@ class VerboseReraiseViolation(Violation):
         vio_details: Tuple[str, str],
         node: ast.AST,
         exception_name: str = "",
-        *args,
-        **kwargs
-    ):
+        *args: Any,  # noqa: ANN401
+        **kwargs: Any,  # noqa: ANN401
+    ) -> VerboseReraiseViolation:
         code, msg = vio_details
         return cls(code, node.lineno, node.col_offset, msg, filename, node, exception_name)
 
@@ -49,9 +58,9 @@ class RaiseWithoutCauseViolation(Violation):
         node: ast.AST,
         except_node: Optional[ast.ExceptHandler] = None,
         exception_name: Optional[str] = None,
-        *args,
-        **kwargs
-    ):
+        *args: Any,  # noqa: ANN401
+        **kwargs: Any,  # noqa: ANN401
+    ) -> RaiseWithoutCauseViolation:
         if except_node is None:
             raise ValueError("except_node")
 

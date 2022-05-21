@@ -36,7 +36,7 @@ class FileFilter:
 
     ignore_lines: Iterable[IgnoreViolation]
 
-    def ignores_violation(self, violation: Violation):
+    def ignores_violation(self, violation: Violation) -> bool:
         for line in self.ignore_lines:
             if line.is_ignoring(violation.line, violation.code):
                 return True
@@ -56,7 +56,7 @@ class GlobalSettings:
     exclude_dirs: Iterable[str]
     autofix: bool = False
 
-    def _self_check(self):
+    def _self_check(self) -> None:
         self.exclude_dirs = [excluded for excluded in self.exclude_dirs if excluded]
 
     def __post_init__(self):
@@ -97,7 +97,7 @@ class GlobalSettings:
         ignore_violations: Iterable[str],
         exclude_dirs: Iterable[str],
         autofix: bool,
-    ):
+    ) -> None:
         """In case any value is set it overwrites the previous value"""
         if include_experimental:
             self.include_experimental = include_experimental

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from collections import defaultdict
-from typing import Dict, Generic, Iterable, List, TypeVar
+from types import TracebackType
+from typing import Dict, Generic, Iterable, List, Optional, Type, TypeVar
 
 from tryceratops.processors import Processor
 from tryceratops.violations import Violation
@@ -23,12 +24,17 @@ class FileFixerHandler:
         self.file.seek(0)
         return lines
 
-    def write_fix(self, new_lines: Iterable[str]):
+    def write_fix(self, new_lines: Iterable[str]) -> None:
         self.file.writelines(new_lines)
         self.file.truncate()
         self.file.seek(0)
 
-    def __exit__(self, exc_type, exc_value, exc_traceback):
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc: Optional[BaseException],
+        traceback: Optional[TracebackType],
+    ) -> None:
         self.file.close()
 
 
@@ -47,7 +53,7 @@ class BaseFixer(ABC, Processor, Generic[ViolationType]):
 
         return group
 
-    def _process_group(self, filename: str, violations: List[ViolationType]):
+    def _process_group(self, filename: str, violations: List[ViolationType]) -> None:
         with FileFixerHandler(filename) as file:
             for violation in violations:
                 try:
@@ -63,7 +69,7 @@ class BaseFixer(ABC, Processor, Generic[ViolationType]):
     def perform_fix(self, lines: List[str], violation: ViolationType) -> List[str]:
         pass
 
-    def fix(self, violations: List[Violation]):
+    def fix(self, violations: List[Violation]) -> None:
         relevant_violations = self._filter_violations_in_scope(violations)
         grouped = self._group_violations_by_filename(relevant_violations)
 

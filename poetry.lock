@@ -239,6 +239,18 @@ pycodestyle = ">=2.7.0,<2.8.0"
 pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
+name = "flake8-annotations"
+version = "2.9.0"
+description = "Flake8 Type Annotation Checks"
+category = "dev"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.dependencies]
+attrs = ">=21.4,<22.0"
+flake8 = ">=3.7"
+
+[[package]]
 name = "gitdb"
 version = "4.0.9"
 description = "Git Object Database"
@@ -883,7 +895,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "7cc58721e5b6db654382201c6945e7638e3091dcbf6dbd4ff2dfbd9e04c7a8a0"
+content-hash = "a052e2b61009af17cdf4f1a8f7fcdf7c4b2a7b1365fc47390287fff600da9013"
 
 [metadata.files]
 appdirs = [
@@ -1074,6 +1086,10 @@ filelock = [
 flake8 = [
     {file = "flake8-3.9.2-py2.py3-none-any.whl", hash = "sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907"},
     {file = "flake8-3.9.2.tar.gz", hash = "sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b"},
+]
+flake8-annotations = [
+    {file = "flake8-annotations-2.9.0.tar.gz", hash = "sha256:63fb3f538970b6a8dfd84125cf5af16f7b22e52d5032acb3b7eb23645ecbda9b"},
+    {file = "flake8_annotations-2.9.0-py3-none-any.whl", hash = "sha256:84f46de2964cb18fccea968d9eafce7cf857e34d913d515120795b9af6498d56"},
 ]
 gitdb = [
     {file = "gitdb-4.0.9-py3-none-any.whl", hash = "sha256:8033ad4e853066ba6ca92050b9df2f89301b8fc8bf7e9324d412a63f8bf1a8fd"},

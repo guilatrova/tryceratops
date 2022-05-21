@@ -10,7 +10,7 @@ class CallTooManyAnalyzer(BaseAnalyzer):
     violation_code = codes.TOO_MANY_TRY
 
     @visit_error_handler
-    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+    def visit_FunctionDef(self, node: ast.FunctionDef):  # noqa: ANN201
         try_blocks = [stm for stm in ast.iter_child_nodes(node) if isinstance(stm, ast.Try)]
 
         if len(try_blocks) > 1:
@@ -23,7 +23,7 @@ class CallTooManyAnalyzer(BaseAnalyzer):
 class CallRaiseVanillaAnalyzer(BaseRaiseCallableAnalyzer):
     violation_code = codes.RAISE_VANILLA_CLASS
 
-    def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name):
+    def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name) -> None:
         if func.id == "Exception":
             self._mark_violation(node)
 
@@ -31,7 +31,7 @@ class CallRaiseVanillaAnalyzer(BaseRaiseCallableAnalyzer):
 class CallRaiseLongArgsAnalyzer(BaseRaiseCallableAnalyzer):
     violation_code = codes.RAISE_VANILLA_ARGS
 
-    def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name):
+    def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name) -> None:
         if len(exc.args):
             first_arg, *_ = exc.args
             is_constant_str = isinstance(first_arg, ast.Constant) and isinstance(
@@ -51,7 +51,7 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
         self.assignments_from_calls: Dict[str, ast.Assign] = {}
         super().__init__()
 
-    def _scan_assignments(self, node: StmtBodyProtocol):
+    def _scan_assignments(self, node: StmtBodyProtocol) -> None:
         def is_assigned_from_call(node: ast.stmt) -> bool:
             if isinstance(node, ast.Assign):
                 if isinstance(node.value, ast.Call):
@@ -70,7 +70,7 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
         }
         self.assignments_from_calls.update(assignments)
 
-    def _find_violations(self, node: StmtBodyProtocol):
+    def _find_violations(self, node: StmtBodyProtocol) -> None:
         code, rawmsg = codes.CHECK_TO_CONTINUE
 
         def is_if_returning(node: Union[ast.stmt, StmtBodyProtocol]) -> bool:
@@ -118,7 +118,7 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
                                 )
                             )
 
-    def _scan_deeper(self, node: StmtBodyProtocol, may_contain_violations: bool):
+    def _scan_deeper(self, node: StmtBodyProtocol, may_contain_violations: bool) -> None:
         self._scan_assignments(node)
 
         if may_contain_violations:
