@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Set
+from typing import TYPE_CHECKING, Set, Type, cast
 
 from . import call, conditional, exception_block, try_block
 from .base import BaseAnalyzer
@@ -9,11 +9,11 @@ if TYPE_CHECKING:
     from tryceratops.filters import GlobalSettings
 
 
-ANALYZER_CLASSES = {
-    call.CallTooManyAnalyzer,  # type: ignore
-    call.CallRaiseVanillaAnalyzer,  # type: ignore
-    call.CallRaiseLongArgsAnalyzer,  # type: ignore
-    call.CallAvoidCheckingToContinueAnalyzer,  # type: ignore
+ANALYZER_CLASSES: Set[Type[BaseAnalyzer]] = {
+    call.CallTooManyAnalyzer,
+    call.CallRaiseVanillaAnalyzer,
+    call.CallRaiseLongArgsAnalyzer,
+    call.CallAvoidCheckingToContinueAnalyzer,
     conditional.PreferTypeErrorAnalyzer,
     exception_block.ExceptReraiseWithoutCauseAnalyzer,
     exception_block.ExceptVerboseReraiseAnalyzer,
