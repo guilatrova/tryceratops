@@ -29,7 +29,7 @@ class RaiseWithoutCauseFixer(BaseFixer[RaiseWithoutCauseViolation]):
     violation_code = codes.RERAISE_NO_CAUSE
     exception_name_to_create = "ex"
 
-    def _fix_except_handler(self, all_lines: List[str], offending_node: ast.ExceptHandler):
+    def _fix_except_handler(self, all_lines: List[str], offending_node: ast.ExceptHandler) -> None:
         line_offset = offending_node.lineno - 1
         offending_line = all_lines[line_offset]
 
@@ -41,7 +41,7 @@ class RaiseWithoutCauseFixer(BaseFixer[RaiseWithoutCauseViolation]):
 
     def _fix_raise_no_cause(
         self, all_lines: List[str], violation: RaiseWithoutCauseViolation, exception_name: str
-    ):
+    ) -> None:
         endline = violation.node.end_lineno or violation.line
         is_singleline = violation.line == endline
 

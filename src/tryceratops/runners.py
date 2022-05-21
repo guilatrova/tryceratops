@@ -28,14 +28,14 @@ class Runner:
         self.excluded_files = 0
         self.fixed_violations = 0
 
-    def _clear(self):
+    def _clear(self) -> None:
         self.violations = []
         self.runtime_errors = []
         self.excluded_files = 0
 
     def _run_analyzers(
         self, analyzers: Set[BaseAnalyzer], filename: str, filefilter: FileFilter, tree: ast.AST
-    ):
+    ) -> None:
         for analyzer in analyzers:
             try:
                 found_violations = analyzer.check(tree, filename)
@@ -52,7 +52,7 @@ class Runner:
             else:
                 self.violations += valid_violations
 
-    def _run_fixers(self, fixers: Set[BaseFixer]):
+    def _run_fixers(self, fixers: Set[BaseFixer]) -> None:
         for fixer in fixers:
             try:
                 fixer.fix(self.violations)

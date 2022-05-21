@@ -12,7 +12,7 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer):
 
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
-        def is_raise_without_cause(node: ast.AST):
+        def is_raise_without_cause(node: ast.AST) -> bool:
             if isinstance(node, ast.Raise):
                 return isinstance(node.exc, ast.Call) and node.cause is None
             return False
@@ -29,7 +29,7 @@ class ExceptVerboseReraiseAnalyzer(BaseAnalyzer):
 
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
-        def is_raise_with_name(stm: ast.AST, name: str):
+        def is_raise_with_name(stm: ast.AST, name: str) -> bool:
             if isinstance(stm, ast.Raise) and isinstance(stm.exc, ast.Name):
                 return stm.exc.id == name
             return False
@@ -122,13 +122,13 @@ class LogObjectAnalyzer(BaseAnalyzer):
 
         return False
 
-    def _check_args(self, log_args: Iterable[ast.AST]):
+    def _check_args(self, log_args: Iterable[ast.AST]) -> None:
         for arg in log_args:
             for node in ast.walk(arg):
                 if self._has_object_reference(node):
                     self._mark_violation(node)
 
-    def _find_violations(self, node: ast.ExceptHandler):
+    def _find_violations(self, node: ast.ExceptHandler) -> None:
         for stm in ast.walk(node):
             if possible_log_wrap := self._maybe_get_possible_log_wrap(stm):
                 possible_log_node = possible_log_wrap.func

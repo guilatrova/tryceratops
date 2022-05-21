@@ -18,7 +18,7 @@ class ExitCodes(IntEnum):
     RUNTIME_ISSUES = 100
 
 
-def present_violation(violation: Violation):
+def present_violation(violation: Violation) -> str:
     codestr = violation.code
     descstr = violation.description
     location = f"{violation.filename}:{violation.line}:{violation.col}"
@@ -31,11 +31,11 @@ class CliInterface:
         self.runner = runner
         self.discovery = discovery
 
-    def _present_violations(self):
+    def _present_violations(self) -> None:
         for violation in self.runner.violations:
             print(present_violation(violation))
 
-    def _present_status(self):
+    def _present_status(self) -> None:
         print("Done processing!")
 
         if self.runner.analyzed_files:
@@ -63,7 +63,7 @@ class CliInterface:
                 f"stored in {ERROR_LOG_FILENAME}"
             )
 
-    def _exit(self):
+    def _exit(self) -> None:
         exit_code = ExitCodes.SUCCESS
 
         if self.runner.had_issues:
@@ -75,7 +75,7 @@ class CliInterface:
 
         sys.exit(exit_code)
 
-    def _delete_empty_logs(self):
+    def _delete_empty_logs(self) -> None:
         cwd = os.getcwd()
         log_file_path = f"{cwd}/{ERROR_LOG_FILENAME}"
         is_log_empty = os.path.getsize(log_file_path) == 0
@@ -83,7 +83,7 @@ class CliInterface:
         if is_log_empty:
             os.remove(log_file_path)
 
-    def present_and_exit(self):
+    def present_and_exit(self) -> None:
         logging.shutdown()
         self._present_violations()
         self._present_status()
