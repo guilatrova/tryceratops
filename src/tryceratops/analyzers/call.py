@@ -1,6 +1,5 @@
-# type: ignore
 import ast
-from typing import Dict, List
+from typing import Dict, List, Union, cast
 
 from tryceratops.violations import Violation, codes
 
@@ -40,7 +39,7 @@ class CallRaiseLongArgsAnalyzer(BaseRaiseCallableAnalyzer):
             )
 
             WHITESPACE = " "
-            if is_constant_str and WHITESPACE in first_arg.value:
+            if is_constant_str and WHITESPACE in first_arg.value:  # type: ignore
                 self._mark_violation(node)
 
 
@@ -59,20 +58,22 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
                     return True
                 else:
                     if hasattr(node.targets[0], "id"):
-                        self.assignments_from_calls.pop(node.targets[0].id, None)
+                        self.assignments_from_calls.pop(node.targets[0].id, None)  # type: ignore
             return False
 
         raw_assignments = [stm for stm in node.body if is_assigned_from_call(stm)]
         # TODO: What if there's more targets?
         assignments = {
-            raw.targets[0].id: raw for raw in raw_assignments if hasattr(raw.targets[0], "id")
+            raw.targets[0].id: raw  # type: ignore
+            for raw in raw_assignments
+            if hasattr(raw.targets[0], "id")  # type: ignore
         }
         self.assignments_from_calls.update(assignments)
 
     def _find_violations(self, node: StmtBodyProtocol):
         code, rawmsg = codes.CHECK_TO_CONTINUE
 
-        def is_if_returning(node: ast.stmt) -> bool:
+        def is_if_returning(node: Union[ast.stmt, StmtBodyProtocol]) -> bool:
             if isinstance(node, ast.If):
                 for child in node.body:
                     if isinstance(child, ast.Return):
@@ -81,14 +82,14 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
 
         ifs_stmt = [stm for stm in node.body if is_if_returning(stm)]
         if is_if_returning(node):
-            ifs_stmt.append(node)
+            ifs_stmt.append(cast(ast.stmt, node))
 
         for if_stmt in ifs_stmt:
-            test = if_stmt.test
+            test = if_stmt.test  # type: ignore
             if isinstance(test, ast.Name):
                 if assignment := self.assignments_from_calls.get(test.id):
-                    if hasattr(assignment.value.func, "id"):
-                        callable_name = assignment.value.func.id
+                    if hasattr(assignment.value.func, "id"):  # type: ignore
+                        callable_name = assignment.value.func.id  # type: ignore
                         msg = rawmsg.format(callable_name)
                         self.violations.append(
                             Violation(
@@ -103,8 +104,8 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
             elif isinstance(test, ast.UnaryOp):
                 if isinstance(test.operand, ast.Name):
                     if assignment := self.assignments_from_calls.get(test.operand.id):
-                        if hasattr(assignment.value.func, "id"):
-                            callable_name = assignment.value.func.id
+                        if hasattr(assignment.value.func, "id"):  # type: ignore
+                            callable_name = assignment.value.func.id  # type: ignore
                             msg = rawmsg.format(callable_name)
                             self.violations.append(
                                 Violation(
@@ -130,7 +131,7 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
 
         for child in node.body:
             if hasattr(child, "body"):
-                self._scan_deeper(child, may_contain_violations)
+                self._scan_deeper(cast(StmtBodyProtocol, child), may_contain_violations)
 
     def check(self, tree: ast.AST, filename: str) -> List[Violation]:
         self.filename = filename
