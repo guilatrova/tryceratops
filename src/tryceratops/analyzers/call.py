@@ -1,6 +1,8 @@
 import ast
 from typing import Dict, List, Union, cast
 
+from ast_selector import AstSelector
+
 from tryceratops.violations import Violation, codes
 
 from .base import BaseAnalyzer, BaseRaiseCallableAnalyzer, StmtBodyProtocol, visit_error_handler
@@ -11,10 +13,10 @@ class CallTooManyAnalyzer(BaseAnalyzer):
 
     @visit_error_handler
     def visit_FunctionDef(self, node: ast.FunctionDef):  # noqa: ANN201
-        try_blocks = [stm for stm in ast.iter_child_nodes(node) if isinstance(stm, ast.Try)]
+        query = AstSelector("Try", node)
 
-        if len(try_blocks) > 1:
-            _, *violation_blocks = try_blocks
+        if query.count() > 1:
+            _, *violation_blocks = query.all()
             self._mark_violation(*violation_blocks)
 
         self.generic_visit(node)
