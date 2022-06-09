@@ -73,8 +73,6 @@ If you installed `pre-commit` it should ensure you're not commiting anything bro
 
 You can run `./bin/lint` to fix some issues for you.
 
-Please note `mypy` is broken, [we're going to solve it eventually](https://github.com/guilatrova/tryceratops/issues/17).
-
 ## Conventional Commits
 
 We automate the versioning and release process! It's only possible if we are consistent with the commit pattern and follow the conventional commits standards.
