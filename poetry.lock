@@ -7,6 +7,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "ast-selector"
+version = "0.2.0"
+description = "Query AST elements by using CSS Selector-like syntax"
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+
+[[package]]
 name = "astpretty"
 version = "2.1.0"
 description = "Pretty print the output of python stdlib `ast.parse`."
@@ -895,12 +903,16 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "a052e2b61009af17cdf4f1a8f7fcdf7c4b2a7b1365fc47390287fff600da9013"
+content-hash = "2a148aec00099e2a45c7eb36908e987f84eda0f7c20c0a10cd6516714cf2effc"
 
 [metadata.files]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
+]
+ast-selector = [
+    {file = "ast_selector-0.2.0-py3-none-any.whl", hash = "sha256:dfcc130fdf9bdc7cd105f5d53fc5acd575a4067c6710b1d909fe1e68bf411388"},
+    {file = "ast_selector-0.2.0.tar.gz", hash = "sha256:6991884efd4248060ecf3da169e8ade4d48d2ab64fdb99046afbcb98aa5a27a1"},
 ]
 astpretty = [
     {file = "astpretty-2.1.0-py2.py3-none-any.whl", hash = "sha256:f81f14b5636f7af81fadb1e3c09ca7702ce4615500d9cc6d6829befb2dec2e3c"},

@@ -1,5 +1,6 @@
 import ast
-from typing import Generator
+
+from ast_selector import AstSelector
 
 from tryceratops.violations import codes
 
@@ -23,16 +24,10 @@ class TryConsiderElseAnalyzer(BaseAnalyzer):
 class TryShouldntRaiseAnalyzer(BaseAnalyzer):
     violation_code = codes.RAISE_WITHIN_TRY
 
-    def _iter_body(self, node: ast.Try) -> Generator[ast.AST, None, None]:
-        for body_child in node.body:
-            yield body_child
-            yield from ast.iter_child_nodes(body_child)
-
     @visit_error_handler
     def visit_Try(self, node: ast.Try) -> None:
-        raises_within_try = [
-            child for child in self._iter_body(node) if isinstance(child, ast.Raise)
-        ]
+        query = AstSelector("Try.body Raise", node)
+        raises_within_try = query.all()
 
         self._mark_violation(*raises_within_try)
 

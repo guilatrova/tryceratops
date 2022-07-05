@@ -1,5 +1,7 @@
 import ast
-from typing import Iterable, Optional
+from typing import Iterable
+
+from ast_selector import AstSelector
 
 from tryceratops.violations import RaiseWithoutCauseViolation, VerboseReraiseViolation, codes
 
@@ -12,14 +14,10 @@ class ExceptReraiseWithoutCauseAnalyzer(BaseAnalyzer):
 
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
-        def is_raise_without_cause(node: ast.AST) -> bool:
-            if isinstance(node, ast.Raise):
-                return isinstance(node.exc, ast.Call) and node.cause is None
-            return False
+        query = AstSelector("Raise[exc is Call][cause is None]", node)
+        reraises_no_cause = query.all()
 
-        reraises_no_cause = [stm for stm in ast.walk(node) if is_raise_without_cause(stm)]
         self._mark_violation(*reraises_no_cause, exception_name=node.name, except_node=node)
-
         self.generic_visit(node)
 
 
@@ -29,17 +27,13 @@ class ExceptVerboseReraiseAnalyzer(BaseAnalyzer):
 
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
-        def is_raise_with_name(stm: ast.AST, name: str) -> bool:
-            if isinstance(stm, ast.Raise) and isinstance(stm.exc, ast.Name):
-                return stm.exc.id == name
-            return False
-
         # If no name is set, then it's impossible to be verbose
         # since you don't have the object
         if node.name:
-            for child in ast.walk(node):
-                if is_raise_with_name(child, node.name):
-                    self._mark_violation(child, exception_name=node.name)
+            query = AstSelector(f"Raise[exc is Name].exc[id = {node.name}] $Raise", node)
+            children = query.all()
+
+            self._mark_violation(*children, exception_name=node.name)
 
         self.generic_visit(node)
 
@@ -84,36 +78,18 @@ class ExceptBroadPassAnalyzer(BaseAnalyzer):
 class LogErrorAnalyzer(BaseAnalyzer):
     violation_code = codes.USE_LOGGING_EXCEPTION
 
-    def _maybe_get_possible_log_node(self, node: ast.AST) -> Optional[ast.Attribute]:
-        if isinstance(node, ast.Expr):
-            if isinstance(node.value, ast.Call):
-                if isinstance(node.value.func, ast.Attribute):
-                    return node.value.func
-
-        return None
-
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
-        for stm in ast.walk(node):
-            if possible_log_node := self._maybe_get_possible_log_node(stm):
-                object_method = possible_log_node.attr
+        query = AstSelector("Expr[value is Call].value[func is Attribute].func[attr = error]", node)
+        violations = query.all()
 
-                if object_method == "error":
-                    self._mark_violation(possible_log_node)
+        self._mark_violation(*violations)
 
         self.generic_visit(node)
 
 
 class LogObjectAnalyzer(BaseAnalyzer):
     violation_code = codes.VERBOSE_LOG_MESSAGE
-
-    def _maybe_get_possible_log_wrap(self, node: ast.AST) -> Optional[ast.Call]:
-        if isinstance(node, ast.Expr):
-            if isinstance(node.value, ast.Call):
-                if isinstance(node.value.func, ast.Attribute):
-                    return node.value
-
-        return None
 
     def _has_object_reference(self, node: ast.AST) -> bool:
         if isinstance(node, ast.Name):
@@ -129,15 +105,14 @@ class LogObjectAnalyzer(BaseAnalyzer):
                     self._mark_violation(node)
 
     def _find_violations(self, node: ast.ExceptHandler) -> None:
-        for stm in ast.walk(node):
-            if possible_log_wrap := self._maybe_get_possible_log_wrap(stm):
-                possible_log_node = possible_log_wrap.func
+        query = AstSelector(
+            "Expr[value is Call].value[func is Attribute].func[attr = exception] $Expr.value",
+            node,
+        )
+        log_wraps = query.all()
 
-                if isinstance(possible_log_node, ast.Attribute):
-                    object_method = possible_log_node.attr
-
-                    if object_method == "exception":
-                        self._check_args(possible_log_wrap.args)
+        for possible_log_wrap in log_wraps:
+            self._check_args(possible_log_wrap.args)
 
     @visit_error_handler
     def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
