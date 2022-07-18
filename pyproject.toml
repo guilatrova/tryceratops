@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "tryceratops"
 version = "1.1.0"
-description = "A linter to manage your exception like a PRO!"
+description = "Prevent Exception Handling AntiPatterns"
 authors = ["Guilherme Latrova <hello@guilatrova.dev>"]
 license = "MIT"
 keywords = ["lint", "try", "except"]
