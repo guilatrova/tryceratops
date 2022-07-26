@@ -47,6 +47,12 @@ Inspired by [this blog post](https://blog.guilatrova.dev/handling-exceptions-in-
 pip install tryceratops
 ```
 
+OR
+
+```
+poetry add -D tryceratops
+```
+
 ### Usage
 
 ```
