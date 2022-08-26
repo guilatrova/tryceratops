@@ -27,7 +27,7 @@ packages = [
 tryceratops = 'tryceratops.__main__:main'
 
 [tool.poetry.plugins."flake8.extension"]
-TC = "tryceratops.flake_plugin:TryceratopsAdapterPlugin"
+TRY = "tryceratops.flake_plugin:TryceratopsAdapterPlugin"
 
 [tool.poetry.urls]
 "Changelog" = "https://github.com/guilatrova/tryceratops/blob/main/CHANGELOG.md"

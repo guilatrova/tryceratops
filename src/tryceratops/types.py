@@ -11,7 +11,7 @@ class PyprojectConfig(TypedDict):
     """
     Represents the expected pyproject config to be loaded
         exclude: a list of path patterns to be excluded e.g. [/tests, /fixtures]
-        ignore: a list of violations to be completely ignored e.g. [TC002, TC300]
+        ignore: a list of violations to be completely ignored e.g. [TRY002, TRY300]
         experimental: whether to enable experimental analyzers
     """
 

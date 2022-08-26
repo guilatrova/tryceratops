@@ -36,13 +36,13 @@ def test_parse_specific_code_line():
 
     first, second, third = ignore_lines
     assert first.line == 13
-    assert first.code == ["TC202"]
+    assert first.code == ["TRY202"]
 
     assert second.line == 21
-    assert second.code == ["TC202", "TC200", "TC201"]
+    assert second.code == ["TRY202", "TRY200", "TRY201"]
 
     assert third.line == 30
-    assert third.code == ["TC101"]
+    assert third.code == ["TRY101"]
 
 
 def test_parse_ignore_file():
@@ -61,56 +61,56 @@ def test_parse_ignore_file():
 def test_entity_ignores_all():
     ignore = IgnoreViolation(10)
 
-    assert ignore.is_ignoring(10, "TC200") is True
-    assert ignore.is_ignoring(10, "TC100") is True
-    assert ignore.is_ignoring(10, "TC300") is True
+    assert ignore.is_ignoring(10, "TRY200") is True
+    assert ignore.is_ignoring(10, "TRY100") is True
+    assert ignore.is_ignoring(10, "TRY300") is True
     assert ignore.is_ignoring(10, "anything") is True
 
-    assert ignore.is_ignoring(12, "TC200") is False
-    assert ignore.is_ignoring(12, "TC100") is False
-    assert ignore.is_ignoring(12, "TC300") is False
+    assert ignore.is_ignoring(12, "TRY200") is False
+    assert ignore.is_ignoring(12, "TRY100") is False
+    assert ignore.is_ignoring(12, "TRY300") is False
     assert ignore.is_ignoring(12, "anything") is False
 
 
 def test_entity_ignores_specific():
-    ignore = IgnoreViolation(10, ["TC200", "TC101"])
+    ignore = IgnoreViolation(10, ["TRY200", "TRY101"])
 
-    assert ignore.is_ignoring(10, "TC200") is True
-    assert ignore.is_ignoring(10, "TC101") is True
-    assert ignore.is_ignoring(10, "TC100") is False
-    assert ignore.is_ignoring(10, "TC300") is False
+    assert ignore.is_ignoring(10, "TRY200") is True
+    assert ignore.is_ignoring(10, "TRY101") is True
+    assert ignore.is_ignoring(10, "TRY100") is False
+    assert ignore.is_ignoring(10, "TRY300") is False
     assert ignore.is_ignoring(10, "anything") is False
 
 
 def test_entity_ignore_all_whole_file():
     ignore = IgnoreViolation(1)
 
-    assert ignore.is_ignoring(10, "TC200") is True
-    assert ignore.is_ignoring(10, "TC100") is True
-    assert ignore.is_ignoring(10, "TC300") is True
+    assert ignore.is_ignoring(10, "TRY200") is True
+    assert ignore.is_ignoring(10, "TRY100") is True
+    assert ignore.is_ignoring(10, "TRY300") is True
     assert ignore.is_ignoring(10, "anything") is True
 
     # Still true
-    assert ignore.is_ignoring(12, "TC200") is True
-    assert ignore.is_ignoring(12, "TC100") is True
-    assert ignore.is_ignoring(12, "TC300") is True
+    assert ignore.is_ignoring(12, "TRY200") is True
+    assert ignore.is_ignoring(12, "TRY100") is True
+    assert ignore.is_ignoring(12, "TRY300") is True
     assert ignore.is_ignoring(12, "anything") is True
 
 
 def test_entity_ignore_specific_whole_file():
-    ignore = IgnoreViolation(1, ["TC200", "TC101"])
+    ignore = IgnoreViolation(1, ["TRY200", "TRY101"])
 
     # Any line
-    assert ignore.is_ignoring(10, "TC200") is True
-    assert ignore.is_ignoring(10, "TC101") is True
-    assert ignore.is_ignoring(20, "TC200") is True
-    assert ignore.is_ignoring(20, "TC101") is True
-    assert ignore.is_ignoring(30, "TC200") is True
-    assert ignore.is_ignoring(30, "TC101") is True
+    assert ignore.is_ignoring(10, "TRY200") is True
+    assert ignore.is_ignoring(10, "TRY101") is True
+    assert ignore.is_ignoring(20, "TRY200") is True
+    assert ignore.is_ignoring(20, "TRY101") is True
+    assert ignore.is_ignoring(30, "TRY200") is True
+    assert ignore.is_ignoring(30, "TRY101") is True
 
     # Any other violation
-    assert ignore.is_ignoring(10, "TC300") is False
+    assert ignore.is_ignoring(10, "TRY300") is False
     assert ignore.is_ignoring(10, "anything") is False
-    assert ignore.is_ignoring(20, "TC002") is False
-    assert ignore.is_ignoring(30, "TC301") is False
+    assert ignore.is_ignoring(20, "TRY002") is False
+    assert ignore.is_ignoring(30, "TRY301") is False
     assert ignore.is_ignoring(30, "anything") is False

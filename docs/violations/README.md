@@ -1,43 +1,43 @@
 # Violations
 
-## `TC0xx` - Exception Classes
+## `TRY0xx` - Exception Classes
 
 
 | Code              | Description                                                |
 | ----------------- | ---------------------------------------------------------- |
-| [TC002](TC002.md) | Create your own exception                                  |
-| [TC003](TC003.md) | Avoid specifying long messages outside the exception class |
-| [TC004](TC004.md) | Prefer `TypeError` exception for invalid type              |
+| [TRY002](TRY002.md) | Create your own exception                                  |
+| [TRY003](TRY003.md) | Avoid specifying long messages outside the exception class |
+| [TRY004](TRY004.md) | Prefer `TypeError` exception for invalid type              |
 
-## `TC1xx` - General
+## `TRY1xx` - General
 
 
 | Code                                 | Description           |
 | ------------------------------------ | --------------------- |
-| [TC100](TC100.md) (**EXPERIMENTAL**) | Check to continue     |
-| [TC101](TC101.md)                    | Too many `try` blocks |
+| [TRY100](TRY100.md) (**EXPERIMENTAL**) | Check to continue     |
+| [TRY101](TRY101.md)                    | Too many `try` blocks |
 
-## `TC2xx` - Except blocks
+## `TRY2xx` - Except blocks
 
 
 | Code              | Description                                         |
 | ----------------- | --------------------------------------------------- |
-| [TC200](TC200.md) | Use `raise Exception from`                          |
-| [TC201](TC201.md) | Simply use `raise`                                  |
-| [TC202](TC202.md) | Don't ignore a broad exception without even logging |
+| [TRY200](TRY200.md) | Use `raise Exception from`                          |
+| [TRY201](TRY201.md) | Simply use `raise`                                  |
+| [TRY202](TRY202.md) | Don't ignore a broad exception without even logging |
 
-## `TC3xx` - Try blocks
+## `TRY3xx` - Try blocks
 
 
 | Code              | Description                       |
 | ----------------- | --------------------------------- |
-| [TC300](TC300.md) | Consider adding an `else` block   |
-| [TC301](TC301.md) | Avoid direct raises in `try` body |
+| [TRY300](TRY300.md) | Consider adding an `else` block   |
+| [TRY301](TRY301.md) | Avoid direct raises in `try` body |
 
-## `TC4xx` - Logging usage
+## `TRY4xx` - Logging usage
 
 
 | Code              | Description                                  |
 | ----------------- | -------------------------------------------- |
-| [TC400](TC400.md) | Use logging `.exception` instead of `.error` |
-| [TC401](TC401.md) | Do not log the exception object              |
+| [TRY400](TRY400.md) | Use logging `.exception` instead of `.error` |
+| [TRY401](TRY401.md) | Do not log the exception object              |

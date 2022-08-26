@@ -1,4 +1,5 @@
 .vscode
+.idea
 *.egg-info
 *.pyc
 *.log
