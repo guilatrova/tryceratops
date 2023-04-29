@@ -50,9 +50,9 @@ or test it against some violation files we have in place:
 
 ```sh
 ❯ poetry run tryceratops src/tests/samples/violations/call_too_many_try.py
-[TC101] Too many try blocks in your function - src/tests/samples/violations/call_too_many_try.py:15:4
-[TC101] Too many try blocks in your function - src/tests/samples/violations/call_too_many_try.py:27:4
-[TC101] Too many try blocks in your function - src/tests/samples/violations/call_too_many_try.py:32:4
+[TRY101] Too many try blocks in your function - src/tests/samples/violations/call_too_many_try.py:15:4
+[TRY101] Too many try blocks in your function - src/tests/samples/violations/call_too_many_try.py:27:4
+[TRY101] Too many try blocks in your function - src/tests/samples/violations/call_too_many_try.py:32:4
 Done processing! 🦖✨
 Processed 1 files
 Found 3 violations
@@ -61,10 +61,10 @@ Found 3 violations
 You can try it with flake8 if preferred:
 
 ```sh
-❯ poetry run flake8 --select TC src/tests/samples/violations/call_too_many_try.py
-src/tests/samples/violations/call_too_many_try.py:15:5: TC101 Too many try blocks in your function
-src/tests/samples/violations/call_too_many_try.py:27:5: TC101 Too many try blocks in your function
-src/tests/samples/violations/call_too_many_try.py:32:5: TC101 Too many try blocks in your function
+❯ poetry run flake8 --select TRY src/tests/samples/violations/call_too_many_try.py
+src/tests/samples/violations/call_too_many_try.py:15:5: TRY101 Too many try blocks in your function
+src/tests/samples/violations/call_too_many_try.py:27:5: TRY101 Too many try blocks in your function
+src/tests/samples/violations/call_too_many_try.py:32:5: TRY101 Too many try blocks in your function
 ```
 
 ## Linting

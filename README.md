@@ -65,10 +65,10 @@ You can enable experimental analyzers by running:
 tryceratops --experimental [filename or dir...]
 ```
 
-You can ignore specific violations by using: `--ignore TCXXX` repeatedly:
+You can ignore specific violations by using: `--ignore TRYXXX` repeatedly:
 
 ```
-tryceratops --ignore TC201 --ignore TC202 [filename or dir...]
+tryceratops --ignore TRY201 --ignore TRY202 [filename or dir...]
 ```
 
 You can exclude dirs by using: `--exclude dir/path` repeatedly:
@@ -90,10 +90,10 @@ tryceratops --autofix [filename or dir...]
 🦖 Tryceratops is also a plugin for `flake8`, so you can:
 
 ```
-❯ flake8 --select TC src/tests/samples/violations/call_raise_vanilla.py
-src/tests/samples/violations/call_raise_vanilla.py:13:9: TC002 Create your own exception
-src/tests/samples/violations/call_raise_vanilla.py:13:9: TC003 Avoid specifying long messages outside the exception class
-src/tests/samples/violations/call_raise_vanilla.py:21:9: TC201 Simply use 'raise' without specifying exception object again
+❯ flake8 --select TRY src/tests/samples/violations/call_raise_vanilla.py
+src/tests/samples/violations/call_raise_vanilla.py:13:9: TRY002 Create your own exception
+src/tests/samples/violations/call_raise_vanilla.py:13:9: TRY003 Avoid specifying long messages outside the exception class
+src/tests/samples/violations/call_raise_vanilla.py:21:9: TRY201 Simply use 'raise' without specifying exception object again
 ```
 
 ## Violations
@@ -102,7 +102,7 @@ All violations and its descriptions can be found in [docs](https://github.com/gu
 
 ### Autofix support
 
-So far, autofix only supports violations: [TC200](docs/violations/TC200.md), [TC201](docs/violations/TC201.md), and [TC400](docs/violations/TC400.md).
+So far, autofix only supports violations: [TRY200](docs/violations/TRY200.md), [TRY201](docs/violations/TRY201.md), and [TRY400](docs/violations/TRY400.md).
 
 ### Ignoring violations
 
@@ -119,7 +119,7 @@ def verbose_reraise_1():
     try:
         a = 1
     except Exception as ex:
-        raise ex  # noqa: TC202
+        raise ex  # noqa: TRY202
 ```
 
 ### Configuration
@@ -132,7 +132,7 @@ Example:
 ```toml
 [tool.tryceratops]
 exclude = ["samples"]
-ignore = ["TC002", "TC200", "TC300"]
+ignore = ["TRY002", "TRY200", "TRY300"]
 experimental = true
 ```
 

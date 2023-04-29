@@ -22,7 +22,7 @@ AUTOFIX_FLAG_OPTION = dict(
 )
 IGNORE_OPTION = dict(
     multiple=True,
-    help="A violation to be ignored. e.g. -i TC200 -i TC201",
+    help="A violation to be ignored. e.g. -i TRY200 -i TRY201",
     type=click.Choice(CODE_CHOICES),
 )
 EXCLUDE_OPTION = dict(multiple=True, help="A dir to be excluded. e.g. -x tests/ -x fixtures/")

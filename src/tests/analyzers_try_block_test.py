@@ -31,7 +31,7 @@ def test_finally_dont_consider_else():
     assert len(violations) == 1
     violation = violations[0]
 
-    assert_consider(31, 8, violation)
+    assert_consider(30, 8, violation)
 
 
 def test_try_inner_raise():
