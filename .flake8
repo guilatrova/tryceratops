@@ -1,9 +1,12 @@
 [flake8]
 max-line-length=100
 extend-ignore=
-    E203 # whitespace before :
-    ANN101, ANN102 # type self and cls
-    ANN204 # type __init__
+    # whitespace before :
+    E203
+    # type self and cls
+    ANN101, ANN102
+    # type __init__
+    ANN204
 per-file-ignores=
     src/tests/*:ANN201
 exclude=

@@ -23,7 +23,6 @@ def fine():
         logger.info("ok() is fine")
 
 
-
 def bad():
     try:
         a = 1
@@ -35,4 +34,3 @@ def bad():
 
     finally:
         logger.info("except + finally = still issue")
-
