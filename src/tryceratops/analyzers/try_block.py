@@ -14,8 +14,11 @@ class TryConsiderElseAnalyzer(BaseAnalyzer):
         *_, last_child = node.body
         theres_more_children = len(node.body) > 1
 
-        if isinstance(last_child, ast.Return) and theres_more_children:
-            self._mark_violation(last_child)
+        has_except_block = bool(node.handlers)
+
+        if has_except_block:
+            if isinstance(last_child, ast.Return) and theres_more_children:
+                self._mark_violation(last_child)
 
         self.generic_visit(node)
 

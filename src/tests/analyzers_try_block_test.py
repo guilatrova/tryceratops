@@ -20,6 +20,20 @@ def test_consider_else():
     assert_consider(20, 8, violation)
 
 
+def test_finally_dont_consider_else():
+    tree = read_sample("try_finally_dont_consider_else")
+    analyzer = analyzers.try_block.TryConsiderElseAnalyzer()
+    code, msg = codes.CONSIDER_ELSE
+
+    assert_consider = partial(assert_violation, code, msg)
+
+    violations = analyzer.check(tree, "filename")
+    assert len(violations) == 1
+    violation = violations[0]
+
+    assert_consider(31, 8, violation)
+
+
 def test_try_inner_raise():
     tree = read_sample("try_inner_raise")
     analyzer = analyzers.try_block.TryShouldntRaiseAnalyzer()
