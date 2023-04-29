@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.0 (2023-04-29)
+### Feature
+* Handle false positive for TC300 ([`719d07f`](https://github.com/guilatrova/tryceratops/commit/719d07f46dc68d4036964216c65aafdf452366da))
+
+### Documentation
+* Fix syntax err in TC003 ([`130a7f2`](https://github.com/guilatrova/tryceratops/commit/130a7f2a512aaeefb6bb7faaced75d8865ce9b26))
+* Add poetry install option ([`fa50c28`](https://github.com/guilatrova/tryceratops/commit/fa50c2840b2ff3afc2c57d136d921b1dba54fc57))
+* Update readme ([`9291efb`](https://github.com/guilatrova/tryceratops/commit/9291efb9a159cbfbd9db6127944bac2fd6aa3dd2))
+
 ## v1.1.0 (2022-04-30)
 ### Feature
 * Reduce dependencies contraints ([`1a71007`](https://github.com/guilatrova/tryceratops/commit/1a710072c86f4747a375e0bcd88766e856baeaf9))
