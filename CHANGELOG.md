@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v2.0.0 (2023-04-29)
+### Feature
+* Change codes from TC to TRY ([`4998fd2`](https://github.com/guilatrova/tryceratops/commit/4998fd2df40b58a6b1929b06b3cddcaa748d0a32))
+
+### Breaking
+* change codes from TC to TRY ([`4998fd2`](https://github.com/guilatrova/tryceratops/commit/4998fd2df40b58a6b1929b06b3cddcaa748d0a32))
+
 ## v1.2.0 (2023-04-29)
 ### Feature
 * Handle false positive for TC300 ([`719d07f`](https://github.com/guilatrova/tryceratops/commit/719d07f46dc68d4036964216c65aafdf452366da))
