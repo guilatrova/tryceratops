@@ -148,3 +148,31 @@ class LogObjectAnalyzer(BaseAnalyzer):
             self._find_violations(node)
 
         self.generic_visit(node)
+
+
+class UselessTryExceptAnalyzer(BaseAnalyzer):
+    violation_code = codes.USELESS_TRY_EXCEPT
+
+    @visit_error_handler
+    def visit_Try(self, node: ast.Try) -> None:
+        def is_handler_useless(handler: ast.ExceptHandler) -> bool:
+            # a handler whose body is just `raise` is considered useless
+
+            if len(handler.body) == 1 and isinstance(handler.body[0], ast.Raise):
+                raise_argument = handler.body[0].exc
+                return (
+                    raise_argument
+                    is None
+                    # `except ... as e: raise`, no argument
+                ) or (
+                    isinstance(raise_argument, ast.Name)
+                    and raise_argument.id == handler.name
+                    # `except ... as e: raise e`
+                )
+            return False
+
+        if node.handlers and all(is_handler_useless(handler) for handler in node.handlers):
+            # the `if node.handlers` is for allowing try-finally cases, without except
+            self._mark_violation(node)
+
+        self.generic_visit(node)

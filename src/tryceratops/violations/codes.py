@@ -20,6 +20,7 @@ VERBOSE_RERAISE = (
     "Simply use 'raise' without specifying exception object again",
 )
 IGNORING_EXCEPTION = ("TRY202", "You're ignoring a broad exception without even logging")
+USELESS_TRY_EXCEPT = ("TRY203", "Useless try-except, remove it or handle the exception")
 
 # TRY3xx - Try
 CONSIDER_ELSE = ("TRY300", "Consider moving this statement to an 'else' block")
@@ -39,6 +40,7 @@ CODE_CHOICES = {
     "TRY202",
     "TRY300",
     "TRY301",
+    "TRY302",
     "TRY400",
     "TRY401",
 }

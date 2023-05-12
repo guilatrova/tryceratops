@@ -56,6 +56,25 @@ def test_broad_pass():
     assert_broad(35, 12, third)
 
 
+def test_useless_except():
+    tree = read_sample("try_useless_except")
+
+    analyzer = analyzers.exception_block.UselessTryExceptAnalyzer()
+    code, msg = codes.USELESS_TRY_EXCEPT
+
+    violations = analyzer.check(tree, "filename")
+    assert_useless_except = partial(assert_violation, code, msg)
+
+    assert len(violations) == 7
+    assert_useless_except(22, 4, violations[0])
+    assert_useless_except(54, 4, violations[1])
+    assert_useless_except(62, 4, violations[2])
+    assert_useless_except(70, 4, violations[3])
+    assert_useless_except(78, 4, violations[4])
+    assert_useless_except(88, 4, violations[5])
+    assert_useless_except(153, 4, violations[6])
+
+
 def test_log_error():
     tree = read_sample("log_error")
     analyzer = analyzers.exception_block.LogErrorAnalyzer()
