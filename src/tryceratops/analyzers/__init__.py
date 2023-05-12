@@ -20,6 +20,7 @@ ANALYZER_CLASSES: Set[Type[BaseAnalyzer]] = {
     exception_block.ExceptBroadPassAnalyzer,
     exception_block.LogErrorAnalyzer,
     exception_block.LogObjectAnalyzer,
+    exception_block.UselessTryExceptAnalyzer,
     try_block.TryConsiderElseAnalyzer,
     try_block.TryShouldntRaiseAnalyzer,
 }
