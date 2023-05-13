@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.1.0 (2023-05-13)
+### Feature
+* Useless try-except ([`f7a56dd`](https://github.com/guilatrova/tryceratops/commit/f7a56dd337acda060aa643c80f20b2e780ad2fa2))
+
 ## v2.0.0 (2023-04-29)
 ### Feature
 * Change codes from TC to TRY ([`4998fd2`](https://github.com/guilatrova/tryceratops/commit/4998fd2df40b58a6b1929b06b3cddcaa748d0a32))
