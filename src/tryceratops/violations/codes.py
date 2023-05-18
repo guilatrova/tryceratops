@@ -38,9 +38,9 @@ CODE_CHOICES = {
     "TRY200",
     "TRY201",
     "TRY202",
+    "TRY203",
     "TRY300",
     "TRY301",
-    "TRY302",
     "TRY400",
     "TRY401",
 }

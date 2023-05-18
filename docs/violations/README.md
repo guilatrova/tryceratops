@@ -22,6 +22,7 @@
 | [TRY200](TRY200.md) | Use `raise Exception from`                          |
 | [TRY201](TRY201.md) | Simply use `raise`                                  |
 | [TRY202](TRY202.md) | Don't ignore a broad exception without even logging |
+| [TRY203](TRY203.md) | Useless try-except                                  |
 
 ## `TRY3xx` - Try blocks
 
@@ -29,7 +30,6 @@
 | ------------------- | --------------------------------- |
 | [TRY300](TRY300.md) | Consider adding an `else` block   |
 | [TRY301](TRY301.md) | Avoid direct raises in `try` body |
-| [TRY302](TRY302.md) | Useless try-except                |
 
 ## `TRY4xx` - Logging usage
 
