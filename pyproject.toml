@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tryceratops"
-version = "2.1.0"
+version = "2.1.1"
 description = "Prevent Exception Handling AntiPatterns"
 authors = ["Guilherme Latrova <hello@guilatrova.dev>"]
 license = "MIT"

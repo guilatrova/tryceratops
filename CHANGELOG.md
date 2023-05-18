@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v2.1.1 (2023-05-18)
+### Fix
+* Wrong reference to 302 instead of 203 ([`8826ded`](https://github.com/guilatrova/tryceratops/commit/8826ded502e230aee4c0cfe92c709feb9f431a19))
+
+### Documentation
+* Add info about TRY302 ([`8e739b0`](https://github.com/guilatrova/tryceratops/commit/8e739b0e8e5e2b80ad5c62ea8dd79900f4ac6d8a))
+
 ## v2.1.0 (2023-05-13)
 ### Feature
 * Useless try-except ([`f7a56dd`](https://github.com/guilatrova/tryceratops/commit/f7a56dd337acda060aa643c80f20b2e780ad2fa2))

@@ -26,7 +26,7 @@ and you should be ready to go!
 
 ```sh
 ❯ poetry run tryceratops --version
-tryceratops, version 2.1.0
+tryceratops, version 2.1.1
 ```
 
 ## Testing
