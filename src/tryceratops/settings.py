@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Iterable, Optional, Type
+from typing import TYPE_CHECKING, Iterable, Optional, Set, Type
 
 from tryceratops.processors import Processor
 from tryceratops.violations import Violation
@@ -55,6 +55,8 @@ class GlobalSettings:
     include_experimental: bool
     ignore_violations: Iterable[str]
     exclude_dirs: Iterable[str]
+    allowed_base_exceptions: Set[str]
+
     check_pickable: bool = False
     autofix: bool = False
 
@@ -94,8 +96,9 @@ class GlobalSettings:
         exclude = config.get("exclude", [])
         autofix = config.get("autofix", False)
         check_pickable = config.get("check_pickable", False)
+        allowed_base_exceptions = set(config.get("allowed_base_exceptions", set()))
 
-        return cls(experimental, ignore, exclude, check_pickable, autofix)
+        return cls(experimental, ignore, exclude, allowed_base_exceptions, check_pickable, autofix)
 
     def overwrite_from_cli(
         self,

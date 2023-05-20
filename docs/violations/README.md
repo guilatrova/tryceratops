@@ -2,12 +2,13 @@
 
 ## `TRY0xx` - Exception Classes
 
-| Code                                                       | Description                                                |
-| ---------------------------------------------------------- | ---------------------------------------------------------- |
-| [TRY002](TRY002.md)                                        | Create your own exception                                  |
-| [TRY003](TRY003.md)                                        | Avoid specifying long messages outside the exception class |
-| [TRY004](TRY004.md)                                        | Prefer `TypeError` exception for invalid type              |
-| [TRY005](TRY005.md) (**ENABLED through `check_pickable`**) | Define `__reduce__` to make exception pickable             |
+| Code                                                                | Description                                                |
+| ------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [TRY002](TRY002.md)                                                 | Create your own exception                                  |
+| [TRY003](TRY003.md)                                                 | Avoid specifying long messages outside the exception class |
+| [TRY004](TRY004.md)                                                 | Prefer `TypeError` exception for invalid type              |
+| [TRY005](TRY005.md) (**ENABLED through `check_pickable`**)          | Define `__reduce__` to make exception pickable             |
+| [TRY006](TRY006.md) (**ENABLED through `allowed_base_exceptions`**) | Inheriting from non defined base exception                 |
 
 ## `TRY1xx` - General
 

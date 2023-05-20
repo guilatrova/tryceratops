@@ -135,6 +135,7 @@ exclude = ["samples"]
 ignore = ["TRY002", "TRY200", "TRY300"]
 experimental = false
 check_pickable = false
+allowed_base_exceptions = ["MyAppBase"]
 ```
 
 CLI flags always overwrite the config file.

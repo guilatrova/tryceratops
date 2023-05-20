@@ -16,6 +16,7 @@ ANALYZER_CLASSES: Set[Type[BaseAnalyzer]] = {
     call.CallAvoidCheckingToContinueAnalyzer,
     conditional.PreferTypeErrorAnalyzer,
     classdefs.NonPickableAnalyzer,
+    classdefs.InheritFromBaseAnalyzer,
     exception_block.ExceptReraiseWithoutCauseAnalyzer,
     exception_block.ExceptVerboseReraiseAnalyzer,
     exception_block.ExceptBroadPassAnalyzer,
@@ -29,7 +30,7 @@ ANALYZER_CLASSES: Set[Type[BaseAnalyzer]] = {
 
 def get_analyzer_chain(global_settings: GlobalSettings) -> Set[BaseAnalyzer]:
     analyzers = {
-        analyzercls()
+        analyzercls(global_settings)
         for analyzercls in ANALYZER_CLASSES
         if global_settings.should_run_processor(analyzercls)
     }

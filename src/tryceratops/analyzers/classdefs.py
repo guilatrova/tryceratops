@@ -1,7 +1,9 @@
 import ast
 import typing as t
 
+from tryceratops.settings import GlobalSettings
 from tryceratops.violations import codes
+from tryceratops.violations.violations import InheritFromNonBaseViolation
 
 from .base import BaseAnalyzer, visit_error_handler
 
@@ -44,3 +46,22 @@ class NonPickableAnalyzer(BaseAnalyzer):
         ):
             # Pickle would break for non string args or for more than 1 arg
             self._mark_violation(node)
+
+
+class InheritFromBaseAnalyzer(BaseAnalyzer):
+    violation_code = codes.ALLOWED_BASE_EXCEPTION
+    violation_type = InheritFromNonBaseViolation
+
+    @visit_error_handler
+    def visit_ClassDef(self, node: ast.ClassDef) -> t.Any:
+        is_exc = any([base for base in node.bases if getattr(base, "id", None) == "Exception"])
+        if is_exc is False:
+            return self.generic_visit(node)
+
+        settings = t.cast(GlobalSettings, self._settings)
+        if node.name not in settings.allowed_base_exceptions:
+            self._mark_violation(
+                node,
+                class_name=node.name,
+                allowed_bases=settings.allowed_base_exceptions,
+            )
