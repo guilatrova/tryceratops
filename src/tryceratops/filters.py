@@ -95,7 +95,7 @@ class GlobalSettings:
         autofix = config.get("autofix", False)
         check_pickable = config.get("check_pickable", False)
 
-        return cls(experimental, ignore, exclude, autofix, check_pickable)
+        return cls(experimental, ignore, exclude, check_pickable, autofix)
 
     def overwrite_from_cli(
         self,
