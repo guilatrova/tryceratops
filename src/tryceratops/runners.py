@@ -4,9 +4,9 @@ from dataclasses import dataclass
 from typing import List, Set, Type
 
 from tryceratops.analyzers import BaseAnalyzer, get_analyzer_chain
-from tryceratops.filters import FileFilter, GlobalSettings
 from tryceratops.fixers import BaseFixer, get_fixers_chain
 from tryceratops.processors import Processor
+from tryceratops.settings import FileFilter, GlobalSettings
 from tryceratops.types import ParsedFilesType
 from tryceratops.violations import Violation
 

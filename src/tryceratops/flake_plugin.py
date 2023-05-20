@@ -5,8 +5,8 @@ from typing import Any, Generator, Iterable, List, Tuple, Type
 
 from tryceratops.files.discovery import load_config
 from tryceratops.files.parser import parse_ignore_tokens
-from tryceratops.filters import FileFilter, GlobalSettings
 from tryceratops.runners import Runner
+from tryceratops.settings import FileFilter, GlobalSettings
 from tryceratops.violations.violations import Violation
 
 PACKAGE_NAME = "tryceratops"
