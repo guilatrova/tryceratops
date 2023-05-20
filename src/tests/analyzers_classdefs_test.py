@@ -21,6 +21,7 @@ def test_non_pickable_error():
 
     assert_non_pickable(24, 0, violations[0])
     assert_non_pickable(29, 0, violations[1])
+    # assert_non_pickable(56, 0, violations[1])
 
 
 def test_inherit_from_allowed_exceptions():

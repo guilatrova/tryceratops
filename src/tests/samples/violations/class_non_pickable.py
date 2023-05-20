@@ -47,3 +47,13 @@ class CustomWITHReduce(Exception):
 
     def __reduce__(self) -> str | tuple[Any, ...]:
         return (CustomMissingReduce, (self.age,))
+
+
+class ParentException(Exception):
+    pass
+
+
+class ChildrenExceptionMissingReduce(ParentException):
+    def __init__(self, age: int) -> None:  # TODO: Should be a violation!
+        self.age = age
+        super().__init__(f"You're not old enough: {age}")
