@@ -1,6 +1,6 @@
 import ast
 import re
-from typing import List
+import typing as t
 
 from tryceratops.violations import codes
 from tryceratops.violations.violations import (
@@ -15,7 +15,7 @@ from .base import BaseFixer
 class VerboseReraiseFixer(BaseFixer[VerboseReraiseViolation]):
     violation_code = codes.VERBOSE_RERAISE
 
-    def perform_fix(self, lines: List[str], violation: VerboseReraiseViolation) -> List[str]:
+    def perform_fix(self, lines: t.List[str], violation: VerboseReraiseViolation) -> t.List[str]:
         all_lines = lines[:]
 
         guilty_line = all_lines[violation.line - 1]
@@ -29,7 +29,9 @@ class RaiseWithoutCauseFixer(BaseFixer[RaiseWithoutCauseViolation]):
     violation_code = codes.RERAISE_NO_CAUSE
     exception_name_to_create = "ex"
 
-    def _fix_except_handler(self, all_lines: List[str], offending_node: ast.ExceptHandler) -> None:
+    def _fix_except_handler(
+        self, all_lines: t.List[str], offending_node: ast.ExceptHandler
+    ) -> None:
         line_offset = offending_node.lineno - 1
         offending_line = all_lines[line_offset]
 
@@ -40,7 +42,7 @@ class RaiseWithoutCauseFixer(BaseFixer[RaiseWithoutCauseViolation]):
         all_lines[line_offset] = new_line
 
     def _fix_raise_no_cause(
-        self, all_lines: List[str], violation: RaiseWithoutCauseViolation, exception_name: str
+        self, all_lines: t.List[str], violation: RaiseWithoutCauseViolation, exception_name: str
     ) -> None:
         endline = violation.node.end_lineno or violation.line
         is_singleline = violation.line == endline
@@ -56,7 +58,7 @@ class RaiseWithoutCauseFixer(BaseFixer[RaiseWithoutCauseViolation]):
 
         all_lines[fix_offset] = new_line
 
-    def perform_fix(self, lines: List[str], violation: RaiseWithoutCauseViolation) -> List[str]:
+    def perform_fix(self, lines: t.List[str], violation: RaiseWithoutCauseViolation) -> t.List[str]:
         all_lines = lines[:]
         exception_name = violation.exception_name
 
@@ -72,7 +74,7 @@ class RaiseWithoutCauseFixer(BaseFixer[RaiseWithoutCauseViolation]):
 class LoggerErrorFixer(BaseFixer[Violation]):
     violation_code = codes.USE_LOGGING_EXCEPTION
 
-    def perform_fix(self, lines: List[str], violation: Violation) -> List[str]:
+    def perform_fix(self, lines: t.List[str], violation: Violation) -> t.List[str]:
         all_lines = lines[:]
 
         guilty_line = all_lines[violation.line - 1]

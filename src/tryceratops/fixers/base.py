@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from types import TracebackType
@@ -13,13 +15,13 @@ GroupedViolations = Dict[str, List[ViolationType]]
 
 
 class FileFixerHandler:
-    def __init__(self, filename: str):
+    def __init__(self, filename: str) -> None:
         self.file = open(filename, "r+", encoding="utf-8")
 
-    def __enter__(self):
+    def __enter__(self) -> FileFixerHandler:
         return self
 
-    def read_lines(self) -> Iterable[str]:
+    def read_lines(self) -> List[str]:
         lines = self.file.readlines()
         self.file.seek(0)
         return lines

@@ -11,7 +11,7 @@ from .exceptions import AnalyzerVisitException
 class BaseAnalyzer(ABC, Processor, ast.NodeVisitor):
     violation_type: Type[Violation] = Violation
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.violations: List[Violation] = []
 
     def _mark_violation(self, *nodes: ast.AST, **kwargs: Any) -> None:  # noqa: ANN401

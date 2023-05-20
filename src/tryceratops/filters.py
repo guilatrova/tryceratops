@@ -59,7 +59,7 @@ class GlobalSettings:
     def _self_check(self) -> None:
         self.exclude_dirs = [excluded for excluded in self.exclude_dirs if excluded]
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self._self_check()
 
     @property

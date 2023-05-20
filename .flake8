@@ -5,8 +5,6 @@ extend-ignore=
     E203
     # type self and cls
     ANN101, ANN102
-    # type __init__
-    ANN204
 per-file-ignores=
     src/tests/*:ANN201
 exclude=

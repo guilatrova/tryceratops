@@ -35,7 +35,7 @@ class FileParseFailed:
 
 
 class FileDiscovery:
-    def __init__(self):
+    def __init__(self) -> None:
         self.failures: List[FileParseFailed] = []
 
     @property

@@ -27,7 +27,7 @@ def present_violation(violation: Violation) -> str:
 
 
 class CliInterface:
-    def __init__(self, runner: Runner, discovery: FileDiscovery):
+    def __init__(self, runner: Runner, discovery: FileDiscovery) -> None:
         self.runner = runner
         self.discovery = discovery
 

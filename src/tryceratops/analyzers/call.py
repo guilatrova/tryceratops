@@ -47,7 +47,7 @@ class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
     EXPERIMENTAL = True
     violation_code = codes.CHECK_TO_CONTINUE
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.assignments_from_calls: Dict[str, ast.Assign] = {}
         super().__init__()
 

@@ -21,7 +21,7 @@ class RuntimeError:
 
 
 class Runner:
-    def __init__(self):
+    def __init__(self) -> None:
         self.runtime_errors: List[RuntimeError] = []
         self.violations: List[Violation] = []
         self.analyzed_files = 0

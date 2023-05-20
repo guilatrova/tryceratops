@@ -6,7 +6,7 @@ class AnalyzerException(Exception):
 
 
 class AnalyzerVisitException(AnalyzerException):
-    def __init__(self, node: ast.stmt):
+    def __init__(self, node: ast.stmt) -> None:
         self.node = node
         super().__init__(
             f"Unexpected error when analyzing '{type(node).__name__}' statement at "
