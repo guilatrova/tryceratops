@@ -54,11 +54,14 @@ class InheritFromBaseAnalyzer(BaseAnalyzer):
 
     @visit_error_handler
     def visit_ClassDef(self, node: ast.ClassDef) -> t.Any:
+        settings = t.cast(GlobalSettings, self._settings)
+        if not settings.allowed_base_exceptions:
+            return self.generic_visit(node)
+
         is_exc = any([base for base in node.bases if getattr(base, "id", None) == "Exception"])
         if is_exc is False:
             return self.generic_visit(node)
 
-        settings = t.cast(GlobalSettings, self._settings)
         if node.name not in settings.allowed_base_exceptions:
             self._mark_violation(
                 node,

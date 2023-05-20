@@ -35,7 +35,7 @@ def test_inherit_from_allowed_exceptions():
         )
     )
 
-    assert_non_pickable = partial(assert_violation, codes.ALLOWED_BASE_EXCEPTION[0])
+    asset_non_inherit = partial(assert_violation, codes.ALLOWED_BASE_EXCEPTION[0])
     msg_base = codes.ALLOWED_BASE_EXCEPTION[1]
     allowed_msg = ", ".join(allowed_base_exceptions)
 
@@ -43,5 +43,20 @@ def test_inherit_from_allowed_exceptions():
 
     assert len(violations) == 2
 
-    assert_non_pickable(msg_base.format("InvalidBase", allowed_msg), 19, 0, violations[0])
-    assert_non_pickable(msg_base.format("MultiInvalidBase", allowed_msg), 23, 0, violations[1])
+    asset_non_inherit(msg_base.format("InvalidBase", allowed_msg), 19, 0, violations[0])
+    asset_non_inherit(msg_base.format("MultiInvalidBase", allowed_msg), 23, 0, violations[1])
+
+
+def test_inherit_from_allowed_exceptions_undefined():
+    tree = read_sample("class_base_allowed")
+    analyzer = analyzers.classdefs.InheritFromBaseAnalyzer(
+        GlobalSettings(
+            include_experimental=False,
+            exclude_dirs=[],
+            ignore_violations=[],
+            allowed_base_exceptions=set(),
+        )
+    )
+
+    violations = analyzer.check(tree, "filename")
+    assert len(violations) == 0
