@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.3.1 (2023-05-20)
+### Fix
+* Empty allowed_class skips check ([`e3efc35`](https://github.com/guilatrova/tryceratops/commit/e3efc3532a9516d62d0194afe1c2743c6cf8be36))
+
 ## v2.3.0 (2023-05-20)
 ### Feature
 * Implement TRY006 ([`9635950`](https://github.com/guilatrova/tryceratops/commit/96359503b41b67265c5787869b277140a28233f8))
