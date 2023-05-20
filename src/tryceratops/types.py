@@ -1,13 +1,14 @@
 import ast
-from typing import Collection, List, Tuple, TypedDict
+import typing as t
+import typing_extensions as te
 
 from tryceratops.filters import FileFilter
 
-ParsedFileType = Tuple[str, ast.AST, FileFilter]
-ParsedFilesType = Collection[ParsedFileType]
+ParsedFileType = t.Tuple[str, ast.AST, FileFilter]
+ParsedFilesType = t.Collection[ParsedFileType]
 
 
-class PyprojectConfig(TypedDict):
+class PyprojectConfig(t.TypedDict):
     """
     Represents the expected pyproject config to be loaded
         exclude: a list of path patterns to be excluded e.g. [/tests, /fixtures]
@@ -15,7 +16,8 @@ class PyprojectConfig(TypedDict):
         experimental: whether to enable experimental analyzers
     """
 
-    exclude: List[str]
-    ignore: List[str]
-    experimental: bool
-    autofix: bool
+    exclude: te.NotRequired[t.List[str]]
+    ignore: te.NotRequired[t.List[str]]
+    experimental: te.NotRequired[bool]
+    autofix: te.NotRequired[bool]
+    check_pickable: te.NotRequired[bool]
