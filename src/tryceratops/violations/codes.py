@@ -6,6 +6,10 @@ RAISE_VANILLA_ARGS = (
 )
 PREFER_TYPE_ERROR = ("TRY004", "Prefer TypeError exception for invalid type")
 NON_PICKABLE_CLASS = ("TRY005", "Define __reduce__ to make exception pickable")
+ALLOWED_BASE_EXCEPTION = (
+    "TRY006",
+    "Class '{}' should inherit from any of your defined base exceptions: {}",
+)
 
 # TRY1xx - General
 CHECK_TO_CONTINUE = (
@@ -37,6 +41,7 @@ CODE_CHOICES = {
     "TRY003",
     "TRY004",
     "TRY005",
+    "TRY006",
     # TRY1xx - General
     "TRY100",
     "TRY101",

@@ -21,3 +21,4 @@ class PyprojectConfig(t.TypedDict):
     experimental: te.NotRequired[bool]
     autofix: te.NotRequired[bool]
     check_pickable: te.NotRequired[bool]
+    allowed_base_exceptions: te.NotRequired[bool]

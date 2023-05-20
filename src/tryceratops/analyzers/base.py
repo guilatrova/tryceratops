@@ -1,26 +1,28 @@
 import ast
+import typing as t
 from abc import ABC, abstractmethod
-from typing import Any, Callable, List, Protocol, Type
 
 from tryceratops.processors import Processor
+from tryceratops.settings import GlobalSettings
 from tryceratops.violations import Violation
 
 from .exceptions import AnalyzerVisitException
 
 
 class BaseAnalyzer(ABC, Processor, ast.NodeVisitor):
-    violation_type: Type[Violation] = Violation
+    violation_type: t.Type[Violation] = Violation
 
-    def __init__(self) -> None:
-        self.violations: List[Violation] = []
+    def __init__(self, settings: t.Optional[GlobalSettings] = None) -> None:
+        self.violations: t.List[Violation] = []
+        self._settings = settings
 
-    def _mark_violation(self, *nodes: ast.AST, **kwargs: Any) -> None:  # noqa: ANN401
+    def _mark_violation(self, *nodes: ast.AST, **kwargs: t.Any) -> None:  # noqa: ANN401
         klass = self.violation_type
         for node in nodes:
             violation = klass.build(self.filename, self.violation_code, node, **kwargs)
             self.violations.append(violation)
 
-    def check(self, tree: ast.AST, filename: str) -> List[Violation]:
+    def check(self, tree: ast.AST, filename: str) -> t.List[Violation]:
         self.filename = filename
         self.violations = []
 
@@ -29,12 +31,12 @@ class BaseAnalyzer(ABC, Processor, ast.NodeVisitor):
         return self.violations
 
 
-class StmtBodyProtocol(Protocol):
-    body: List[ast.stmt]
+class StmtBodyProtocol(t.Protocol):
+    body: t.List[ast.stmt]
 
 
-def visit_error_handler(func: Callable[[BaseAnalyzer, Any], Any]):  # noqa: ANN201
-    def _func(instance: Any, node: ast.stmt) -> None:  # noqa: ANN401
+def visit_error_handler(func: t.Callable[[BaseAnalyzer, t.Any], t.Any]):  # noqa: ANN201
+    def _func(instance: t.Any, node: ast.stmt) -> None:  # noqa: ANN401
         try:
             return func(instance, node)
         except Exception as ex:
