@@ -6,7 +6,7 @@ from . import call, classdefs, conditional, exception_block, try_block
 from .base import BaseAnalyzer
 
 if TYPE_CHECKING:
-    from tryceratops.filters import GlobalSettings
+    from tryceratops.settings import GlobalSettings
 
 
 ANALYZER_CLASSES: Set[Type[BaseAnalyzer]] = {

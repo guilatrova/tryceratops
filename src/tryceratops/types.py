@@ -2,7 +2,7 @@ import ast
 import typing as t
 import typing_extensions as te
 
-from tryceratops.filters import FileFilter
+from tryceratops.settings import FileFilter
 
 ParsedFileType = t.Tuple[str, ast.AST, FileFilter]
 ParsedFilesType = t.Collection[ParsedFileType]

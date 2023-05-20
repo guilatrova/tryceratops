@@ -3,7 +3,7 @@ import re
 import tokenize
 from typing import Generator, Iterable, TextIO, Tuple
 
-from tryceratops.filters import FileFilter, IgnoreViolation
+from tryceratops.settings import FileFilter, IgnoreViolation
 
 IGNORE_TRYCERATOPS_TOKEN = "noqa"
 IGNORE_TOKEN_PATT = r"noqa(: ?((TRY\d{3},? ?)+))?"
