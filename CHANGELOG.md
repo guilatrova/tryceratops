@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v2.2.0 (2023-05-20)
+### Feature
+* Implement new TRY005 violation ([`5b65dc3`](https://github.com/guilatrova/tryceratops/commit/5b65dc3c139186e0d3df6945533864f07bcc3874))
+
+### Fix
+* Build config in the proper order ([`90863ac`](https://github.com/guilatrova/tryceratops/commit/90863ac777ef262a9ef2b2d216c7ae05a7cd2190))
+* Handle potential missing prop ([`ddcb8bb`](https://github.com/guilatrova/tryceratops/commit/ddcb8bbd999688339d64cd1848663aa6456c6df1))
+
 ## v2.1.1 (2023-05-18)
 ### Fix
 * Wrong reference to 302 instead of 203 ([`8826ded`](https://github.com/guilatrova/tryceratops/commit/8826ded502e230aee4c0cfe92c709feb9f431a19))
