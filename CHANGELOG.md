@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.3.0 (2023-05-20)
+### Feature
+* Implement TRY006 ([`9635950`](https://github.com/guilatrova/tryceratops/commit/96359503b41b67265c5787869b277140a28233f8))
+
 ## v2.2.0 (2023-05-20)
 ### Feature
 * Implement new TRY005 violation ([`5b65dc3`](https://github.com/guilatrova/tryceratops/commit/5b65dc3c139186e0d3df6945533864f07bcc3874))
