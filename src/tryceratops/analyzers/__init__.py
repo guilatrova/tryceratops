@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Set, Type, cast
+from typing import TYPE_CHECKING, Set, Type
 
-from . import call, conditional, exception_block, try_block
+from . import call, classdefs, conditional, exception_block, try_block
 from .base import BaseAnalyzer
 
 if TYPE_CHECKING:
@@ -15,6 +15,7 @@ ANALYZER_CLASSES: Set[Type[BaseAnalyzer]] = {
     call.CallRaiseLongArgsAnalyzer,
     call.CallAvoidCheckingToContinueAnalyzer,
     conditional.PreferTypeErrorAnalyzer,
+    classdefs.NonPickableAnalyzer,
     exception_block.ExceptReraiseWithoutCauseAnalyzer,
     exception_block.ExceptVerboseReraiseAnalyzer,
     exception_block.ExceptBroadPassAnalyzer,

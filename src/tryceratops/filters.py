@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Iterable, Optional, Type
 
 from tryceratops.processors import Processor
 from tryceratops.violations import Violation
+from tryceratops.violations.codes import NON_PICKABLE_CLASS
 
 if TYPE_CHECKING:
     from tryceratops.types import PyprojectConfig
@@ -54,6 +55,7 @@ class GlobalSettings:
     include_experimental: bool
     ignore_violations: Iterable[str]
     exclude_dirs: Iterable[str]
+    check_pickable: bool = False
     autofix: bool = False
 
     def _self_check(self) -> None:
@@ -61,6 +63,9 @@ class GlobalSettings:
 
     def __post_init__(self) -> None:
         self._self_check()
+        if self.check_pickable is False:
+            self.ignore_violations = list(self.ignore_violations)
+            self.ignore_violations.append(NON_PICKABLE_CLASS[0])
 
     @property
     def exclude_experimental(self) -> bool:
@@ -88,8 +93,9 @@ class GlobalSettings:
         ignore = config.get("ignore", [])
         exclude = config.get("exclude", [])
         autofix = config.get("autofix", False)
+        check_pickable = config.get("check_pickable", False)
 
-        return cls(experimental, ignore, exclude, autofix)
+        return cls(experimental, ignore, exclude, autofix, check_pickable)
 
     def overwrite_from_cli(
         self,

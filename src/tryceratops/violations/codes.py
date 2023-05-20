@@ -5,6 +5,7 @@ RAISE_VANILLA_ARGS = (
     "Avoid specifying long messages outside the exception class",
 )
 PREFER_TYPE_ERROR = ("TRY004", "Prefer TypeError exception for invalid type")
+NON_PICKABLE_CLASS = ("TRY005", "Define __reduce__ to make exception pickable")
 
 # TRY1xx - General
 CHECK_TO_CONTINUE = (
@@ -31,16 +32,23 @@ USE_LOGGING_EXCEPTION = ("TRY400", "Use logging '.exception' instead of '.error'
 VERBOSE_LOG_MESSAGE = ("TRY401", "Do not log exception object, give context instead")
 
 CODE_CHOICES = {
+    # TRY0xx - Exceptions
     "TRY002",
     "TRY003",
+    "TRY004",
+    "TRY005",
+    # TRY1xx - General
     "TRY100",
     "TRY101",
+    # TRY2xx - Except
     "TRY200",
     "TRY201",
     "TRY202",
     "TRY203",
+    # TRY3xx - Try
     "TRY300",
     "TRY301",
+    # TRY4xx - Logging
     "TRY400",
     "TRY401",
 }

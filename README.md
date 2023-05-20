@@ -133,7 +133,8 @@ Example:
 [tool.tryceratops]
 exclude = ["samples"]
 ignore = ["TRY002", "TRY200", "TRY300"]
-experimental = true
+experimental = false
+check_pickable = false
 ```
 
 CLI flags always overwrite the config file.
