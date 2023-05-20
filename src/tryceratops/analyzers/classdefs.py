@@ -18,7 +18,7 @@ class NonPickableAnalyzer(BaseAnalyzer):
 
     @visit_error_handler
     def visit_ClassDef(self, node: ast.ClassDef) -> t.Any:
-        is_exc = any([base for base in node.bases if getattr(base, "id") == "Exception"])
+        is_exc = any([base for base in node.bases if getattr(base, "id", None) == "Exception"])
         if is_exc is False:
             return self.generic_visit(node)
 
@@ -40,7 +40,7 @@ class NonPickableAnalyzer(BaseAnalyzer):
         if (
             len(remaining_args) > 0
             or second_arg.annotation
-            and getattr(second_arg.annotation, "id") != "str"
+            and getattr(second_arg.annotation, "id", None) != "str"
         ):
             # Pickle would break for non string args or for more than 1 arg
             self._mark_violation(node)
