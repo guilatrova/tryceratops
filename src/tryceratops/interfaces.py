@@ -6,8 +6,8 @@ from enum import IntEnum
 from rich import print
 
 from tryceratops.files.discovery import FileDiscovery
+from tryceratops.logging_config import ERROR_LOG_FILENAME
 from tryceratops.runners import Runner
-from tryceratops.settings import ERROR_LOG_FILENAME
 from tryceratops.violations import Violation
 
 

@@ -6,8 +6,8 @@ import tryceratops
 from tryceratops.files import FileDiscovery, load_config
 from tryceratops.filters import GlobalSettings
 from tryceratops.interfaces import CliInterface
+from tryceratops.logging_config import LOGGING_CONFIG
 from tryceratops.runners import Runner
-from tryceratops.settings import LOGGING_CONFIG
 from tryceratops.violations import CODE_CHOICES
 
 runner = Runner()
