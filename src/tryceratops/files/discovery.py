@@ -6,7 +6,7 @@ from os.path import isdir, isfile, join
 from pathlib import Path
 from typing import Generator, Iterable, List, Optional, Sequence
 
-from tryceratops.types import ParsedFileType, PyprojectConfig
+from tryceratops.parsing_types import ParsedFileType, PyprojectConfig
 
 from .parser import parse_file
 

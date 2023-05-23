@@ -8,7 +8,7 @@ from tryceratops.violations import Violation
 from tryceratops.violations.codes import NON_PICKABLE_CLASS
 
 if TYPE_CHECKING:
-    from tryceratops.types import PyprojectConfig
+    from tryceratops.parsing_types import PyprojectConfig
 
 
 @dataclass
