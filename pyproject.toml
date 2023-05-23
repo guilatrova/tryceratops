@@ -54,7 +54,7 @@ python = ">=3.8.1,<4.0"
 click = ">=7"
 toml = ">=0.10.2"
 rich = ">=10.14.0"
-typing-extensions = { version = ">=4.5.0", python = "<3.10" }
+typing-extensions = { version = ">=4.5.0", python = "<3.11" }
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"

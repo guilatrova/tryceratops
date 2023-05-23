@@ -1,6 +1,11 @@
 import ast
+import sys
 import typing as t
-import typing_extensions as te
+
+if sys.version_info >= (3, 11):
+    import typing as te
+else:
+    import typing_extensions as te
 
 from tryceratops.settings import FileFilter
 
