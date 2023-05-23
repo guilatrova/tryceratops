@@ -11,7 +11,11 @@ from tryceratops.violations.violations import Violation
 
 PACKAGE_NAME = "tryceratops"
 GLOBAL_DUMMY_FILTER = GlobalSettings(
-    include_experimental=False, ignore_violations=[], exclude_dirs=[], autofix=False
+    include_experimental=False,
+    ignore_violations=[],
+    exclude_dirs=[],
+    autofix=False,
+    allowed_base_exceptions=set(),
 )
 FLAKE8_VIOLATION_TYPE = Tuple[int, int, str, Type[Any]]
 # line, offset, message, class
