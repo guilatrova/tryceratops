@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v2.3.2 (2023-05-23)
+### Fix
+* Add missing prop for allowed_base_exceptions ([`1497ab8`](https://github.com/guilatrova/tryceratops/commit/1497ab85ec26d7a54940664ef4ef50e08744dded))
+* Python <3.11 needs typing_extensions ([`bf8f4cc`](https://github.com/guilatrova/tryceratops/commit/bf8f4ccdeaf3982cd03c1973c6be6170672ede23))
+
 ## v2.3.1 (2023-05-20)
 ### Fix
 * Empty allowed_class skips check ([`e3efc35`](https://github.com/guilatrova/tryceratops/commit/e3efc3532a9516d62d0194afe1c2743c6cf8be36))
