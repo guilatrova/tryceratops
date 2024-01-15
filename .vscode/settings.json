@@ -3,8 +3,8 @@
   "python.linting.flake8Enabled": true,
   "python.formatting.provider": "black",
   "editor.codeActionsOnSave": {
-    "source.flake8": true,
-    "source.organizeImports": true
+    "source.flake8": "explicit",
+    "source.organizeImports": "explicit"
   },
   "editor.formatOnSave": true,
   "[python]": {
@@ -13,7 +13,7 @@
     ],
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     }
   },
   "python.testing.pytestArgs": [
