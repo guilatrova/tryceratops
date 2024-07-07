@@ -22,5 +22,4 @@ repos:
     rev: v1.3.0
     hooks:
       - id: mypy
-        additional_dependencies: [types-toml==0.1.3]
         exclude: samples/
