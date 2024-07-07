@@ -1,5 +1,5 @@
 import logging
-import toml
+import tomli as tomllib
 from dataclasses import dataclass
 from os import listdir
 from os.path import isdir, isfile, join
@@ -115,7 +115,8 @@ def load_config(dir: Sequence[str]) -> Optional[PyprojectConfig]:
     toml_file = find_pyproject_toml(dir)
 
     if toml_file:
-        config = toml.load(toml_file)
-        return config.get("tool", {}).get("tryceratops", {})
+        with open(toml_file, "rb") as toml_stream:
+            config = tomllib.load(toml_stream)
+            return config.get("tool", {}).get("tryceratops", {})
 
     return None
