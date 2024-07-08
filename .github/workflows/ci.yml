@@ -31,25 +31,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - name: Install poetry
+        shell: bash
+        run: pipx install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Install poetry
-        uses: Gr1N/setup-poetry@v7
-
-      - name: Cache poetry dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pypoetry/virtualenvs
-          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+          cache: poetry
+          # key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          poetry config virtualenvs.create false
-          poetry install
+        run: poetry install --with=dev
 
       - name: Unit tests
         run: poetry run pytest -vvv --cov=tryceratops --cov-report=xml
