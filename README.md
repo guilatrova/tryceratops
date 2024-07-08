@@ -146,7 +146,7 @@ If you wish to use pre-commit, add this:
 
 ```yaml
   - repo: https://github.com/guilatrova/tryceratops
-    rev: v2.3.2
+    rev: v2.3.3
     hooks:
       - id: tryceratops
 ```

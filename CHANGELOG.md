@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v2.3.3 (2024-07-08)
+
+### Fix
+
+* Use 'tomli' package instead of 'toml' package. ([`d20c153`](https://github.com/guilatrova/tryceratops/commit/d20c1538e2fa24e6b82d107bd40f027ccef34bb0))
+
 ## v2.3.2 (2023-05-23)
 ### Fix
 * Add missing prop for allowed_base_exceptions ([`1497ab8`](https://github.com/guilatrova/tryceratops/commit/1497ab85ec26d7a54940664ef4ef50e08744dded))
