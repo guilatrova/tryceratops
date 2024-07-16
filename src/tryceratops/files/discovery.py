@@ -1,5 +1,5 @@
 import logging
-import tomli as tomllib
+import sys
 from dataclasses import dataclass
 from os import listdir
 from os.path import isdir, isfile, join
@@ -9,6 +9,11 @@ from typing import Generator, Iterable, List, Optional, Sequence
 from tryceratops.parsing_types import ParsedFileType, PyprojectConfig
 
 from .parser import parse_file
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 logger = logging.getLogger(__name__)
 
