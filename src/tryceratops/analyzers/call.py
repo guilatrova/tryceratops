@@ -24,7 +24,7 @@ class CallRaiseVanillaAnalyzer(BaseRaiseCallableAnalyzer):
     violation_code = codes.RAISE_VANILLA_CLASS
 
     def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name) -> None:
-        if func.id == "Exception":
+        if func.id in ("BaseException", "Exception"):
             self._mark_violation(node)
 
 
