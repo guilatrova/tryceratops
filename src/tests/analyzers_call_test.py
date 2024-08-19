@@ -32,10 +32,11 @@ def test_raise_vanilla():
 
     violations = analyzer.check(tree, "filename")
 
-    assert len(violations) == 1
-    violation = violations[0]
+    assert len(violations) == 2
+    exc_violation, base_exc_violation = violations
 
-    assert_vanilla(13, 8, violation)
+    assert_vanilla(14, 8, exc_violation)
+    assert_vanilla(34, 8, base_exc_violation)
 
 
 def test_raise_long_args():
