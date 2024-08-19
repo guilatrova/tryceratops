@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v2.4.0 (2024-08-19)
+
+### Feature
+
+* TRY002 also checks for Base Exception ([`d2a6beb`](https://github.com/guilatrova/tryceratops/commit/d2a6bebce86930fac1f4d477adaa21c84a0015a6))
+
 ## v2.3.3 (2024-07-08)
 
 ### Fix
