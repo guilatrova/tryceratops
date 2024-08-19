@@ -19,6 +19,8 @@ def func():
         raise CustomException("Short")  # This is acceptable
     elif a == 3:
         raise CustomException("its_code_not_message")  # This is acceptable
+    elif a == 4:
+        raise CustomException(f"A long message in the f-string number {a}")
 
 
 def ignore():

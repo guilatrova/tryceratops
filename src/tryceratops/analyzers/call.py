@@ -42,6 +42,10 @@ class CallRaiseLongArgsAnalyzer(BaseRaiseCallableAnalyzer):
             if is_constant_str and WHITESPACE in first_arg.value:  # type: ignore
                 self._mark_violation(node)
 
+            is_constant_fstr = isinstance(first_arg, ast.JoinedStr)
+            if is_constant_fstr:
+                self._mark_violation(node)
+
 
 class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):
     EXPERIMENTAL = True

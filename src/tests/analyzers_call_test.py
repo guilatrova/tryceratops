@@ -49,10 +49,11 @@ def test_raise_long_args():
 
     violations = analyzer.check(tree, "filename")
 
-    assert len(violations) == 1
-    violation, *_ = violations
+    assert len(violations) == 2
+    first, second = violations
 
-    assert_args(17, 8, violation)
+    assert_args(17, 8, first)
+    assert_args(23, 8, second)
 
 
 def test_check_continue():
