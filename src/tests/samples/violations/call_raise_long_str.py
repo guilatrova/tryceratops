@@ -20,7 +20,13 @@ def func():
     elif a == 3:
         raise CustomException("its_code_not_message")  # This is acceptable
     elif a == 4:
-        raise CustomException(f"A long message in the f-string number {a}")
+        raise CustomException(f"long message with f-string {a}")
+    # elif a == 5:
+    #     raise CustomException(f"code_{a}")  # TODO: This should be acceptable!
+    elif a == 6:
+        raise CustomException("long message number %s", a)
+    elif a == 7:
+        raise CustomException("code_message_number_%s", a)  # This is acceptable
 
 
 def ignore():
