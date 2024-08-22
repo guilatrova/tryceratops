@@ -34,17 +34,18 @@ class CallRaiseLongArgsAnalyzer(BaseRaiseCallableAnalyzer):
     def _check_raise_callable(self, node: ast.Raise, exc: ast.Call, func: ast.Name) -> None:
         if len(exc.args):
             first_arg, *_ = exc.args
-            is_constant_str = isinstance(first_arg, ast.Constant) and isinstance(
-                first_arg.value, str
-            )
-
             WHITESPACE = " "
-            if is_constant_str and WHITESPACE in first_arg.value:  # type: ignore
-                self._mark_violation(node)
 
-            is_constant_fstr = isinstance(first_arg, ast.JoinedStr)
-            if is_constant_fstr:
-                self._mark_violation(node)
+            if isinstance(first_arg, ast.Constant) and isinstance(first_arg.value, str):
+                if WHITESPACE in first_arg.value:
+                    self._mark_violation(node)
+
+            if isinstance(first_arg, ast.JoinedStr):
+                for f_string_part in first_arg.values:
+                    if isinstance(f_string_part, ast.Constant):
+                        if isinstance(f_string_part.value, str):
+                            if WHITESPACE in f_string_part.value:
+                                self._mark_violation(node)
 
 
 class CallAvoidCheckingToContinueAnalyzer(BaseAnalyzer):

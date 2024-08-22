@@ -54,7 +54,7 @@ def test_raise_long_args():
 
     assert_args(17, 8, first)
     assert_args(23, 8, second)
-    assert_args(27, 8, third)
+    assert_args(29, 8, third)
 
 
 def test_check_continue():
