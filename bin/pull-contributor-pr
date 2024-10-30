@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Usage: ./pull_pr.sh owner:branch [-r]
+
+# Set repository name
+readonly REPO_NAME="tryceratops"
+
+# Extract owner and branch from the first argument
+IFS=":" read -r OWNER BRANCH <<< "$1"
+
+# Check if -r flag is passed to remove the remote afterward
+REMOVE_REMOTE=false
+if [[ "$2" == "-r" ]]; then
+    REMOVE_REMOTE=true
+fi
+
+# Add the contributor's remote
+CONTRIBUTOR_REMOTE="${OWNER}_remote"
+git remote add "$CONTRIBUTOR_REMOTE" "https://github.com/$OWNER/$REPO_NAME.git"
+
+git fetch "$CONTRIBUTOR_REMOTE" "$BRANCH"
+git checkout -b "${OWNER}_${BRANCH}" "$CONTRIBUTOR_REMOTE/$BRANCH"
+
+# Remove the remote if -r flag was provided
+if [ "$REMOVE_REMOTE" = true ]; then
+    git remote remove "$CONTRIBUTOR_REMOTE"
+    echo "Removed remote $CONTRIBUTOR_REMOTE"
+fi
+
+echo "Branch ${OWNER}_${BRANCH} checked out successfully."
