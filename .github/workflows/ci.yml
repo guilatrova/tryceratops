@@ -11,6 +11,8 @@ on:
       - "docs/**"
       - "*.md"
 
+  workflow_dispatch:
+
 jobs:
   test:
     # We want to run on external PRs, but not on our own internal PRs as they'll be run
