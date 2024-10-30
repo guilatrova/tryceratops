@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v2.4.1 (2024-10-30)
+
+### Fix
+
+* Allow f-string to trigger TRY003 ([`5d6d050`](https://github.com/guilatrova/tryceratops/commit/5d6d05061b7fc3d5bf470339287f4123970a522a))
+
 ## v2.4.0 (2024-08-19)
 
 ### Feature
